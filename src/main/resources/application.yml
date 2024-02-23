@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  # 타임리프 파일 수정 시 서버 재시작 없이 바로 적용
+  thymeleaf:
+    cache: false
+  profiles:
+    active: local
+# Database 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:mysql://localhost:3306/wine?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-88&allowMultiQueries=true
+#    url: jdbc:log4jdbc:mysql://movie.goosia.com:3306/movie?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowMultiQueries=true
+
+    username: wine
+    password: 4795
+  devtools:
+    livereload:
+      enabled: true  # LiveReload 활성화
+    restart:
+      enabled: true  # 자동 재시작 활성화
+    
+# mybatis 설정
+mybatis:
+  type-aliases-package: com.winemanager
+  #type-aliases:
+    #userDto: dev.moviesearch.app.user.domain.UserDto
+  mapper-locations: classpath:/mybatis/*.xml
+  configuration:
+    multiple-result-sets-enabled: false
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    default-fetch-size: 500
+    default-statement-timeout: 25000
