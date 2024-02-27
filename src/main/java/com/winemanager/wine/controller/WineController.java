@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.winemanager.wine.service.WineService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -33,18 +34,31 @@ public class WineController {
 	
 	@GetMapping("/my-wine")
 	public String redirectToMyWine() {
-		return "redirect:/my-wine/all";
+		return "redirect:/my-wine/all?sort_by=reg_desc";
 	}
 	
 	@GetMapping("/my-wine/{type}")
 	public String getMyWine(@PathVariable(name = "type") String type, 
 							@RequestParam(name = "sort_by", required = false, defaultValue = "reg_desc") String sortBy, 
+							HttpServletRequest request,
 							Model model) {
 		
 		model.addAttribute("type", type);
 		model.addAttribute("sortBy", sortBy);
+		model.addAttribute("uri", request.getRequestURI());
 		
 		return "wine/my-wine";
+	}
+	
+	@GetMapping("/wine/{wineId}")
+	public String getWineDetail(@PathVariable(name = "wineId") String wineId, 
+							HttpServletRequest request,
+							Model model) {
+		
+		model.addAttribute("wineId", wineId);
+		model.addAttribute("uri", request.getRequestURI());
+		
+		return "wine/wine-detail";
 	}
 	
 }

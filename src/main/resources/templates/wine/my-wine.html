@@ -12,13 +12,13 @@
 </th:block>
 
 <div layout:fragment="content" class="w-4/5 mx-auto py-10 mt-40">
-	<h1 class="text-5xl font-bold mb-6">All</h1>
+	<h1 th:text="${#strings.capitalize(type)}" class="text-5xl font-bold mb-6">All</h1>
 	<nav class="flex space-x-4 pb-3 mb-20">
-		<a class="text-lg font-semibold" href="/my-wine/all"> All </a> 
-		<a class="text-lg font-semibold" href="/my-wine/red"> Red </a>
-		<a class="text-lg font-semibold" href="/my-wine/white"> White </a> 
-		<a class="text-lg font-semibold" href="/my-wine/sparkling"> Sparkling </a>
-		<a class="text-lg font-semibold" href="/my-wine/rose"> Rose </a> 
+		<a th:classappend="${type == 'all'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/all"> All </a> 
+		<a th:classappend="${type == 'red'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/red"> Red </a>
+		<a th:classappend="${type == 'white'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/white"> White </a> 
+		<a th:classappend="${type == 'sparkling'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/sparkling"> Sparkling </a>
+		<a th:classappend="${type == 'rose'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/rose"> Rose </a> 
 	</nav>
 	
 	<div class="flex justify-between pb-3 mb-10 border-b">
@@ -69,21 +69,29 @@
 	<!-- Contents -->
 	<div class="flex justify-center w-full">
 		<div class="grid grid-cols-4 gap-8 w-full">
+		
 			<div class="flex flex-col items-center">
-				<div class=" w-full text-center relative">
-					<div class="absolute top-0 right-0 bg-red-700 p-2 rounded-bl-lg ">
-						<span class="text-xs font-semibold text-white">Double Magnum</span>
+				<a href="/wine/1" class=" w-full text-center relative">
+					<div class=" w-full text-center relative">
+						<div class="absolute top-0 left-0 bg-red-700 p-2 rounded-br-lg ">
+							<span class="text-xs font-semibold text-white">Double Magnum</span>
+						</div>
+						<div class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
+							<span class="text-xs font-semibold text-gray-100">Sold Out</span>
+						</div>
+						<img th:src="@{https://images.vivino.com/thumbs/QRhTyEmKR8Wi_C1N2uqBWg_pb_300x300.png}" alt="Red Sculpture"
+							class="inline-block my-2 h-[300px] object-cover" 
+							height="300" style="object-fit: cover;" />
 					</div>
-					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
-						class="inline-block my-2 h-[300px] object-cover" 
-						height="300" style="object-fit: cover;" />
-				</div>
-				<h2 class="text-lg font-semibold">Red Sculpture</h2>
-				<p class="mt-1 text-sm text-gray-700">$25.00</p>
+					<h2 class="text-lg font-semibold">Moët & Chandon Grand Vintage Brut Champagne</h2>
+					<h3 class="text-base font-medium">2012</h3>
+					<p class="mt-1 text-sm text-gray-700">$85.00</p>
+				</a>
 			</div>
+			
 			<div class="flex flex-col items-center">
 				<div class=" w-full text-center relative">
-					<div class="absolute top-0 right-0 bg-blue-700 p-2 rounded-bl-lg ">
+					<div class="absolute top-0 left-0 bg-blue-700 p-2 rounded-br-lg ">
 						<span class="text-xs font-semibold text-white">Magnum</span>
 					</div>
 					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
@@ -91,11 +99,12 @@
 						height="300" style="object-fit: cover;" />
 				</div>
 				<h2 class="text-lg font-semibold">Grey Bowl</h2>
+				<h3 class="text-base font-medium">NV</h3>
 				<p class="mt-1 text-sm text-gray-700">$25.00</p>
 			</div>
 			<div class="flex flex-col items-center">
 				<div class=" w-full text-center relative">
-				<div class="absolute top-0 right-0 bg-orange-500 p-2 rounded-bl-lg ">
+					<div class="absolute top-0 left-0 bg-orange-500 p-2 rounded-br-lg ">
 						<span class="text-xs font-semibold text-white">Half</span>
 					</div>
 					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
@@ -103,11 +112,12 @@
 						height="300" style="object-fit: cover;" />
 				</div>
 				<h2 class="text-lg font-semibold">Green Vase</h2>
+				<h3 class="text-base font-medium">2012</h3>
 				<p class="mt-1 text-sm text-gray-700">$25.00</p>
 			</div>
 			<div class="flex flex-col items-center">
 				<div class=" w-full text-center relative">
-				<div class="absolute top-0 right-0 bg-yellow-500 p-2 rounded-bl-lg ">
+					<div class="absolute top-0 left-0 bg-yellow-500 p-2 rounded-br-lg ">
 						<span class="text-xs font-semibold text-white">Split</span>
 					</div>
 					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
@@ -115,14 +125,84 @@
 						height="300" style="object-fit: cover;" />
 				</div>
 				<h2 class="text-lg font-semibold">Beige Armchair</h2>
+				<h3 class="text-base font-medium">2012</h3>
 				<p class="mt-1 text-sm text-gray-700">$25.00</p>
 			</div>
 		</div>
 	</div>
+	
+	<!-- Pagination 
+		나중에 페이징 처리할 때 만들기-->
+	<nav role="navigation" aria-label="pagination" class="mx-auto mt-16 flex w-full justify-center">
+		<ul class="flex flex-row items-center gap-1">
+			<li class="">
+				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-8 px-3 py-2 gap-1 pl-2.5"
+					aria-label="Go to previous page" href="#"> 
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="h-4 w-4">
+           			<path d="m15 18-6-6 6-6"></path>
+         			</svg> 
+        			<span>Previous</span>
+				</a>
+			</li>
+			
+			<li class="">
+				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9"
+					href="#"> 1 </a>
+			</li>
 
+			<li class="">
+				<a aria-current="page"
+					class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9"
+					href="#"> 2 </a>
+			</li>
+
+			<li class="">
+				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9"
+					href="#"> 3 </a>
+			</li>
+			<li class="">
+				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-8 px-3 py-2 gap-1 pr-2.5"
+					aria-label="Go to next page" href="#"> 
+				<span>Next</span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+					viewBox="0 0 24 24" fill="none" stroke="currentColor"
+					stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+					class="h-4 w-4">
+            		<path d="m9 18 6-6-6-6"></path>
+          		</svg>
+				</a>
+			</li>
+		</ul>
+	</nav>
 </div>
 
 
 </html>
 
+<!-- 
+	와인 사이즈 템플릿
 
+	<div class="absolute top-0 left-0 bg-red-700 p-2 rounded-br-lg ">
+		<span class="text-xs font-semibold text-white">Double Magnum</span>
+	</div>
+	<div class="absolute top-0 left-0 bg-blue-700 p-2 rounded-br-lg ">
+		<span class="text-xs font-semibold text-white">Magnum</span>
+	</div>
+	<div class="absolute top-0 left-0 bg-orange-500 p-2 rounded-br-lg ">
+		<span class="text-xs font-semibold text-white">Half</span>
+	</div>
+	<div class="absolute top-0 left-0 bg-yellow-500 p-2 rounded-br-lg ">
+		<span class="text-xs font-semibold text-white">Split</span>
+	</div>
+	
+	
+	
+	재고 0개일 때 솔드아웃
+	
+	<div class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
+		<span class="text-xs font-semibold text-gray-100">Sold Out</span>
+	</div>
+ -->
