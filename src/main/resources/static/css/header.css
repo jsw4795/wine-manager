@@ -1,0 +1,15 @@
+header {
+	z-index: 10;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    line-height: 1;
+    height: 70px;
+    width: 100%;
+}
+
+.header-title-nav-wrapper > div {
+	display: inline-block;
+	height: 70px;
+}

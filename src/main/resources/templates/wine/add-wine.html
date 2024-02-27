@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="script">
+	<!-- <script th:src="@{/js/index.js}" type="text/javascript"></script> -->
+</th:block>
+
+<th:block layout:fragment="css">
+	<!-- <link rel="stylesheet" th:href="@{/css/header.css}" /> -->
+</th:block>
+
+<form layout:fragment="content" action="/add-wine" method="POST" class="max-w-4xl mx-auto mb-8 mt-40 p-8">
+	<h1 class="text-4xl font-bold text-center mb-12">Add Wine</h1>
+	<div class="flex flex-col space-y-6">
+		<div class="flex space-x-2">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+				viewBox="0 0 24 24" fill="none" stroke="currentColor"
+				stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+				class="w-6 h-6 mt-2">
+				<path xmlns="http://www.w3.org/2000/svg" d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		    </svg>
+			<input id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+				placeholder="Search your wine name" />
+			<!-- vivino 검색 -->
+			<button id="search-new" type="button"
+					class="group relative w-12 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
+					New</button>
+			<!-- 내 와인 중에서 검색 -->
+			<button id="search-old" type="button"
+					class="group relative w-12 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
+					Old</button>
+		</div>
+		
+		<label class="font-semibold pt-14 text-2xl"> About Wine </label>
+		<hr />
+		
+		<div class="flex space-x-2 place-content-center">
+			<div class="w-72 h-80 bg-gray-200 rounded-md text-center">
+				<!--_pb_x600.png : 와인 전체 사진   /   https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pb_x600.png
+					_pl_375x500.png : 와인 밑쪽 썸네일   /   https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png 
+				-->
+				<img th:src="@{/images/wine-default.png}" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
+			</div>
+			<!-- 파일 추후 추가 예정 
+			<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+			  id="wine-image" type="file" /> 
+			-->
+		</div>
+		<div class="flex flex-col space-y-4">
+			<div class="grid grid-cols-4 gap-4">
+				<div class="flex flex-col col-span-3">
+					<label for="wine-name" class="font-semibold"> Name </label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="wine-name" placeholder="Name" type="text" name="name" required autocomplete="off"/> 
+				</div>
+				<div class="flex flex-col">
+					<label for="vintage" class="font-semibold"> Vintage </label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="vintage" placeholder="NV = blank" type="number" min="0" step="1" name="vintage" autocomplete="off"/>
+				</div>
+			</div>
+			<div class="grid grid-cols-2 gap-4">
+				<div class="flex flex-col">
+					<label for="country" class="font-semibold">Country</label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="country" placeholder="Country" type="text" name="country" autocomplete="off"/>
+				</div>
+				<div class="flex flex-col">
+					<label for="region" class="font-semibold">Region</label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="region" placeholder="Region" type="text" name="region" autocomplete="off"/>
+				</div>
+			</div>
+			<div class="grid grid-cols-2 gap-4">
+				<div class="flex flex-col">
+					<label for="average-rate" class="font-semibold">Average_Rate</label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="average-rate" placeholder="Average_Rate" type="number" min="0" max="5" step="0.1" name="averageRate" autocomplete="off"/>
+				</div>
+				<div class="flex flex-col">
+					<label for="rating" class="font-semibold">Rating</label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="rating" placeholder="Rating" type="number" min="0" step="1" name="rating" autocomplete="off"/>
+				</div>
+			</div>
+			
+			<div>
+				<label class="font-semibold">Size</label> 
+				<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex ">
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="size-sp" type="radio" value="sp" name="size" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
+				            <label for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
+				        </div>
+				    </li>
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="size-h" type="radio" value="h" name="size" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+				            <label for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
+				        </div>
+				    </li>
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="size-st" type="radio" value="st" name="size" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+				            <label for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
+				        </div>
+				    </li>
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="size-m" type="radio" value="m" name="size" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+				            <label for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
+				        </div>
+				    </li>
+				    <li class="w-full ">
+				        <div class="flex items-center ps-3">
+				            <input id="size-dm" type="radio" value="dm" name="size" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+				            <label for="size-dm" class="w-full py-3 ms-2 text-xs font-medium text-gray-900 ">Double Magnum - 3L</label>
+				        </div>
+				    </li>
+				</ul>
+			</div>
+			
+			<div>
+				<label class="font-semibold">Type</label> 
+				<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex ">
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="type-r" type="radio" value="r" name="wine-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
+				            <label for="type-r" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Red </label>
+				        </div>
+				    </li>
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="type-w" type="radio" value="w" name="wine-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+				            <label for="type-w" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">White</label>
+				        </div>
+				    </li>
+				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				        <div class="flex items-center ps-3">
+				            <input id="type-s" type="radio" value="s" name="wine-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+				            <label for="type-s" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Sparkling</label>
+				        </div>
+				    </li>
+				    <li class="w-full ">
+				        <div class="flex items-center ps-3">
+				            <input id="type-rs" type="radio" value="rs" name="wine-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+				            <label for="type-rs" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Rose</label>
+				        </div>
+				    </li>
+				</ul>
+			</div>
+			
+			<input type="hidden" name="thumb" />
+			<input type="hidden" name="link" />
+			
+			<label class="font-semibold pt-14 text-2xl"> About purchase </label>
+			<hr />
+			<div class="grid grid-cols-4 gap-4">
+				<div class="flex flex-col col-span-3">
+					<label for="place" class="font-semibold"> Place </label>
+					<select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+						style="white-space: nowrap; overflow-wrap: normal;" name="place" >
+						<option value="" selected disabled hidden="" >선택해주세요.</option>
+						<option value="1">새마을 구판장</option>
+						<option value="2">이마트 남양주점</option>
+						<option value="3">빅보틀</option>
+					</select> 
+				</div>
+				<div class="flex flex-col">
+					<label for="date" class="font-semibold"> Date </label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="date" type="date" name="date"/>
+				</div>
+			</div>
+			<div class="grid grid-cols-2 gap-4">
+				<div class="flex flex-col">
+					<label for="price" class="font-semibold">Price</label> 
+					<div class="relative">
+				        <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+				            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+								<!-- <path xmlns="http://www.w3.org/2000/svg" d="M6 12L8 19L10 12M6 12L4 5M6 12H3M6 12H10M14 12L16 19L18 12M14 12L12 5L10 12M14 12H10M14 12H18M18 12L20 5M18 12H21" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> -->
+								<polyline xmlns="http://www.w3.org/2000/svg" id="primary" points="20 3 16 21 12 6 8 21 4 3" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
+								<path xmlns="http://www.w3.org/2000/svg" id="primary-2" data-name="primary" d="M3,10H21M3,14H21" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
+				            </svg>
+				        </div>
+				        <input type="number" id="price" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 " 
+				        		placeholder="Price (Won)" name="price" min="0" step="1" required autocomplete="off"/>
+				    </div>
+					<!-- <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="price" placeholder="Price" /> -->
+				</div>
+				<div class="flex flex-col">
+					<label for="count" class="font-semibold">Count</label> 
+					<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="count" placeholder="Count" type="number" min="0" step="1" name="count" required autocomplete="off"/>
+				</div>
+			</div>
+			<span class="mt-6"></span>
+			<button type="submit"
+					class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+					Add!</button>
+		</div>
+	</div>
+	
+	<!-- Search Result Modal -->	
+	<div id="modal-background" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
+		<div id="modal" class="bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 30vw; max-width: 80vw">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-xl font-semibold">Search result</h2>
+				<button type="button" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+					Close</button>
+			</div>
+			<div id="modal-content" class="flex justify-center ">
+				<!-- Loading Animation -->
+				<div id="loading" class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 " ></div>
+				
+				<!-- No Result -->
+				<h2 class="text-2xl hidden">No result</h2>
+				
+				<div class="flex flex-col space-y-1 hidden">
+					<div class="p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
+						<img src="https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png" alt="Charles Heidsieck Brut Réserve"
+							class="h-14 w-14 rounded" width="40" height="40"
+							style="aspect-ratio: 40/40; object-fit: cover;" /> 
+						<span class="text-lg font-semibold">Charles Heidsieck Brut Réserve</span>
+					</div> 
+					<div class="p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
+						<img src="https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png" alt="Heidsieck &amp; Co. Monopole Blue Top Brut Champagne"
+							class="h-14 w-14 rounded" width="40" height="40"
+							style="aspect-ratio: 40/40; object-fit: cover;" /> 
+						<span class="text-lg font-semibold">Heidsieck &amp; Co. Monopole Blue Top Brut Champagne</span>
+					</div> 
+					<div class="p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
+						<img src="https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png" alt="Piper-Heidsieck Cuvée Brut Champagne"
+							class="h-14 w-14 rounded" width="40" height="40"
+							style="aspect-ratio: 40/40; object-fit: cover;" /> 
+						<span class="text-lg font-semibold">Piper-Heidsieck Cuvée Brut Champagne</span>
+					</div> 
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</form>
+
+</html>
+
+
