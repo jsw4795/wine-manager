@@ -32,6 +32,11 @@ public class WineController {
 		return "wine/add-wine";
 	}
 	
+	@GetMapping("/drink-wine")
+	public String getDrinkWine() {
+		return "wine/drink-wine";
+	}
+	
 	@GetMapping("/my-wine")
 	public String redirectToMyWine() {
 		return "redirect:/my-wine/all?sort_by=reg_desc";
