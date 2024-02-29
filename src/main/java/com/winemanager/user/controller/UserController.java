@@ -8,10 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.winemanager.security.domain.SecurityUser;
-import com.winemanager.security.service.SecurityService;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.service.UserService;
 
@@ -23,24 +23,26 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
-	private final SecurityService securityService;
 	
 	@GetMapping("/login")
-	public String getLogin(@ModelAttribute SecurityUser securityUser, Principal principal, Model model) {
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
+	public String getLogin(@ModelAttribute SecurityUser securityUser, Principal principal, Model model, @RequestParam(required = false) String error) {
 		// 로그인 상태라면 메인화면으로
 		if(principal != null) 
 			return "redirect:/";
+		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		model.addAttribute("error", error);
 		
 		return "login/login";
 	}
 	
 	@GetMapping("/sign-up")
 	public String getSignUp(@ModelAttribute SignUpRequest signUpRequest, Principal principal, Model model) {
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		// 로그인 상태라면 메인화면으로
 		if(principal != null) 
 			return "redirect:/";
+		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		
 		return "login/sign-up";
 	}
@@ -60,8 +62,7 @@ public class UserController {
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		
-		System.out.println("회원가입 폼: " + signUpRequest.toString());
-		
+		// 비밀번호, 비밀번호 확인 미 일치 시, 에러 추가하고 로그인 회원가입 페이지로
 		if(!signUpRequest.getPassword().equals(signUpRequest.getPasswordCheck())) {
 			result.rejectValue("passwordCheck", "errer.passwordCheck", "Not same with PW.");
 			return "/login/sign-up";
@@ -70,7 +71,7 @@ public class UserController {
 		if(result.hasErrors()) {
 			return "/login/sign-up";
 		}
-		System.out.println("회원가입 실행");
+
 		userService.signUp(signUpRequest);
 		
 		return "redirect:/login";

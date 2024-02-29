@@ -4,7 +4,7 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="script">
-	<!-- <script th:src="@{/js/index.js}" type="text/javascript"></script> -->
+	<!-- <script th:src="@{/js/login.js}" type="text/javascript"></script> -->
 </th:block>
 
 <th:block layout:fragment="css">
@@ -30,6 +30,22 @@
 					<input id="pw" autocomplete="current-password" required
 						class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
 						placeholder="PW (8~, Eng/Num)" type="password" name="password" />
+				</div>
+			</div>
+			<div th:if="${error != null}" class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 "
+				role="alert">
+				<svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+					viewBox="0 0 20 20">
+			    	<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+			    </svg>
+				<span class="sr-only">Info</span>
+				<div>
+					<span th:if="${error == 'notMatch'}" class="font-medium">ID and Password do not match.</span> 
+					<span th:if="${error == 'notExist'}" class="font-medium">ID is not exist. Sign up first.</span> 
+					<span th:if="${error == 'systemError'}" class="font-medium">System error. Please contact administrator.</span> 
+					<span th:if="${error == 'refused'}" class="font-medium">Authentication request was rejected. Please contact administrator.</span> 
+					<span th:if="${error == 'error'}" class="font-medium">Your login request could not be processed due to an unknown error. Please contact administrator.</span> 
 				</div>
 			</div>
 			<div>

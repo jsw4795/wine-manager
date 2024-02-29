@@ -2,16 +2,20 @@ package com.winemanager.security;
 
 import java.io.IOException;
 
-import javax.security.sasl.AuthenticationException;
-
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
+	private final UserDetailsService detailsService;
 	
 	// 시큐리티 기능을 비활성화 할 요청 설정 (정적 요소들에 한해서 시큐리티 비활성화)
 	@Bean
@@ -70,11 +75,24 @@ public class SecurityConfig {
 							@Override
 							public void onAuthenticationFailure(HttpServletRequest request,
 									HttpServletResponse response,
-									org.springframework.security.core.AuthenticationException exception)
+									AuthenticationException exception)
 									throws IOException, ServletException {
-								System.out.println("exception : " + exception.getMessage());
+								
+								String error;
+								
+								if (exception instanceof UsernameNotFoundException) {
+									error = "notExist";
+								} else if(exception instanceof BadCredentialsException) {
+									error = "notMatch";
+								} else if (exception instanceof InternalAuthenticationServiceException) {
+									error = "systemError";
+								} else if (exception instanceof AuthenticationCredentialsNotFoundException) {
+									error = "refused";
+								} else {
+									error = "error";
+								}
 
-                                response.sendRedirect("/login");
+                                response.sendRedirect("/login?error=" + error);
 							}
 		                })
 				)
@@ -85,6 +103,15 @@ public class SecurityConfig {
 				.build();
 		
 	}
+	
+	@Bean
+	public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(detailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setHideUserNotFoundExceptions(false); // 아이디가 존재하지 않을 때 존재하지 않는 아이디 예외 출력
+        return authenticationProvider;
+    }
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
