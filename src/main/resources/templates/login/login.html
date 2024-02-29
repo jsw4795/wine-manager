@@ -16,20 +16,20 @@
 		<div>
 			<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Get login!</h2>
 		</div>
-		<form class="mt-8 space-y-6" action="/login" method="POST">
+		<form th:object="${securityUser}" class="mt-8 space-y-6" action="/login" method="POST">
 			<input type="hidden" value="true" name="remember" />
 			<div class="rounded-md shadow-sm -space-y-px">
 				<div>
 					<label for="id" class="sr-only">ID</label>
 					<input id="id"  required
 						class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-						placeholder="ID" type="text" name="id" autocomplete="off"/>
+						placeholder="ID" type="text" name="userId" autocomplete="off"/>
 				</div>
 				<div class="pt-4">
 					<label for="pw" class="sr-only">PW</label> 
 					<input id="pw" autocomplete="current-password" required
 						class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-						placeholder="PW" type="password" name="password" />
+						placeholder="PW (8~, Eng/Num)" type="password" name="password" />
 				</div>
 			</div>
 			<div>

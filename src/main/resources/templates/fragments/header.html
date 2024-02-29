@@ -6,7 +6,7 @@
 	<nav class="flex items-center justify-between p-8">
 		<h1 class="text-3xl font-bold"><a href="/">Wine Manager</a></h1>
 		<div class="flex items-center space-x-8">
-			<a class="text-xl" href="/login">Login</a>
+			<a class="text-xl" th:href="${userId == null} ? '/login' : '/logout'" th:text="${userId == null} ? 'Login' : 'Logout'">Login</a>
 			<a class="text-xl" href="/add-wine">Add wine</a>
 			<a class="text-xl" href="/my-wine">My Wine</a>
 			<a class="text-xl" href="/about">About</a>

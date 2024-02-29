@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winemanager.user.mapper.UserMapper">
+
+	<select id="selectUserById" parameterType="com.winemanager.user.domain.User" resultType="com.winemanager.user.domain.User">
+		select
+			user_id, password, nickname, email, profile_pic
+		from
+			wine.member
+		where
+			user_id = #{userId}
+		
+	</select>
     
-    
+    <insert id="insertUser" parameterType="com.winemanager.user.domain.User">
+    	insert into
+    		wine.member
+    	(user_id, password, nickname, email)
+    	values
+    	(#{userId}, #{password}, #{nickname}, #{email})
+    </insert>
 
 </mapper>

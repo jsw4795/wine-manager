@@ -1,5 +1,7 @@
 package com.winemanager.wine.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,36 +20,43 @@ public class WineController {
 	private final WineService wineService;
 	
 	@GetMapping("/")
-	public String getIndex() {
+	public String getIndex(Principal principal, Model model) {
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		return "index";
 	}
 	
 	@GetMapping("/about")
-	public String getAbout() {
+	public String getAbout(Principal principal, Model model) {
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		return "about";
 	}
 		
 	@GetMapping("/add-wine")
-	public String getAddWine() {
+	public String getAddWine(Principal principal, Model model) {
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		return "wine/add-wine";
 	}
 	
 	@GetMapping("/drink-wine")
-	public String getDrinkWine() {
+	public String getDrinkWine(Principal principal, Model model) {
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		return "wine/drink-wine";
 	}
 	
 	@GetMapping("/my-wine")
-	public String redirectToMyWine() {
+	public String redirectToMyWine(Principal principal, Model model) {
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		return "redirect:/my-wine/all?sort_by=reg_desc";
 	}
 	
 	@GetMapping("/my-wine/{type}")
 	public String getMyWine(@PathVariable(name = "type") String type, 
 							@RequestParam(name = "sort_by", required = false, defaultValue = "reg_desc") String sortBy, 
+							Principal principal,
 							HttpServletRequest request,
 							Model model) {
 		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("type", type);
 		model.addAttribute("sortBy", sortBy);
 		model.addAttribute("uri", request.getRequestURI());
@@ -57,9 +66,11 @@ public class WineController {
 	
 	@GetMapping("/wine/{wineId}")
 	public String getWineDetail(@PathVariable(name = "wineId") String wineId, 
+							Principal principal,
 							HttpServletRequest request,
 							Model model) {
 		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("wineId", wineId);
 		model.addAttribute("uri", request.getRequestURI());
 		

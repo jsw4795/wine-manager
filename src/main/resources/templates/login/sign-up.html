@@ -5,6 +5,7 @@
 
 <th:block layout:fragment="script">
 	<!-- <script th:src="@{/js/index.js}" type="text/javascript"></script> -->
+	<script th:src="@{/js/sign-up.js}" type="text/javascript"></script>	
 </th:block>
 
 <th:block layout:fragment="css">
@@ -19,34 +20,51 @@
 			width="600" height="600"
 			style="aspect-ratio: 600/600; object-fit: cover;" />
 	</div>
-	<form action="/sign-up" method="POST" class="flex w-[400px] flex-col space-y-6">
+	<form th:object="${signUpRequest}" action="/sign-up" method="POST" class="flex w-[400px] flex-col space-y-6" >
 		<h1 class="text-4xl font-bold">Sign up</h1>
 		
 		<div class="flex flex-col space-y-4">
 			<label for="id" class="flex flex-col"> 
 				<span class="mb-1 text-sm font-semibold">ID</span> 
-				<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						id="id" placeholder="Enter your ID" required name="id" autocomplete="off"/>
+				<div class="flex space-x-2">
+					<input th:field="*{userId}" th:classappend="${#fields.hasErrors('userId')} ? 'border-red-600' : ''" 
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+							id="userId" placeholder="Enter your ID" required name="id" autocomplete="off"/>
+					<input th:field="*{idChecked}" type="hidden" id="id-check" name="idChecked" value="false" required/>
+					<button th:classappend="${#fields.hasErrors('idChecked')} ? 'bg-red-200' : ''"
+							type="button" id="id-check-btn" class="group relative  inline-block flex justify-center py-2 px-4 border  border-black text-sm font-medium rounded-md text-black  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+					Check</button>
+				</div>
+				<p th:if="${#fields.hasErrors('idChecked')}" th:errors="*{idChecked}"></p>
+				<p th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></p>
 			</label> 
 			<label for="password" class="flex flex-col"> 
 				<span class="mb-1 text-sm font-semibold">PW</span> 
-				<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+				<input th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'border-red-600' : ''" 
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="password" placeholder="Enter your password" type="password" required name="password"/>
+				<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 			</label> 
 			<label for="password" class="flex flex-col"> 
 				<span class="mb-1 text-sm font-semibold">PW Check</span> 
-				<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						id="password" placeholder="Enter your password again" type="password" required name="password-check"/>
+				<input th:field="*{passwordCheck}" th:classappend="${#fields.hasErrors('passwordCheck')} ? 'border-red-600' : ''" 
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+						id="passwordCheck" placeholder="Enter your password again" type="password" required name="passwordCheck"/>
+				<p th:if="${#fields.hasErrors('passwordCheck')}" th:errors="*{passwordCheck}"></p>
 			</label> 
 			<label for="email" class="flex flex-col"> 
 				<span class="mb-1 text-sm font-semibold">Email</span> 
-				<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+				<input th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? 'border-red-600' : ''"  
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="email" placeholder="Enter your email" type="email" required name="email"/>
+				<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 			</label> 
 			<label for="nickname" class="flex flex-col"> 
 				<span class="mb-1 text-sm font-semibold">Nickname</span> 
-				<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+				<input th:field="*{nickname}" th:classappend="${#fields.hasErrors('nickname')} ? 'border-red-600' : ''" 
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="nickname" placeholder="Enter your nickname" required name="nickname" autocomplete="off"/>
+				<p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></p>
 			</label>
 		</div>
 		<button type="submit"

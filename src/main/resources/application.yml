@@ -11,7 +11,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:mysql://localhost:3306/wine?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-88&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/wine?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowMultiQueries=true
 #    url: jdbc:log4jdbc:mysql://movie.goosia.com:3306/movie?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowMultiQueries=true
 
     username: wine
