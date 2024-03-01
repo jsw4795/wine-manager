@@ -1,0 +1,32 @@
+<div xmlns:th="http://www.thymeleaf.org" class="flex flex-col space-y-1" >
+
+	<div th:each="wine : ${wineList}" class="wine-in-search-result p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
+		<img th:src="@{|${wine.thumb}_pl_375x500.png|}" th:alt="${wine.name}"
+			class="h-14 w-14 rounded" width="40" height="40"
+			style="aspect-ratio: 40/40; object-fit: cover;" /> 
+			
+		<span class="text-lg font-semibold">
+			<span th:text="${wine.name}"></span>
+			<span th:text="${wine.vintage == null ? '--NV' : '--'+wine.vintage}" class="font-black"></span>
+			<span th:text="${wine.size == 'Standard' ? '' : '--'+wine.size}" class="font-black"></span>
+		</span>
+		
+		<div class="data hidden">
+			<p th:text="${wine.wineId}" class="wineId"></p>
+			<p th:text="${wine.wineType}" class="wineType"></p>
+			<p th:text="${wine.name}" class="wineName"></p>
+			<p th:text="${wine.size}" class="wineSize"></p>
+			<p th:text="${wine.vintage}" class="wineVintage"></p>
+			<p th:text="${wine.country}" class="wineCountry"></p>
+			<p th:text="${wine.region}" class="wineRegion"></p>
+			<p th:text="${wine.averageRating}" class="wineAverageRating"></p>
+			<p th:text="${wine.rating}" class="wineRating"></p>
+			<p th:text="${wine.averagePrice}" class="wineAveragePrice"></p>
+			<p th:text="${wine.count}" class="wineCount"></p>
+			<p th:text="${wine.link}" class="wineLink"></p>
+			<p th:text="${wine.thumb}" class="wineThumb"></p>
+			<p th:text="${wine.bestYear}" class="wineBestYear"></p>
+		</div>
+	</div> 
+	
+</div>

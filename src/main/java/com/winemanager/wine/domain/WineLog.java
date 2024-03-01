@@ -23,8 +23,8 @@ public class WineLog {
 	
 	private String type; // 로그 종류 / IN(구매) or OUT(소비)
 	
-	private int placeId;
+	private String place;
 	private Date date;
-	private int price;
+	private Integer price;
 	private int count;
 }

@@ -21,14 +21,14 @@ public class Wine {
 	private String wineType; // red, white, sparkling, rose
 	private String name;
 	private String size; // split, half, standard, magnum, double magnum
-	private int vintage;
+	private Integer vintage;
 	private String country;
 	private String region;
-	private double averageRating;
-	private int rating;
-	private double price;
+	private Double averageRating;
+	private Integer rating;
+	private Double averagePrice;
 	private int count;
 	private String link;
 	private String thumb;
-	private int bestYear;
+	private Integer bestYear;
 }

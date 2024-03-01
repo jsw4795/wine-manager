@@ -2,6 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.winemanager.wine.mapper.WineMapper">
     
+    <select id="selectPlaceById" parameterType="String" resultType="String">
+    	select
+			place
+		from
+			wine.place
+		where
+			user_id = #{userId}
+    </select>
     
+    <insert id="insertNewWine" parameterType="com.winemanager.wine.domain.Wine" useGeneratedKeys="true" keyColumn="wine_id" keyProperty="wineId">
+    	insert into
+			wine.wine
+		(user_id, name, link, thumb, country, region, average_rating, rating, average_price, vintage, count, size, wine_type)
+		values
+		(#{userId}, #{name}, #{link}, #{thumb}, #{country}, #{region}, #{averageRating}, #{rating}, #{averagePrice}, #{vintage}, #{count}, #{size}, #{wineType})
+    </insert>
+    
+    <insert id="insertWineLog" parameterType="com.winemanager.wine.domain.WineLog" useGeneratedKeys="true">
+    	insert into
+			wine.wine_log
+		(user_id, wine_id, type, date, place, price, count)
+		values
+		(#{userId}, #{wineId}, #{type}, #{date}, #{place}, #{price}, #{count});
+		
+		update 
+			wine.wine
+		set
+			count = count + #{count}
+		where wine_id = #{wineId}
+    </insert>
+    
+    <select id="selectWineListWithAllData" parameterType="String" resultType="com.winemanager.wine.domain.Wine">
+    	select
+    		wine_id, user_id, name, link, thumb, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    	from
+    		wine.wine
+    	where
+    		user_id = #{userId}
+    </select>
 
 </mapper>
