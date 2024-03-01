@@ -55,7 +55,6 @@ public class UserController {
 			return "pattern";
 		return userService.checkIdExist(userId) ? "false" : "true";
 	}
-	
 	// 회원가입 실행
 	@PostMapping("/sign-up")
 	public String signUp(@Valid @ModelAttribute SignUpRequest signUpRequest, BindingResult result, Principal principal, Model model) {

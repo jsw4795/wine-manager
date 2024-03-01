@@ -42,7 +42,7 @@
 				<span class="sr-only">Info</span>
 				<div>
 					<span th:if="${error == 'notMatch'}" class="font-medium">ID and Password do not match.</span> 
-					<span th:if="${error == 'notExist'}" class="font-medium">ID is not exist. Sign up first.</span> 
+					<span th:if="${error == 'notExist'}" class="font-medium">ID does not exist. Sign up first.</span> 
 					<span th:if="${error == 'systemError'}" class="font-medium">System error. Please contact administrator.</span> 
 					<span th:if="${error == 'refused'}" class="font-medium">Authentication request was rejected. Please contact administrator.</span> 
 					<span th:if="${error == 'error'}" class="font-medium">Your login request could not be processed due to an unknown error. Please contact administrator.</span> 
