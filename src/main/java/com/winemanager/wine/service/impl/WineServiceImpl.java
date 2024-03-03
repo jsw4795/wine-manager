@@ -1,7 +1,9 @@
 package com.winemanager.wine.service.impl;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -82,8 +84,11 @@ public class WineServiceImpl implements WineService{
 	}
 
 	@Override
-	public List<Wine> getWineListWithAllData(String userId) {
-		return wineMapper.selectWineListWithAllData(userId);
+	public List<Wine> getWineListByWineName(String keyword, String userId) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("userId", userId);
+		param.put("keyword", keyword);
+		return wineMapper.selectWineListByName(param);
 	}
 
 	@Override
@@ -107,24 +112,29 @@ public class WineServiceImpl implements WineService{
 			jsonResult = new String(p.getInputStream().readAllBytes());
 			wineList = mapper.readValue(jsonResult, new TypeReference<List<Wine>>() {});
 			for(Wine wine : wineList) {
-				String thumb = wine.getThumb();
+				String thumbOrigin = wine.getThumb();
 				
 				// vivino에 사진이 없으면, 자체 기본 이미지로 변경
-				if(thumb.contains("default_label")) {
+				if(thumbOrigin.contains("default_label")) {
 					wine.setThumb("/images/wine-default.png");
 					wine.setThumbBottom("/images/wine-default.png");
 					continue;
 				}
 				
-				int idx1 = thumb.lastIndexOf("_");
-				int idx2 = thumb.lastIndexOf(".");
-				String thumbBody = thumb.substring(0, idx1); 
-				String thumbSize = "80x80"; // 이미지 사이즈
-				String thumbExtention = thumb.substring(idx2 + 1); // jpg or png
+				int idx1 = thumbOrigin.lastIndexOf("_");
+				int idx2 = thumbOrigin.lastIndexOf(".");
+				String thumbBody = thumbOrigin.substring(0, idx1); 
+				String thumbSize = "x600"; // 이미지 사이즈
+				String thumbBottomSize = "80x80"; 
+				String thumbExtention = thumbOrigin.substring(idx2 + 1); // jpg or png
 				
-				thumb = thumbBody + "_" + thumbSize + "." + thumbExtention;
-				thumb = thumb.replace("_pb_", "_pl_"); // 하반부 사진으로 변경
-				wine.setThumbBottom(thumb);
+				String thumb = thumbBody + "_" + thumbSize + "." + thumbExtention;
+				String thumbBottom = thumbBody + "_" + thumbBottomSize + "." + thumbExtention;
+				
+				thumbBottom = thumbBottom.replace("_pb_", "_pl_"); // 하반부 사진으로 변경 (있을 때만)
+				
+				wine.setThumb(!thumbExtention.equals("png") ? thumbOrigin : thumb); // 확장자가 png일 때만 사이즈 바꾸기
+				wine.setThumbBottom(thumbBottom);
 			}
 			
 			long endTime = System.currentTimeMillis();

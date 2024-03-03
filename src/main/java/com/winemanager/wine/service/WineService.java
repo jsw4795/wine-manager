@@ -9,6 +9,6 @@ public interface WineService {
 	public List<String> getBuyPlace(String userId);
 	public Integer addNewWine(AddWineRequest addWineRequest, String userId);
 	public Integer addBuyWineLog(AddWineRequest addWineRequest, String userId);
-	public List<Wine> getWineListWithAllData(String userId);
+	public List<Wine> getWineListByWineName(String keyword, String userId);
 	public List<Wine> searchWineInVivino(String keyword);
 }

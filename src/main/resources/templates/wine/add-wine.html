@@ -23,14 +23,10 @@
 		    </svg>
 			<input id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 				 placeholder="Search your wine name" />
-			<!-- vivino 검색 -->
-			<button id="search-new" type="button"
-					class="group relative w-12 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
-					New</button>
-			<!-- 내 와인 중에서 검색 -->
-			<button id="search-old" type="button"
-					class="group relative w-12 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
-					Old</button>
+					<!-- 와인 검색 -->
+			<button id="search-btn" type="button"
+					class="group relative w-15 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
+					Search</button>
 		</div>
 		
 		<label class="font-semibold pt-14 text-2xl"> About Wine </label>
@@ -189,7 +185,7 @@
 						<select th:field="*{buyPlace}" th:classappend="${#fields.hasErrors('buyPlace')} ? 'border-red-600' : ''"         
 							class="col-span-11 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
 							style="white-space: nowrap; overflow-wrap: normal;" name="buyPlace" required >
-							<option value="" selected hidden="" >선택해주세요.</option>
+							<option value="" selected hidden="" >Select or add new place</option>
 							<option th:each="place : ${buyPlaceList}" th:value="${place}" th:text="${place}"></option>
 						</select> 
 						<button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
@@ -246,7 +242,19 @@
 					Close</button>
 			</div>
 			<div id="search-modal-content" class="modal-content flex justify-center ">
-				<!-- Content Area -->
+				<div>
+					<!-- Content Area -->
+					<h4 class="text-xl font-semibold">Registered Wine</h4>
+					<hr />
+					<div id="search-modal-content-old" class="mb-6">
+					
+					</div>
+					<h4 class="text-xl font-semibold">New Wine</h4>
+					<hr />
+					<div id="search-modal-content-new">
+					
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

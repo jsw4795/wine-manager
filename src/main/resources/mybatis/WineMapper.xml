@@ -33,13 +33,15 @@
 		where wine_id = #{wineId}
     </insert>
     
-    <select id="selectWineListWithAllData" parameterType="String" resultType="com.winemanager.wine.domain.Wine">
+    <select id="selectWineListByName" parameterType="Map" resultType="com.winemanager.wine.domain.Wine">
     	select
     		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
     	from
     		wine.wine
     	where
     		user_id = #{userId}
+    		and
+    		name like concat('%', #{keyword}, '%')
     </select>
 
 </mapper>

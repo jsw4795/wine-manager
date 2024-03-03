@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.Wine;
@@ -76,9 +75,9 @@ public class WineController {
 		return "redirect:/wine/" + wineId;
 	}
 	@GetMapping("/add-wine/my-wine-list")
-	public String getMyWineList(Principal principal, Model model) {
+	public String getMyWineList(Principal principal, String keyword, Model model) {
 		
-		List<Wine> wineList = wineService.getWineListWithAllData(principal.getName());
+		List<Wine> wineList = wineService.getWineListByWineName(keyword, principal.getName());
 		
 		if(wineList == null || wineList.size() == 0)
 			return "wine/emptyResultTemplate-add-wine";
