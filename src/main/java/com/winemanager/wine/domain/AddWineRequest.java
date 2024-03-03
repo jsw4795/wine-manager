@@ -28,6 +28,7 @@ public class AddWineRequest {
 	private String wineType;
 	private Double wineAveragePrice;
 	private String wineThumb;
+	private String wineThumbBottom;
 	private String wineLink;
 	
 	

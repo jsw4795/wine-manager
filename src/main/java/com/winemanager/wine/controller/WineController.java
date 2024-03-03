@@ -84,6 +84,18 @@ public class WineController {
 			return "wine/emptyResultTemplate-add-wine";
 		
 		model.addAttribute("wineList", wineList);
+		model.addAttribute("type", "old");
+		
+		return "wine/searchResultTemplate-add-wine";
+	}
+	@GetMapping("/add-wine/search-new")
+	public String searchWineInVivino(String keyword, Model model) {
+		
+		List<Wine> wineList = wineService.searchWineInVivino(keyword);
+		
+		model.addAttribute("wineList", wineList);
+		model.addAttribute("type", "new");
+		
 		return "wine/searchResultTemplate-add-wine";
 	}
 	

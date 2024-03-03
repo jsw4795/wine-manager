@@ -14,9 +14,9 @@
     <insert id="insertNewWine" parameterType="com.winemanager.wine.domain.Wine" useGeneratedKeys="true" keyColumn="wine_id" keyProperty="wineId">
     	insert into
 			wine.wine
-		(user_id, name, link, thumb, country, region, average_rating, rating, average_price, vintage, count, size, wine_type)
+		(user_id, name, link, thumb, thumb_bottom country, region, average_rating, rating, average_price, vintage, count, size, wine_type)
 		values
-		(#{userId}, #{name}, #{link}, #{thumb}, #{country}, #{region}, #{averageRating}, #{rating}, #{averagePrice}, #{vintage}, #{count}, #{size}, #{wineType})
+		(#{userId}, #{name}, #{link}, #{thumb}, #{thumbBottom}, #{country}, #{region}, #{averageRating}, #{rating}, #{averagePrice}, #{vintage}, #{count}, #{size}, #{wineType})
     </insert>
     
     <insert id="insertWineLog" parameterType="com.winemanager.wine.domain.WineLog" useGeneratedKeys="true">
@@ -35,7 +35,7 @@
     
     <select id="selectWineListWithAllData" parameterType="String" resultType="com.winemanager.wine.domain.Wine">
     	select
-    		wine_id, user_id, name, link, thumb, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
     	from
     		wine.wine
     	where

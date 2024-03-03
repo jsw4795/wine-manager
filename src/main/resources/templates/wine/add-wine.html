@@ -22,7 +22,7 @@
 				<path xmlns="http://www.w3.org/2000/svg" d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 		    </svg>
 			<input id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-				placeholder="Search your wine name" />
+				 placeholder="Search your wine name" />
 			<!-- vivino 검색 -->
 			<button id="search-new" type="button"
 					class="group relative w-12 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
@@ -177,6 +177,7 @@
 			
 			<input th:field="*{wineAveragePrice}" type="hidden" name="wineAveragePrice" />
 			<input th:field="*{wineThumb}" type="hidden" name="wineThumb" />
+			<input th:field="*{wineThumbBottom}" type="hidden" name="wineThumbBottom" />
 			<input th:field="*{wineLink}" type="hidden" name="wineLink" />
 			
 			<label class="font-semibold pt-14 text-2xl"> About purchase </label>
@@ -245,30 +246,7 @@
 					Close</button>
 			</div>
 			<div id="search-modal-content" class="modal-content flex justify-center ">
-				
-				<!-- No Result -->
-				<h2 class="text-2xl hidden">No result</h2>
-				
-				<div class="flex flex-col space-y-1 hidden">
-					<div class="p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
-						<img src="https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png" alt="Charles Heidsieck Brut Réserve"
-							class="h-14 w-14 rounded" width="40" height="40"
-							style="aspect-ratio: 40/40; object-fit: cover;" /> 
-						<span class="text-lg font-semibold">Charles Heidsieck Brut Réserve</span>
-					</div> 
-					<div class="p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
-						<img src="https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png" alt="Heidsieck &amp; Co. Monopole Blue Top Brut Champagne"
-							class="h-14 w-14 rounded" width="40" height="40"
-							style="aspect-ratio: 40/40; object-fit: cover;" /> 
-						<span class="text-lg font-semibold">Heidsieck &amp; Co. Monopole Blue Top Brut Champagne</span>
-					</div> 
-					<div class="p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
-						<img src="https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png" alt="Piper-Heidsieck Cuvée Brut Champagne"
-							class="h-14 w-14 rounded" width="40" height="40"
-							style="aspect-ratio: 40/40; object-fit: cover;" /> 
-						<span class="text-lg font-semibold">Piper-Heidsieck Cuvée Brut Champagne</span>
-					</div> 
-				</div>
+				<!-- Content Area -->
 			</div>
 		</div>
 	</div>

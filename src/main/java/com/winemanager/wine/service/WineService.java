@@ -10,4 +10,5 @@ public interface WineService {
 	public Integer addNewWine(AddWineRequest addWineRequest, String userId);
 	public Integer addBuyWineLog(AddWineRequest addWineRequest, String userId);
 	public List<Wine> getWineListWithAllData(String userId);
+	public List<Wine> searchWineInVivino(String keyword);
 }
