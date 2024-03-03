@@ -80,7 +80,7 @@ public class WineController {
 		
 		List<Wine> wineList = wineService.getWineListWithAllData(principal.getName());
 		
-		if(wineList.size() == 0)
+		if(wineList == null || wineList.size() == 0)
 			return "wine/emptyResultTemplate-add-wine";
 		
 		model.addAttribute("wineList", wineList);
@@ -90,8 +90,13 @@ public class WineController {
 	}
 	@GetMapping("/add-wine/search-new")
 	public String searchWineInVivino(String keyword, Model model) {
+		if(keyword == null || keyword.trim().length() == 0)
+			return "wine/emptyResultTemplate-add-wine";
 		
 		List<Wine> wineList = wineService.searchWineInVivino(keyword);
+		
+		if(wineList == null || wineList.size() == 0)
+			return "wine/emptyResultTemplate-add-wine";
 		
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("type", "new");

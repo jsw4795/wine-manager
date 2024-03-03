@@ -68,7 +68,7 @@ const run = async (
 	// collect items from the page
 	const collectItems = () => {
 		const numerize = (stringNumber) => {
-			const str = stringNumber.replace(/[^0-9,.]+/g, '').replace(',', '.');
+			const str = stringNumber.replace(/[^0-9,.]+/g, '').replace(',', '');
 			return parseFloat(str);
 		};
 
@@ -163,10 +163,10 @@ const run = async (
 		page.setDefaultNavigationTimeout(0);
 
 		//load home page
-		await page.goto(BASE_URL, { waitUntil: 'networkidle2' });
+		await page.goto(BASE_URL); // , { waitUntil: 'networkidle2' }
 		const resultSetShipTo = await setShipTo(countryCode, stateCode);
 
-		//check the country and state
+		// //check the country and state
 		// let isDestinationRight = await isShipTo(countryCode, stateCode);
 		// if (!isDestinationRight) {
 		// 	// set country and state
@@ -205,7 +205,7 @@ const run = async (
 					//console.log('Results were collected from the page:', index);
 					result.vinos.push(...pageItems);
 					index++;
-					if (index <= 2) isNext = true;
+					//if (index <= 2) isNext = true;
 				} else {
 					//console.log('finish');
 					// no more data
@@ -246,7 +246,7 @@ const run = async (
 		//console.log('Finish!');
 
 		// output results to the file
-		console.log(JSON.stringify(result.vinos, null, 2));
+		console.log(JSON.stringify(result.vinos, null, 2)); // 자바로 리턴됨
 		// const outFile = fs.createWriteStream('vivino-out.json');
 		// outFile.write(JSON.stringify(result, null, 2));
 		// outFile.end();

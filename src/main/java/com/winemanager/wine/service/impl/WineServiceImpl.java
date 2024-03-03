@@ -44,7 +44,7 @@ public class WineServiceImpl implements WineService{
 						.thumb(addWineRequest.getWineThumb().trim())
 						.thumbBottom(addWineRequest.getWineThumbBottom().trim())
 						.build();
-		
+
 		wineMapper.insertNewWine(wine);
 		
 		WineLog wineLog = WineLog.builder()
@@ -92,7 +92,7 @@ public class WineServiceImpl implements WineService{
 		String rootDir = System.getProperty("user.dir");
 		String nodeDir = "/usr/local/bin/node"; // 설치된 노드 위치 (환경변수를 못읽음)
 		
-		ProcessBuilder pb = new ProcessBuilder(nodeDir, rootDir + "/src/main/resources/api/vivino-api-main/vivino.js", "--name=piper"); // path를 못찾는다 절대경로로 지정해주자
+		ProcessBuilder pb = new ProcessBuilder(nodeDir, rootDir + "/src/main/resources/api/vivino-api-main/vivino.js", "--name=" + keyword); // path를 못찾는다 절대경로로 지정해주자
 		//pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 		//pb.redirectError(ProcessBuilder.Redirect.INHERIT);
 		
@@ -100,7 +100,10 @@ public class WineServiceImpl implements WineService{
 		ObjectMapper mapper = new ObjectMapper();
 		List<Wine> wineList = null;
 		try {
+			long startTime = System.currentTimeMillis();
 			Process p = pb.start();
+			
+			
 			jsonResult = new String(p.getInputStream().readAllBytes());
 			wineList = mapper.readValue(jsonResult, new TypeReference<List<Wine>>() {});
 			for(Wine wine : wineList) {
@@ -123,6 +126,10 @@ public class WineServiceImpl implements WineService{
 				thumb = thumb.replace("_pb_", "_pl_"); // 하반부 사진으로 변경
 				wine.setThumbBottom(thumb);
 			}
+			
+			long endTime = System.currentTimeMillis();
+			System.out.println("검색 시간: " + (endTime - startTime) + "ms");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

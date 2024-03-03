@@ -19,7 +19,7 @@ import lombok.ToString;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Wine {
 	private String userId;
-	private int wineId;
+	private Integer wineId;
 	private String wineType; // red, white, sparkling, rose
 	private String name;
 	private String size; // split, half, standard, magnum, double magnum

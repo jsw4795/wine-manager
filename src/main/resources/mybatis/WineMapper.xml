@@ -14,7 +14,7 @@
     <insert id="insertNewWine" parameterType="com.winemanager.wine.domain.Wine" useGeneratedKeys="true" keyColumn="wine_id" keyProperty="wineId">
     	insert into
 			wine.wine
-		(user_id, name, link, thumb, thumb_bottom country, region, average_rating, rating, average_price, vintage, count, size, wine_type)
+		(user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type)
 		values
 		(#{userId}, #{name}, #{link}, #{thumb}, #{thumbBottom}, #{country}, #{region}, #{averageRating}, #{rating}, #{averagePrice}, #{vintage}, #{count}, #{size}, #{wineType})
     </insert>
