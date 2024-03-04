@@ -102,6 +102,39 @@ public class WineController {
 		
 		return "wine/searchResultTemplate-add-wine";
 	}
+	@PostMapping("/add-place")
+	public String addPlace(String place, Principal principal, Model model) {
+		boolean isBuyPlaceValid = false;
+		String errorMessage = "An unknown error occurred.";
+		
+		List<String> buyPlaceList = null;
+		List<String> buyPlaceListOrigin = null;
+		
+		// 입력받은 장소 길이 체크
+		if(place == null || place.length() < 1 || place.length() > 30) {
+			errorMessage = "Place name must be at least 1 character and not more than 30 characters.";
+		} else {
+			// 이미 등록된 장소인지 확인
+			buyPlaceListOrigin = wineService.getBuyPlace(principal.getName());
+			if(buyPlaceListOrigin.contains(place)) {
+				errorMessage = "The place already exist.";
+			} else {
+				isBuyPlaceValid = true;
+			}
+		}
+		
+		if(isBuyPlaceValid) {
+			// 장소 등록 후, 새로운 값 받아오기
+			wineService.insertBuyPlace(place, principal.getName());
+			buyPlaceList = wineService.getBuyPlace(principal.getName());
+		}
+		
+		model.addAttribute("buyPlaceList", buyPlaceList);
+		model.addAttribute("isBuyPlaceValid", isBuyPlaceValid);
+		model.addAttribute("errorMessage", errorMessage);
+		
+		return "wine/placeOptionTemplate-add-wine";
+	}
 	
 	
 	@GetMapping("/drink-wine")

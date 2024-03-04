@@ -138,13 +138,32 @@ const run = async (
 
 	const result = { vinos: [] };
 
-	const browser = await puppeteer.launch({
-		headless: true,
-		defaultViewport: { width: 1920, height: 1040 },
-		devtools: false,
-		args: ['--start-maximized'],
-	});
+	const browserURL = 'http://127.0.0.1:9222';
+	let browser = null;
+	try {
+		browser = await puppeteer.connect({
+			browserURL: browserURL,
+			//defaultViewport: { width: 1920, height: 1040 },
+			devtools: false,
+			//args: ['--start-maximized'],
+		});
+	} catch (error) {
+		console.log('error: ' + error);
+		return;
+	}
+	// browser = await puppeteer.launch({
+	// 	headless: true,
+	// 	defaultViewport: { width: 1920, height: 1040 },
+	// 	devtools: false,
+	// 	args: ['--start-maximized'],
+	// });
+	//const page = await browser.newPage();
+
+	// let pages = await browser.pages();
+	// let page = pages[0];
+
 	const page = await browser.newPage();
+
 	// need to set User Agent else an empty result
 	// it seems they detect headless Chrome
 	await page.setUserAgent('Chrome/121.0.6167.184');
@@ -163,8 +182,8 @@ const run = async (
 		page.setDefaultNavigationTimeout(0);
 
 		//load home page
-		await page.goto(BASE_URL); // , { waitUntil: 'networkidle2' }
-		const resultSetShipTo = await setShipTo(countryCode, stateCode);
+		// await page.goto(BASE_URL); // , { waitUntil: 'networkidle2' }
+		// const resultSetShipTo = await setShipTo(countryCode, stateCode);
 
 		// //check the country and state
 		// let isDestinationRight = await isShipTo(countryCode, stateCode);
@@ -251,7 +270,9 @@ const run = async (
 		// outFile.write(JSON.stringify(result, null, 2));
 		// outFile.end();
 
-		await browser.close();
+		await page.close();
+		browser.disconnect();
+		// await browser.close();
 	}
 };
 

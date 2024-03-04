@@ -7,13 +7,12 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.mapper.WineMapper;
 import com.winemanager.wine.service.WineService;
+import com.winemanager.wine.util.VivinoAPI;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +21,19 @@ import lombok.RequiredArgsConstructor;
 public class WineServiceImpl implements WineService{
 
 	private final WineMapper wineMapper;
+	private final VivinoAPI vivinoAPI;
 
 	@Override
 	public List<String> getBuyPlace(String userId) {
 		return wineMapper.selectPlaceById(userId);
+	}
+	
+	@Override
+	public void insertBuyPlace(String place, String userId) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("userId", userId);
+		param.put("place", place);
+		wineMapper.insertPlace(param);
 	}
 
 	@Override
@@ -94,23 +102,10 @@ public class WineServiceImpl implements WineService{
 	@Override
 	public List<Wine> searchWineInVivino(String keyword) {
 		
-		String rootDir = System.getProperty("user.dir");
-		String nodeDir = "/usr/local/bin/node"; // 설치된 노드 위치 (환경변수를 못읽음)
-		
-		ProcessBuilder pb = new ProcessBuilder(nodeDir, rootDir + "/src/main/resources/api/vivino-api-main/vivino.js", "--name=" + keyword); // path를 못찾는다 절대경로로 지정해주자
-		//pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-		//pb.redirectError(ProcessBuilder.Redirect.INHERIT);
-		
-		String jsonResult = null;
-		ObjectMapper mapper = new ObjectMapper();
 		List<Wine> wineList = null;
 		try {
-			long startTime = System.currentTimeMillis();
-			Process p = pb.start();
+			wineList = vivinoAPI.getWineListByName(keyword);
 			
-			
-			jsonResult = new String(p.getInputStream().readAllBytes());
-			wineList = mapper.readValue(jsonResult, new TypeReference<List<Wine>>() {});
 			for(Wine wine : wineList) {
 				String thumbOrigin = wine.getThumb();
 				
@@ -137,14 +132,13 @@ public class WineServiceImpl implements WineService{
 				wine.setThumbBottom(thumbBottom);
 			}
 			
-			long endTime = System.currentTimeMillis();
-			System.out.println("검색 시간: " + (endTime - startTime) + "ms");
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		return wineList;
 	}
+
+	
 	
 }

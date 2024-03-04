@@ -7,6 +7,7 @@ import com.winemanager.wine.domain.Wine;
 
 public interface WineService {
 	public List<String> getBuyPlace(String userId);
+	public void insertBuyPlace(String place, String userId);
 	public Integer addNewWine(AddWineRequest addWineRequest, String userId);
 	public Integer addBuyWineLog(AddWineRequest addWineRequest, String userId);
 	public List<Wine> getWineListByWineName(String keyword, String userId);

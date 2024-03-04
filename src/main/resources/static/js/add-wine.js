@@ -10,6 +10,22 @@ $(() => {
 		searchNewWine(keyword);
 		searchOwnWine(keyword);
 	})
+	// search-input 에서 엔터 클릭
+	$("#search").on("keypress", function(e) {
+		if(e.keyCode == 13)
+			return false;	
+	})
+	$("#search").on("keyup", function(e) {
+		if(e.keyCode == 13){
+			$("#search-modal-content-old").html(getLoadingHTML());	
+			$("#search-modal-content-new").html(getLoadingHTML("It can take about 10 seconds"));
+			$("#search-modal-background").removeClass("hidden");
+			
+			let keyword = $("#search").val();
+			searchNewWine(keyword);
+			searchOwnWine(keyword);
+		}
+	})
 	
 	// 모달 배경 클릭
 	$(".modal-background").on("click", function() {
@@ -75,6 +91,19 @@ $(() => {
 		$(".modal-background").addClass("hidden");
 	})
 	
+	// 장소 추가 버튼 클릭
+	$("#add-place-btn").on("click", function() {
+		$("#place-add-input").val('');
+		$("#place-modal-error").html('');
+		$("#place-modal-background").removeClass("hidden");
+	})
+	// 모달 안에서 장소 추가 확인 버튼 클릭
+	$("#add-place-submit").on("click", function() {
+		let place = $("#place-add-input").val();
+		
+		addPlace(place);
+	})
+	
 })
 
 function searchOwnWine(keyword) {
@@ -99,6 +128,33 @@ function searchNewWine(keyword) {
 		}
 	});
 }
+
+function addPlace(place) {
+	$.ajax({
+		url: "/add-place",
+		type: "POST",
+		data: {place: place},
+		dataType: "HTML",
+		success: function(resultHTML) {
+			// 에러가 리턴된 경우
+			if($(resultHTML).hasClass("error")){
+				$("#place-modal-error").html(resultHTML);
+			} else {
+				// 리턴된 새로운 option태그로 변경
+				$("#buy-place-select").html(resultHTML);
+				
+				// 모달 닫기
+				$(".modal-background").addClass("hidden");
+			}
+			
+		}
+	});
+}
+
+
+
+
+
 
 // HTML Code
 function getLoadingHTML(content) {

@@ -11,6 +11,14 @@
 			user_id = #{userId}
     </select>
     
+    <insert id="insertPlace" parameterType="Map">
+    	insert into
+    		wine.place
+		(user_id, place)
+		values
+		(#{userId}, #{place})
+    </insert>
+    
     <insert id="insertNewWine" parameterType="com.winemanager.wine.domain.Wine" useGeneratedKeys="true" keyColumn="wine_id" keyProperty="wineId">
     	insert into
 			wine.wine

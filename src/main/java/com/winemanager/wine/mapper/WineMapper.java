@@ -11,6 +11,7 @@ import com.winemanager.wine.domain.WineLog;
 @Mapper
 public interface WineMapper {
 	public List<String> selectPlaceById(String userId);
+	public void insertPlace(Map<String, Object> param);
 	public void insertNewWine(Wine wine);
 	public void insertWineLog(WineLog wineLog);
 	public List<Wine> selectWineListByName(Map<String, Object> param);
