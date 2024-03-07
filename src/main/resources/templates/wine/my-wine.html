@@ -23,7 +23,7 @@
 	
 	<div class="flex justify-between pb-3 mb-10 border-b">
 		<div class="mb-4 pt-3">
-			<h2 th:text="${pagination == null} ? '0 Wines' : |${pagination.totalRecordCount} Wines|" class="text-2xl font-semibold">4 Wines</h2>
+			<h2 th:text="${pagination == null} ? '0 Wines' : |${pagination.totalRecordCount} Wines|" class="text-2xl font-semibold">0 Wines</h2>
 		</div>
 		<div class="flex space-x-4 mb-4 pt-3">
 			<!-- asc가 활성화 상태일 경우 해당 요소 desc로 변경 -->
@@ -75,10 +75,9 @@
 					<div class=" w-full text-center relative">
 					
 						<div th:if="${wine.size != 'Standard' }" 
-							th:text="${wine.size}"
-							th:classappend="${wine.size == 'Double Magnum'} ? 'bg-red-700' : ${wine.size == 'Magnum'} ? 'bg-blue-700' : ${wine.size == 'Half'} ? 'bg-orange-500' : 'bg-yellow-500' "
+							th:classappend="${wine.size == 'Double Magnum'} ? 'bg-red-700' : (${wine.size == 'Magnum'} ? 'bg-blue-700' : (${wine.size == 'Half'} ? 'bg-orange-500' : 'bg-yellow-500')) "
 							class="absolute top-0 left-0  p-2 rounded-br-lg ">
-							<span class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
+							<span th:text="${wine.size}" class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
 						</div>
 						
 						<div th:if="${wine.count == 0}" class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
