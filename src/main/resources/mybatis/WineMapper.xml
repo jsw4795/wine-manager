@@ -51,5 +51,44 @@
     		and
     		name like concat('%', #{keyword}, '%')
     </select>
+    
+    <select id="selectCountOfMyWine" parameterType="com.winemanager.wine.domain.MyWineRequest" resultType="int">
+    	select
+    		count(*)
+    	from
+    		wine.wine
+    	<where>
+    		user_id = #{userId}
+    		<if test="type != 'all'">
+    			and wine_type = #{type}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id="selectMyWine" parameterType="com.winemanager.wine.domain.MyWineRequest" resultType="com.winemanager.wine.domain.Wine">
+    	select
+    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    	from
+    		wine.wine
+    	<where>
+    		user_id = #{userId}
+    		<if test="type != 'all'">
+    			and wine_type = #{type}
+    		</if>
+    	</where>
+    	order by
+	    	<if test="sortBy != null">
+		    	<if test="sortBy.equals('reg_asc')">wine_id asc,</if>
+		    	<if test="sortBy.equals('name_asc')">name asc,</if>
+		    	<if test="sortBy.equals('name_desc')">name desc,</if>
+		    	<if test="sortBy.equals('price_asc')">average_price asc,</if>
+		    	<if test="sortBy.equals('price_desc')">average_price desc,</if>
+		    	<if test="sortBy.equals('count_asc')">count asc,</if>
+		    	<if test="sortBy.equals('count_desc')">count desc,</if>
+	    	</if>
+    		wine_id desc
+    	limit
+    		#{pagination.limitStart}, #{recordSize}
+    </select>
 
 </mapper>

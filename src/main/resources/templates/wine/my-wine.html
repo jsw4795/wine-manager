@@ -12,55 +12,55 @@
 </th:block>
 
 <div layout:fragment="content" class="w-4/5 mx-auto py-10 mt-40">
-	<h1 th:text="${#strings.capitalize(type)}" class="text-5xl font-bold mb-6">All</h1>
+	<h1 th:text="${#strings.capitalize(myWineRequest.type)}" class="text-5xl font-bold mb-6">All</h1>
 	<nav class="flex space-x-4 pb-3 mb-20">
-		<a th:classappend="${type == 'all'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/all"> All </a> 
-		<a th:classappend="${type == 'red'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/red"> Red </a>
-		<a th:classappend="${type == 'white'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/white"> White </a> 
-		<a th:classappend="${type == 'sparkling'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/sparkling"> Sparkling </a>
-		<a th:classappend="${type == 'rose'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/rose"> Rose </a> 
+		<a th:classappend="${myWineRequest.type == 'all'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/all"> All </a> 
+		<a th:classappend="${myWineRequest.type == 'red'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/red"> Red </a>
+		<a th:classappend="${myWineRequest.type == 'white'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/white"> White </a> 
+		<a th:classappend="${myWineRequest.type == 'sparkling'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/sparkling"> Sparkling </a>
+		<a th:classappend="${myWineRequest.type == 'rose'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/rose"> Rose </a> 
 	</nav>
 	
 	<div class="flex justify-between pb-3 mb-10 border-b">
 		<div class="mb-4 pt-3">
-			<h2 class="text-2xl font-semibold">4 Wines</h2>
+			<h2 th:text="${pagination == null} ? '0 Wines' : |${pagination.totalRecordCount} Wines|" class="text-2xl font-semibold">4 Wines</h2>
 		</div>
 		<div class="flex space-x-4 mb-4 pt-3">
 			<!-- asc가 활성화 상태일 경우 해당 요소 desc로 변경 -->
 			<div>
-				<a th:classappend="${sortBy.contains('reg')} ? font-semibold : font-normal" 
-					th:href="${sortBy == 'reg_asc'} ? '?sort_by=reg_desc' :'?sort_by=reg_asc'"
+				<a th:classappend="${myWineRequest.sortBy.contains('reg')} ? font-semibold : font-normal" 
+					th:href="${myWineRequest.sortBy == 'reg_asc'} ? '?sortBy=reg_desc' :'?sortBy=reg_asc'"
 					class="text-lg" > Reg </a> 
-				<svg th:if="${sortBy.contains('reg')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
-					<path th:if="${sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path th:if="${sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg th:if="${myWineRequest.sortBy.contains('reg')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
+					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
 			<div>
-				<a th:classappend="${sortBy.contains('name')} ? font-semibold : font-normal" 
-					th:href="${sortBy == 'name_asc'} ? '?sort_by=name_desc' :'?sort_by=name_asc'"
+				<a th:classappend="${myWineRequest.sortBy.contains('name')} ? font-semibold : font-normal" 
+					th:href="${myWineRequest.sortBy == 'name_asc'} ? '?sortBy=name_desc' :'?sortBy=name_asc'"
 					class="text-lg" > Name </a> 
-				<svg th:if="${sortBy.contains('name')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
-					<path th:if="${sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path th:if="${sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg th:if="${myWineRequest.sortBy.contains('name')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
+					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
 			<div>
-				<a th:classappend="${sortBy.contains('price')} ? font-semibold : font-normal" 
-					th:href="${sortBy == 'price_asc'} ? '?sort_by=price_desc' :'?sort_by=price_asc'"
+				<a th:classappend="${myWineRequest.sortBy.contains('price')} ? font-semibold : font-normal" 
+					th:href="${myWineRequest.sortBy == 'price_asc'} ? '?sortBy=price_desc' :'?sortBy=price_asc'"
 					class="text-lg" > Price </a> 
-				<svg th:if="${sortBy.contains('price')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
-					<path th:if="${sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path th:if="${sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg th:if="${myWineRequest.sortBy.contains('price')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
+					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
 			<div>
-				<a th:classappend="${sortBy.contains('count')} ? font-semibold : font-normal" 
-					th:href="${sortBy == 'count_asc'} ? '?sort_by=count_desc' :'?sort_by=count_asc'"
+				<a th:classappend="${myWineRequest.sortBy.contains('count')} ? font-semibold : font-normal" 
+					th:href="${myWineRequest.sortBy == 'count_asc'} ? '?sortBy=count_desc' :'?sortBy=count_asc'"
 					class="text-lg" > Count </a> 
-				<svg th:if="${sortBy.contains('count')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
-					<path th:if="${sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path th:if="${sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg th:if="${myWineRequest.sortBy.contains('count')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
+					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
 		</div>
@@ -70,64 +70,31 @@
 	<div class="flex justify-center w-full">
 		<div class="grid grid-cols-4 gap-8 w-full">
 		
-			<div class="flex flex-col items-center">
-				<a href="/wine/1" class=" w-full text-center relative">
+			<div th:each="wine : ${wineList}" class="wine flex flex-col items-center">
+				<a th:href="@{|/wine/${wine.wineId}|}" class=" w-full text-center relative">
 					<div class=" w-full text-center relative">
-						<div class="absolute top-0 left-0 bg-red-700 p-2 rounded-br-lg ">
-							<span class="text-xs font-semibold text-white">Double Magnum</span>
+					
+						<div th:if="${wine.size != 'Standard' }" 
+							th:text="${wine.size}"
+							th:classappend="${wine.size == 'Double Magnum'} ? 'bg-red-700' : ${wine.size == 'Magnum'} ? 'bg-blue-700' : ${wine.size == 'Half'} ? 'bg-orange-500' : 'bg-yellow-500' "
+							class="absolute top-0 left-0  p-2 rounded-br-lg ">
+							<span class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
 						</div>
-						<div class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
-							<span class="text-xs font-semibold text-gray-100">Sold Out</span>
+						
+						<div th:if="${wine.count == 0}" class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
+							<span class="text-base font-semibold text-gray-100">Sold Out</span>
 						</div>
-						<img th:src="@{https://images.vivino.com/thumbs/QRhTyEmKR8Wi_C1N2uqBWg_pb_300x300.png}" alt="Red Sculpture"
+						
+						<img th:src="@{${wine.thumb}}" alt="Red Sculpture"
 							class="inline-block my-2 h-[300px] object-cover" 
 							height="300" style="object-fit: cover;" />
 					</div>
-					<h2 class="text-lg font-semibold">Moët & Chandon Grand Vintage Brut Champagne</h2>
-					<h3 class="text-base font-medium">2012</h3>
-					<p class="mt-1 text-sm text-gray-700">$85.00</p>
+					<h2 th:text="${wine.name}" class="text-lg font-semibold">와인 이름</h2>
+					<h3 th:text="${wine.vintage != null} ? ${wine.vintage} : 'NV' " class="text-base font-medium">빈티지</h3>
+					<p th:text="|$ ${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}|" class="mt-1 text-sm text-gray-700">평균 가격</p>
 				</a>
 			</div>
 			
-			<div class="flex flex-col items-center">
-				<div class=" w-full text-center relative">
-					<div class="absolute top-0 left-0 bg-blue-700 p-2 rounded-br-lg ">
-						<span class="text-xs font-semibold text-white">Magnum</span>
-					</div>
-					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
-						class="inline-block my-2 h-[300px] object-cover" 
-						height="300" style="object-fit: cover;" />
-				</div>
-				<h2 class="text-lg font-semibold">Grey Bowl</h2>
-				<h3 class="text-base font-medium">NV</h3>
-				<p class="mt-1 text-sm text-gray-700">$25.00</p>
-			</div>
-			<div class="flex flex-col items-center">
-				<div class=" w-full text-center relative">
-					<div class="absolute top-0 left-0 bg-orange-500 p-2 rounded-br-lg ">
-						<span class="text-xs font-semibold text-white">Half</span>
-					</div>
-					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
-						class="inline-block my-2 h-[300px] object-cover" 
-						height="300" style="object-fit: cover;" />
-				</div>
-				<h2 class="text-lg font-semibold">Green Vase</h2>
-				<h3 class="text-base font-medium">2012</h3>
-				<p class="mt-1 text-sm text-gray-700">$25.00</p>
-			</div>
-			<div class="flex flex-col items-center">
-				<div class=" w-full text-center relative">
-					<div class="absolute top-0 left-0 bg-yellow-500 p-2 rounded-br-lg ">
-						<span class="text-xs font-semibold text-white">Split</span>
-					</div>
-					<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
-						class="inline-block my-2 h-[300px] object-cover" 
-						height="300" style="object-fit: cover;" />
-				</div>
-				<h2 class="text-lg font-semibold">Beige Armchair</h2>
-				<h3 class="text-base font-medium">2012</h3>
-				<p class="mt-1 text-sm text-gray-700">$25.00</p>
-			</div>
 		</div>
 	</div>
 	
@@ -136,8 +103,10 @@
 	<nav role="navigation" aria-label="pagination" class="mx-auto mt-16 flex w-full justify-center">
 		<ul class="flex flex-row items-center gap-1">
 			<li class="">
-				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-8 px-3 py-2 gap-1 pl-2.5"
-					aria-label="Go to previous page" href="#"> 
+				<a th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${pagination.startPage - 1}|"
+					th:classappend="${pagination.existPrevPage} ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900' : 'text-gray-300' "
+					class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors pointer-events-none h-8 px-3 py-2 gap-1 pl-2.5"
+					aria-label="Go to previous page" > 
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 						viewBox="0 0 24 24" fill="none" stroke="currentColor"
 						stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -148,24 +117,18 @@
 				</a>
 			</li>
 			
-			<li class="">
-				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9"
-					href="#"> 1 </a>
+			<li th:each="page : ${#numbers.sequence(pagination.startPage, pagination.endPage) }" >
+				<a th:text="${page}" th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${page}|"
+				th:class="${page == myWineRequest.page} ? 'inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9' : 'inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9' "
+				class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9">
+					pageNum </a>
 			</li>
 
 			<li class="">
-				<a aria-current="page"
-					class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9"
-					href="#"> 2 </a>
-			</li>
-
-			<li class="">
-				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9"
-					href="#"> 3 </a>
-			</li>
-			<li class="">
-				<a class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-8 px-3 py-2 gap-1 pr-2.5"
-					aria-label="Go to next page" href="#"> 
+				<a th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${pagination.endPage + 1}|"
+					th:classappend="${pagination.existNextPage} ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900' : 'text-gray-300' "
+					class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors pointer-events-none h-8 px-3 py-2 gap-1 pl-2.5"
+					aria-label="Go to next page"> 
 				<span>Next</span>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 					viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -181,28 +144,3 @@
 
 
 </html>
-
-<!-- 
-	와인 사이즈 템플릿
-
-	<div class="absolute top-0 left-0 bg-red-700 p-2 rounded-br-lg ">
-		<span class="text-xs font-semibold text-white">Double Magnum</span>
-	</div>
-	<div class="absolute top-0 left-0 bg-blue-700 p-2 rounded-br-lg ">
-		<span class="text-xs font-semibold text-white">Magnum</span>
-	</div>
-	<div class="absolute top-0 left-0 bg-orange-500 p-2 rounded-br-lg ">
-		<span class="text-xs font-semibold text-white">Half</span>
-	</div>
-	<div class="absolute top-0 left-0 bg-yellow-500 p-2 rounded-br-lg ">
-		<span class="text-xs font-semibold text-white">Split</span>
-	</div>
-	
-	
-	
-	재고 0개일 때 솔드아웃
-	
-	<div class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
-		<span class="text-xs font-semibold text-gray-100">Sold Out</span>
-	</div>
- -->

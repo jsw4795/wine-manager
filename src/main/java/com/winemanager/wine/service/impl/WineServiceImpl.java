@@ -8,10 +8,12 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.winemanager.wine.domain.AddWineRequest;
+import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.mapper.WineMapper;
 import com.winemanager.wine.service.WineService;
+import com.winemanager.wine.util.Pagination;
 import com.winemanager.wine.util.VivinoAPI;
 
 import lombok.RequiredArgsConstructor;
@@ -137,6 +139,19 @@ public class WineServiceImpl implements WineService{
 		}
 		
 		return wineList;
+	}
+
+	@Override
+	public List<Wine> getMyWineList(MyWineRequest myWineRequest, String userId) {
+		myWineRequest.setUserId(userId);
+		
+		int count = wineMapper.selectCountOfMyWine(myWineRequest);
+		myWineRequest.setPagination(new Pagination(count, myWineRequest));
+		
+		if(count < 1) return null;
+		
+		
+		return wineMapper.selectMyWine(myWineRequest);
 	}
 
 	

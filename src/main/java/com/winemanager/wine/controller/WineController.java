@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.winemanager.wine.domain.AddWineRequest;
+import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.service.WineService;
 
@@ -145,21 +145,18 @@ public class WineController {
 	
 	
 	@GetMapping("/my-wine")
-	public String redirectToMyWine(Principal principal, Model model) {
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
-		return "redirect:/my-wine/all?sort_by=reg_desc";
+	public String redirectToMyWine() {
+		return "redirect:/my-wine/all?sortBy=reg_desc";
 	}
 	@GetMapping("/my-wine/{type}")
-	public String getMyWine(@PathVariable(name = "type") String type, 
-							@RequestParam(name = "sort_by", required = false, defaultValue = "reg_desc") String sortBy, 
-							Principal principal,
-							HttpServletRequest request,
-							Model model) {
+	public String getMyWine(MyWineRequest myWineRequest, Principal principal, HttpServletRequest request, Model model) {
+		
+		List<Wine> wineList = wineService.getMyWineList(myWineRequest, principal.getName());
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
-		model.addAttribute("type", type);
-		model.addAttribute("sortBy", sortBy);
-		model.addAttribute("uri", request.getRequestURI());
+		model.addAttribute("myWineRequest", myWineRequest);
+		model.addAttribute("wineList", wineList);
+		model.addAttribute("pagination", myWineRequest.getPagination());
 		
 		return "wine/my-wine";
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineLog;
 
@@ -15,4 +16,6 @@ public interface WineMapper {
 	public void insertNewWine(Wine wine);
 	public void insertWineLog(WineLog wineLog);
 	public List<Wine> selectWineListByName(Map<String, Object> param);
+	public int selectCountOfMyWine(MyWineRequest myWineRequest);
+	public List<Wine> selectMyWine(MyWineRequest myWineRequest);
 }
