@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 
 @Mapper
@@ -18,4 +19,7 @@ public interface WineMapper {
 	public List<Wine> selectWineListByName(Map<String, Object> param);
 	public int selectCountOfMyWine(MyWineRequest myWineRequest);
 	public List<Wine> selectMyWine(MyWineRequest myWineRequest);
+	public WineDetailResponse selectWineDetail(Wine wine);
+	public String selectUserIdByWineId(int wineId);
+	public Wine selectWineById(int wineId);
 }

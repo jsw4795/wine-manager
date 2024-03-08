@@ -38,7 +38,10 @@
 			wine.wine
 		set
 			count = count + #{count}
-		where wine_id = #{wineId}
+		where 
+			wine_id = #{wineId} 
+			and 
+			user_id = #{userId}
     </insert>
     
     <select id="selectWineListByName" parameterType="Map" resultType="com.winemanager.wine.domain.Wine">
@@ -90,5 +93,104 @@
     	limit
     		#{pagination.limitStart}, #{recordSize}
     </select>
+    
+    <resultMap id="wineDetail" type="com.winemanager.wine.domain.WineDetailResponse" >
+    	<result property="userAveragePrice" column="user_average_price"/>
+    	<result property="userAverageRating" column="user_average_rating"/>
+    	<result property="numberOfBuying" column="number_of_buying"/>
+    	<result property="numberOfDrinking" column="number_of_drinking"/>
+    	<association property="wine" javaType="com.winemanager.wine.domain.Wine">
+    		<id property="userId" column="user_id"/>
+    		<id property="wineId" column="wine_id"/>
+    		<result property="wineType" column="wine_type"/>
+    		<result property="name" column="name"/>
+    		<result property="size" column="size"/>
+    		<result property="vintage" column="vintage"/>
+    		<result property="country" column="country"/>
+    		<result property="region" column="region"/>
+    		<result property="averageRating" column="average_rating"/>
+    		<result property="rating" column="rating"/>
+    		<result property="averagePrice" column="average_price"/>
+    		<result property="count" column="count"/>
+    		<result property="link" column="link"/>
+    		<result property="thumb" column="thumb"/>
+    		<result property="thumbBottom" column="thumb_bottom"/>
+    		<result property="bestYear" column="best_year"/>
+    	</association>
+    	<collection property="wineLogList" column="wineId = wine_id" ofType="com.winemanager.wine.domain.WindLog" select="selectWineLogListByWineId"/>
+    	<collection property="reviewList" column="wineId = wine_id" ofType="com.winemanager.wine.domain.Review" select="selectReviewListByWineId"/>
+    </resultMap>
+    
+    <select id="selectWineDetail" parameterType="com.winemanager.wine.domain.Wine" resultMap="wineDetail">
+    	select
+			W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.average_rating, W.rating, W.average_price, W.vintage, W.count, W.size, W.wine_type
+			, (sum(LI.price * LI.count) / SUM(LI.count)) user_average_price
+			, (sum(R.rating) / count(R.rating)) user_average_rating
+			, sum(LI.count) number_of_buying
+			, sum(LO.count) number_of_drinking
+		from
+			wine.wine W
+		left join
+			wine.wine_log LI
+		on 
+			LI.wine_id = W.wine_id and LI.user_id = W.user_id and LI.type = 'IN'
+		left join
+			wine.wine_log LO
+		on
+			LO.wine_id = W.wine_id and LO.user_id = W.user_id and LI.type = 'OUT'
+		left join
+			wine.review R
+		on
+			LO.wine_id = W.wine_id and LO.user_id = W.user_id
+		where
+			W.user_id = #{userId}
+			and
+			W.wine_id = #{wineId}
+    </select>
+    
+    <select id="selectWineLogListByWineId" resultType="com.winemanager.wine.domain.WineLog">
+    	select
+    		log_id, user_id, wine_id, type, date, place, price, count
+    	from
+    		wine.wine_log
+    	where
+			wine_id = #{wineId}
+		order by
+			date desc
+    </select>
+    
+    <select id="selectReviewListByWineId" resultType="com.winemanager.wine.domain.Review">
+    	select
+    		R.review_id, R.log_id, R.user_id, R.rating, R.title, R.photo, R.content, L.date
+    	from
+    		wine.review R
+    	inner join
+    		wine.wine_log L
+    	on
+    		R.log_id = L.log_id
+    	where
+    		L.wine_id = #{wineId}
+    	order by
+    		L.date desc
+    </select>
+    
+    <select id="selectUserIdByWineId" parameterType="int" resultType="String">
+    	select
+    		user_id
+    	from
+    		wine.wine
+    	where
+    		wine_id = #{wineId}
+    </select>
+    
+    <select id="selectWineById" parameterType="int" resultType="com.winemanager.wine.domain.Wine">
+    	select
+    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    	from
+    		wine.wine
+    	where
+    		wine_id = #{wineId}
+    </select>
+    
 
 </mapper>

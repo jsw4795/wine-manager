@@ -68,21 +68,26 @@ $(() => {
 						}
 					}
 				}
-			} else { // 일반 input인 경우
-				$input.removeAttr("readOnly"); 
-				if(isOwnWine)
-					$input.attr("readOnly", "");
+			} else { // 일반 input인 경우 (빈티지만 직접 입력 가능하다)
+				if($input.attr("id") == "vintage"){
+					$input.removeAttr("readOnly"); 
+					if(isOwnWine) $input.attr("readOnly", "");
+				}
 				$input.val(value);
 			}
-			// 내 와인 검색 시에만 읽기전용 표시
+			// 내 와인 검색 시에만 읽기전용 표시 (빈티지만)
 			if(isOwnWine){
-				$input.addClass("bg-gray-200");
-				$input.addClass("border-gray-300");
+				if($input.attr("id") == "vintage"){
+					$input.addClass("bg-gray-200");
+					$input.addClass("border-gray-300");
+				}
 				$(".radio-ul li").addClass("bg-gray-200");
 				$(".radio-ul li").addClass("border-gray-300");
 			} else {
-				$input.removeClass("bg-gray-200");
-				$input.removeClass("border-gray-300");
+				if($input.attr("id") == "vintage"){
+					$input.removeClass("bg-gray-200");
+					$input.removeClass("border-gray-300");
+				}
 				$(".radio-ul li").removeClass("bg-gray-200");
 				$(".radio-ul li").removeClass("border-gray-300");
 			}

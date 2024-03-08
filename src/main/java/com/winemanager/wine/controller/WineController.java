@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.service.WineService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,6 +49,28 @@ public class WineController {
 	@GetMapping("/add-wine")
 	public String getAddWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
 							Principal principal, Model model) {
+		
+		if(addWineRequest.getWineId() != null) {
+			Wine wine = wineService.getWine(addWineRequest.getWineId());
+			if(wine.getUserId().equals(principal.getName())) {
+				addWineRequest.setWineId(wine.getWineId());
+				addWineRequest.setWineName(wine.getName());
+				addWineRequest.setWineVintage(wine.getVintage());
+				addWineRequest.setWineCountry(wine.getCountry());
+				addWineRequest.setWineRegion(wine.getRegion());
+				addWineRequest.setWineAverageRating(wine.getAverageRating());
+				addWineRequest.setWineRating(wine.getRating());
+				addWineRequest.setWineSize(wine.getSize());
+				addWineRequest.setWineType(wine.getWineType());
+				addWineRequest.setWineAveragePrice(wine.getAveragePrice());
+				addWineRequest.setWineThumb(wine.getThumb());
+				addWineRequest.setWineThumbBottom(wine.getThumbBottom());
+				addWineRequest.setWineLink(wine.getLink());
+			} else {
+				addWineRequest.setWineId(null);
+			}
+		}
+		
 		List<String> buyPlaceList = wineService.getBuyPlace(principal.getName());
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
@@ -68,8 +91,10 @@ public class WineController {
 		
 		if(addWineRequest.getWineId() == null) // 새로운 와인 등록
 			wineId = wineService.addNewWine(addWineRequest, userId);
-		 else // 원래 있던 와인 등록
-			wineId = wineService.addBuyWineLog(addWineRequest, userId);
+		 else { // 원래 있던 와인 추가
+			 if(wineService.isMyWine(addWineRequest.getWineId(), userId)) // 본인 와인일 때만 추가함
+				 wineId = wineService.addBuyWineLog(addWineRequest, userId);			 
+		 }
 		
 		
 		return "redirect:/wine/" + wineId;
@@ -140,6 +165,7 @@ public class WineController {
 	@GetMapping("/drink-wine")
 	public String getDrinkWine(Principal principal, Model model) {
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		// 내 와인이 맞는지 확인 필
 		return "wine/drink-wine";
 	}
 	
@@ -161,14 +187,22 @@ public class WineController {
 		return "wine/my-wine";
 	}
 	@GetMapping("/wine/{wineId}")
-	public String getWineDetail(@PathVariable(name = "wineId") String wineId, 
+	public String getWineDetail(@PathVariable(name = "wineId") Integer wineId, 
 							Principal principal,
 							HttpServletRequest request,
 							Model model) {
+		// 내 와인이 아닌것은 볼 수 없다
+		if(!wineService.isMyWine(wineId, principal.getName())) {
+			String errorMessage = "You do not have access.";
+			model.addAttribute("errorMessage", errorMessage);
+			return "error";
+		}
+		
+		WineDetailResponse response = wineService.getWineDetail(wineId, principal.getName());
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
-		model.addAttribute("wineId", wineId);
-		model.addAttribute("uri", request.getRequestURI());
+		model.addAttribute("response", response);
+		model.addAttribute("exchangeRate", wineService.getExchangeRate());
 		
 		return "wine/wine-detail";
 	}

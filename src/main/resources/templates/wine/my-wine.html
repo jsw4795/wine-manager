@@ -90,7 +90,7 @@
 					</div>
 					<h2 th:text="${wine.name}" class="text-lg font-semibold">와인 이름</h2>
 					<h3 th:text="${wine.vintage != null} ? ${wine.vintage} : 'NV' " class="text-base font-medium">빈티지</h3>
-					<p th:text="|$ ${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}|" class="mt-1 text-sm text-gray-700">평균 가격</p>
+					<p th:text="|$${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}|" class="mt-1 text-sm text-gray-700">평균 가격</p>
 				</a>
 			</div>
 			

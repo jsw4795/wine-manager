@@ -1,7 +1,5 @@
 package com.winemanager.wine.domain;
 
-import java.sql.Date;
-
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -9,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -18,18 +15,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class WineLog {
+public class Review {
+	private int reviewId;
 	private int logId;
 	private String userId;
-	private int wineId;
-	
-	private String type; // 로그 종류 / IN(구매) or OUT(소비)
-	
-	private String place;
-	private Date date;
-	private Integer price;
-	private int count;
-	
-	@Setter
-	private int stock;
+	private double rating;
+	private String title;
+	private String content;
+	private String photo;
 }

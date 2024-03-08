@@ -12,29 +12,36 @@
 </th:block>
 
 
-<div layout:fragment="content" class=" w-full ">
+<div layout:fragment="content" 
+	th:with="wine = ${response.wine}, wineLogList = ${response.wineLogList}, reviewList = ${response.reviewList}
+			, userAveragePrice = ${response.userAveragePrice}, userAverageRating = ${response.userAverageRating}
+			, numberOfBuying = ${response.numberOfBuying}, numberOfDrinking = ${response.numberOfDrinking}" 
+	class=" w-full ">
 	<div class="w-screen bg-gray-100 pt-40 pb-20">
 	
 		<div class="min-w-[700px] max-w-[1000px] space-y-6 mx-auto px-4">
 			<div class="flex items-center gap-2">
-				<h1 class="text-3xl font-bold">Château Margaux</h1>
-				<span class="text-sm font-medium opacity-60">2015</span>
+				<h1 th:text="${wine.name}" class="text-3xl font-bold">와인 이름</h1>
+				<span th:text="${wine.vintage != null} ? ${wine.vintage} : '' " class="text-lg font-medium opacity-70">와인 빈티지</span>
 			</div>
 			<div class="grid md:grid-cols-5 gap-12 items-start">
 				<div class="flex flex-col gap-2 col-span-3">
 					<div class="flex items-start gap-4">
 						
+						
 						<div class=" w-1/2 text-center relative">
-							<div class="absolute top-0 left-0 bg-blue-700 p-2 rounded-br-lg ">
-								<span class="text-xs font-semibold text-white">Magnum</span>
+							<div th:if="${wine.size != 'Standard' }" 
+								th:classappend="${wine.size == 'Double Magnum'} ? 'bg-red-700' : (${wine.size == 'Magnum'} ? 'bg-blue-700' : (${wine.size == 'Half'} ? 'bg-orange-500' : 'bg-yellow-500')) "
+								class="absolute top-0 left-0  p-2 rounded-br-lg ">
+								<span th:text="${wine.size}" class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
 							</div>
-							<img th:src="@{/images/wine-default.png}" alt="Red Sculpture"
+							<img th:src="@{${wine.thumb}}" th:alt="${wine.name}"
 								class="inline-block my-2 h-[400px] object-cover" 
 								height="400" style="object-fit: cover;" />
 						</div>
 						
 						<div class="grid gap-2">
-							<div class="flex items-center gap-2">
+							<div th:if="${wine.country != null}" class="flex items-center gap-2">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 									viewBox="0 0 24 24" fill="none" stroke="currentColor"
 									stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -42,9 +49,9 @@
 					              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
 					              <circle cx="12" cy="10" r="3"></circle>
 					            </svg>
-								<div class="text-lg font-bold">France</div>
+								<div th:text="${wine.country}" class="text-lg font-bold">와인 국가</div>
 							</div>
-							<div class="flex items-center gap-2">
+							<div th:if="${wine.region != null}" class="flex items-center gap-2">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 									viewBox="0 0 24 24" fill="none" stroke="currentColor"
 									stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -52,7 +59,7 @@
 					              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
 					              <circle cx="12" cy="10" r="3"></circle>
 					            </svg>
-								<div class="text-lg font-bold">Champagne</div>
+								<div th:text="${wine.region}" class="text-lg font-bold">와인 지역</div>
 							</div>
 						</div>
 					</div>
@@ -60,15 +67,15 @@
 				<div class="col-span-2">
 					<div class="flex justify-between">
 						<div>
-							<h2 class="text-lg font-semibold">Avg Price</h2>
-							<p class="text-2xl font-bold">$ 25.00</p>
-							<p class="text-sm">(₩ 33,270)</p>
+							<h2 class="text-lg font-semibold">Avg Price <span class="text-xs opacity-70">(750ml)</span></h2>
+							<p th:text="|$ ${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}|" class="text-2xl font-bold">비비노 평균 가격</p>
+							<p th:text="|(₩ ${#numbers.formatDecimal(wine.averagePrice * exchangeRate,1,'COMMA',0,'POINT')})|" class="text-sm">비비노 평균 가격(원)</p>
 							
 						</div>
 						<div>
 							<h2 class="text-lg font-semibold">Your Avg Price</h2>
-							<p class="text-2xl font-bold">$ 22.54</p>
-							<p class="text-sm">(₩ 30,000)</p>
+							<p th:text="|$ ${#numbers.formatDecimal(userAveragePrice / exchangeRate,1,'COMMA',2,'POINT')}|" class="text-2xl font-bold">사용자 평균 구매 가격(달러)</p>
+							<p th:text="|(₩ ${#numbers.formatDecimal(userAveragePrice,1,'COMMA',0,'POINT')})|" class="text-sm">사용자 평균 구매 가격</p>
 						</div>
 					</div>
 					<div class="flex items-center justify-between mt-4 w-full">
@@ -87,10 +94,10 @@
 									</clipPath>
 								</defs>
 					        </svg>
-							<span class="text-4xl font-medium">4.1</span> 
-							<span class="text-sm pt-4">(1032 rating)</span>
+							<span th:text="${wine.averageRating}" class="text-4xl font-medium">비비노 평점</span> 
+							<span th:text="|(${#numbers.formatDecimal(wine.rating,1,'COMMA',0,'POINT')} ratings)|" class="text-sm pt-4">비비노 평점 개수</span>
 						</div>
-						<a th:href="@{https://www.vivino.com/US-CA/en/wines/1469048}" target="_blank">
+						<a th:href="@{${wine.link}}" target="_blank">
 						    <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-black px-4 py-2 text-white">
 						        Learn More
 						    </button>
@@ -98,14 +105,18 @@
 						
 					</div>
 					<div class="mt-6">
-						<p class="text-lg font-medium">Stock: <span class="text-4xl"> 2 </span> bottle(s)</p>
+						<p class="text-lg font-medium">Stock: <span th:text="${wine.count}" class="text-4xl"> 현재 보유량 </span> bottle(s)</p>
 						<br />
-						<p class="text-sm">Accumulated number of buying: 3 bottle(s)</p>
-						<p class="text-sm">Accumulated number of drinking: 1 bottle(s)</p>
+						<p class="text-sm">Number of buying: <span th:text="${numberOfBuying}"></span> bottle(s)</p>
+						<p class="text-sm">Number of drinking: <span th:text="${numberOfDrinking}"></span> bottle(s)</p>
 					</div>
 					<div class="mt-6">
-						<button type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Bought</button>
-						<button type="button" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Drank</button>
+						<a th:href="@{|/add-wine?wineId=${wine.wineId}|}">
+							<button type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+								Bought</button>						
+						</a>
+						<button type="button" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+							Drank</button>
 					</div>
 				</div>
 			</div>
@@ -114,6 +125,7 @@
 	</div>
 	<div class="w-full ">
 		<div class="w-4/5 h-full mx-auto">
+		
 			<div class="w-3/4 mx-auto my-10">
 				<h3 class="text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
 				<div class="w-full relative overflow-x-auto shadow-md sm:rounded-lg ">
@@ -137,34 +149,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="bg-green-600 bg-opacity-20 border-b ">
-								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">2024-01-24</th>
-								<td class="px-6 py-4">Buy</td>
-								<td class="px-6 py-4">새마을 구판장</td>
-								<td class="px-6 py-4">₩ 95,000</td>
-								<td class="px-6 py-4">1</td>
-								<td class="px-6 py-4">2</td>
-							</tr>
-							<tr class="bg-red-600 bg-opacity-20 border-b ">
-								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">2024-01-01</th>
-								<td class="px-6 py-4">Drink</td>
-								<td class="px-6 py-4"></td>
-								<td class="px-6 py-4"></td>
-								<td class="px-6 py-4">-1</td>
-								<td class="px-6 py-4">1</td>
-							</tr>
-							<tr class="bg-green-600 bg-opacity-20 border-b ">
-								<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">2023-08-18</th>
-								<td class="px-6 py-4">Buy</td>
-								<td class="px-6 py-4">새마을 구판장</td>
-								<td class="px-6 py-4">₩ 95,000</td>
-								<td class="px-6 py-4">2</td>
-								<td class="px-6 py-4">2</td>
+							<tr th:each="wineLog : ${wineLogList}" 
+								th:classappend="${wineLog.type == 'IN'} ? 'bg-green-600' : 'bg-red-600' "
+								class=" bg-opacity-20 border-b ">
+								<th th:text="${wineLog.date}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">로그 날짜</th>
+								<td th:text="${wineLog.type == 'IN'} ? 'Buy' : 'Drink' " class="px-6 py-4">로그 타입</td>
+								<td th:text="${wineLog.place}" class="px-6 py-4">로그 장소</td>
+								<td th:text="|₩ ${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|" class="px-6 py-4">와인 가격</td>
+								<td th:text="${wineLog.count}" class="px-6 py-4">로그 개수</td>
+								<td th:text="${wineLog.stock}" class="px-6 py-4">로그 재고</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
+			
+			<div class="w-3/4 mx-auto my-10">
+				<!-- 리뷰 추가 예정 -->
+			</div>
+			
 		</div>
 	</div>
 </div>

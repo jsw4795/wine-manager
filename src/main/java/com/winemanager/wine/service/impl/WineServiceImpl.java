@@ -1,15 +1,23 @@
 package com.winemanager.wine.service.impl;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.mapper.WineMapper;
 import com.winemanager.wine.service.WineService;
@@ -24,6 +32,39 @@ public class WineServiceImpl implements WineService{
 
 	private final WineMapper wineMapper;
 	private final VivinoAPI vivinoAPI;
+	
+	private double exchangeRate = 1300;
+	
+	// 한시간마다 원-달러 환율 업데이트
+	@Scheduled(fixedRate = 60 * 60 * 1000) // 1시간에 한번 실행
+	public void run() {
+		String jsonData = null;
+		String requestURL = "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD";
+		
+		HttpRequest request = HttpRequest.newBuilder()
+			    .uri(URI.create(requestURL))
+			    .header("accept", "application/json")
+			    .method("GET", HttpRequest.BodyPublishers.noBody())
+			    .build();
+		
+		try {
+			HttpResponse<String> response;
+			response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+			jsonData = response.body();
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+		    List<Map<String, Object>> result = objectMapper.readValue(jsonData, new TypeReference<List<Map<String,Object>>>() {});
+		    this.exchangeRate = (double)result.get(0).get("basePrice");
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public double getExchangeRate() {
+		return exchangeRate;
+	}
 
 	@Override
 	public List<String> getBuyPlace(String userId) {
@@ -154,6 +195,36 @@ public class WineServiceImpl implements WineService{
 		return wineMapper.selectMyWine(myWineRequest);
 	}
 
+	@Override
+	public WineDetailResponse getWineDetail(int wineId, String userId) {
+		WineDetailResponse response = wineMapper.selectWineDetail(Wine.builder()
+											    .wineId(wineId)
+											    .userId(userId)
+											    .build());
+		
+		// 와인 로그에 재고 계산
+		List<WineLog> wineLogList = response.getWineLogList();
+		int stock = 0;
+		for(int i = wineLogList.size() - 1; i >= 0; i--) {
+			WineLog wineLog = wineLogList.get(i);
+			stock += wineLog.getType().equals("IN") ? wineLog.getCount() : (-1) * wineLog.getCount();
+			wineLog.setStock(stock);
+		}
+		
+		return response;
+	}
+
+	@Override
+	public boolean isMyWine(int wineId, String userId) {
+		return userId.equals(wineMapper.selectUserIdByWineId(wineId));
+	}
+
+	@Override
+	public Wine getWine(int wineId) {
+		return wineMapper.selectWineById(wineId);
+	}
+
+	
 	
 	
 }
