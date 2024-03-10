@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.wine.domain.AddWineRequest;
+import com.winemanager.wine.domain.DrinkWineRequest;
 import com.winemanager.wine.domain.MyWineRequest;
+import com.winemanager.wine.domain.Review;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
@@ -120,14 +122,14 @@ public class WineServiceImpl implements WineService{
 	@Override
 	public Integer addBuyWineLog(AddWineRequest addWineRequest, String userId) {
 		WineLog wineLog = WineLog.builder()
-			     .userId(userId)
-			     .wineId(addWineRequest.getWineId())
-			     .type("IN")
-			     .place(addWineRequest.getBuyPlace().trim())
-			     .date(addWineRequest.getBuyDate())
-			     .price(addWineRequest.getBuyPrice())
-			     .count(addWineRequest.getBuyCount())
-			     .build();
+							     .userId(userId)
+							     .wineId(addWineRequest.getWineId())
+							     .type("IN")
+							     .place(addWineRequest.getBuyPlace().trim())
+							     .date(addWineRequest.getBuyDate())
+							     .price(addWineRequest.getBuyPrice())
+							     .count(addWineRequest.getBuyCount())
+							     .build();
 
 		wineMapper.insertWineLog(wineLog);
 		
@@ -222,6 +224,36 @@ public class WineServiceImpl implements WineService{
 	@Override
 	public Wine getWine(int wineId) {
 		return wineMapper.selectWineById(wineId);
+	}
+
+	@Override
+	public Integer drinkWine(DrinkWineRequest drinkWineRequest, String userId) {
+		WineLog wineLog = WineLog.builder()
+							     .userId(userId)
+							     .wineId(drinkWineRequest.getWineId())
+							     .type("OUT")
+							     .place(drinkWineRequest.getDrinkPlace().trim())
+							     .date(drinkWineRequest.getDrinkDate())
+							     .count(drinkWineRequest.getDrinkCount())
+							     .build();
+
+		wineMapper.insertWineLog(wineLog);
+		
+		// 리뷰가 같이 들어왔으면 리뷰 등록
+		if(drinkWineRequest.getReviewRating() != null) {
+			Review review = Review.builder()
+								  .logId(drinkWineRequest.getWineLogId())
+								  .userId(userId)
+								  .rating(drinkWineRequest.getReviewRating())
+								  .title(drinkWineRequest.getReviewTitle())
+								  .content(drinkWineRequest.getReviewContent())
+								  .photo(drinkWineRequest.getReviewPhoto())
+								  .build();
+			
+			wineMapper.insertReview(review);
+		}
+		
+		return wineLog.getWineId();
 	}
 
 	

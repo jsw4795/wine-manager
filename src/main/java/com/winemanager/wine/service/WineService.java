@@ -3,6 +3,7 @@ package com.winemanager.wine.service;
 import java.util.List;
 
 import com.winemanager.wine.domain.AddWineRequest;
+import com.winemanager.wine.domain.DrinkWineRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailResponse;
@@ -18,6 +19,7 @@ public interface WineService {
 	public WineDetailResponse getWineDetail(int wineId, String userId);
 	public boolean isMyWine(int wineId, String userId);
 	public Wine getWine(int wineId);
+	public Integer drinkWine(DrinkWineRequest drinkWineRequest, String userId);
 	
 	public double getExchangeRate();
 }

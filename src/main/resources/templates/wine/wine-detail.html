@@ -115,8 +115,10 @@
 							<button type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
 								Bought</button>						
 						</a>
-						<button type="button" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
-							Drank</button>
+						<a th:href="@{|/drink-wine?wineId=${wine.wineId}|}">
+							<button type="button" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+								Drank</button>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -155,7 +157,7 @@
 								<th th:text="${wineLog.date}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">로그 날짜</th>
 								<td th:text="${wineLog.type == 'IN'} ? 'Buy' : 'Drink' " class="px-6 py-4">로그 타입</td>
 								<td th:text="${wineLog.place}" class="px-6 py-4">로그 장소</td>
-								<td th:text="|₩ ${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|" class="px-6 py-4">와인 가격</td>
+								<td th:text="${wineLog.price != null} ? (|₩ ${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|) : '' " class="px-6 py-4">와인 가격</td>
 								<td th:text="${wineLog.count}" class="px-6 py-4">로그 개수</td>
 								<td th:text="${wineLog.stock}" class="px-6 py-4">로그 재고</td>
 							</tr>

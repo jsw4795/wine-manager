@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.winemanager.wine.domain.AddWineRequest;
+import com.winemanager.wine.domain.DrinkWineRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailResponse;
@@ -50,9 +51,10 @@ public class WineController {
 	public String getAddWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
 							Principal principal, Model model) {
 		
+		// 와인 아이디가 주어지면, 내 와인일 때 자동 정보 입력
 		if(addWineRequest.getWineId() != null) {
 			Wine wine = wineService.getWine(addWineRequest.getWineId());
-			if(wine.getUserId().equals(principal.getName())) {
+			if(wine != null && wine.getUserId().equals(principal.getName())) {
 				addWineRequest.setWineId(wine.getWineId());
 				addWineRequest.setWineName(wine.getName());
 				addWineRequest.setWineVintage(wine.getVintage());
@@ -163,10 +165,53 @@ public class WineController {
 	
 	
 	@GetMapping("/drink-wine")
-	public String getDrinkWine(Principal principal, Model model) {
+	public String getDrinkWine(@ModelAttribute DrinkWineRequest drinkWineRequest, BindingResult result, Principal principal, Model model) {
+		
+		if(drinkWineRequest.getWineId() != null) {
+			Wine wine = wineService.getWine(drinkWineRequest.getWineId());
+			if(wine != null && wine.getUserId().equals(principal.getName())) {
+				drinkWineRequest.setWineId(wine.getWineId());
+				drinkWineRequest.setWineName(wine.getName());
+				drinkWineRequest.setWineVintage(wine.getVintage());
+				drinkWineRequest.setWineSize(wine.getSize());
+				drinkWineRequest.setWineThumb(wine.getThumb());
+				
+				model.addAttribute("wineCount", wine.getCount());
+			} else {
+				drinkWineRequest.setWineId(null);
+			}
+		}
+		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
-		// 내 와인이 맞는지 확인 필
+		
 		return "wine/drink-wine";
+	}
+	@PostMapping("/drink-wine")
+	public String drinkWine(@Valid @ModelAttribute DrinkWineRequest drinkWineRequest, BindingResult result,
+						Principal principal, Model model) {
+		
+		if (result.hasErrors())
+			return "wine/drink-wine";
+
+		String userId = principal.getName();
+		int wineId = 0;
+		
+		Wine wine = wineService.getWine(drinkWineRequest.getWineId());
+		
+		if(wine == null) {
+			result.rejectValue("wineId", "errer.wineId", "Wine not found.");
+			return "wine/drink-wine";
+		}
+		
+		if(drinkWineRequest.getDrinkCount() > wine.getCount()) {
+			result.rejectValue("drinkCount", "errer.drinkCount", "The wine you drank can't be more than stocked.");
+			return "wine/drink-wine";
+		}
+		
+		if (wine.getUserId().equals(userId))  // 본인 와인일 때만 추가함
+			 wineId = wineService.drinkWine(drinkWineRequest, userId);
+		
+		return "redirect:/wine/" + wineId;
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.winemanager.wine.domain.MyWineRequest;
+import com.winemanager.wine.domain.Review;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
@@ -22,4 +23,5 @@ public interface WineMapper {
 	public WineDetailResponse selectWineDetail(Wine wine);
 	public String selectUserIdByWineId(int wineId);
 	public Wine selectWineById(int wineId);
+	public void insertReview(Review review);
 }
