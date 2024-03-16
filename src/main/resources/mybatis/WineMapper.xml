@@ -142,7 +142,7 @@
 		left join
 			wine.wine_log LO
 		on
-			LO.wine_id = W.wine_id and LO.user_id = W.user_id and LI.type = 'OUT'
+			LO.wine_id = W.wine_id and LO.user_id = W.user_id and LO.type = 'OUT'
 		left join
 			wine.review R
 		on
