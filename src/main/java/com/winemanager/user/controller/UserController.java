@@ -62,10 +62,8 @@ public class UserController {
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		
 		// 비밀번호, 비밀번호 확인 미 일치 시, 에러 추가하고 로그인 회원가입 페이지로
-		if(!signUpRequest.getPassword().equals(signUpRequest.getPasswordCheck())) {
+		if(!signUpRequest.getPassword().equals(signUpRequest.getPasswordCheck())) 
 			result.rejectValue("passwordCheck", "errer.passwordCheck", "Not same with PW.");
-			return "/login/sign-up";
-		}
 		
 		if(result.hasErrors()) {
 			return "/login/sign-up";
