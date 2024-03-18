@@ -136,24 +136,12 @@
     <select id="selectWineDetail" parameterType="com.winemanager.wine.domain.Wine" resultMap="wineDetail">
     	select
 			W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.average_rating, W.rating, W.average_price, W.vintage, W.count, W.size, W.wine_type
-			, (sum(LI.price * LI.count) / SUM(LI.count)) user_average_price
-			, (sum(R.rating) / count(R.rating)) user_average_rating
-			, sum(LI.count) / (if(count(LO.log_id) > 0, count(LO.log_id), 1)) number_of_buying
-			, sum(LO.count) number_of_drinking
+			, (select sum(price * count) / SUM(count) from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id and type = 'IN') user_average_price
+			, (select sum(rating) / count(rating) from wine.review where log_id in (select log_id from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id)) user_average_rating
+			, (select sum(count) from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id and type = 'IN') number_of_buying
+			, (select sum(count) from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id and type = 'OUT') number_of_drinking
 		from
 			wine.wine W
-		left join
-			wine.wine_log LI
-		on 
-			LI.wine_id = W.wine_id and LI.user_id = W.user_id and LI.type = 'IN'
-		left join
-			wine.wine_log LO
-		on
-			LO.wine_id = W.wine_id and LO.user_id = W.user_id and LO.type = 'OUT'
-		left join
-			wine.review R
-		on
-			R.log_id = LO.log_id
 		where
 			W.user_id = #{userId}
 			and
