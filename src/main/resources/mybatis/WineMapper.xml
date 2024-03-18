@@ -166,7 +166,7 @@
     
     <select id="selectReviewListByWineId" resultType="com.winemanager.wine.domain.Review">
     	select
-    		R.review_id, R.log_id, R.user_id, R.rating, R.title, R.photo, R.content, L.date
+    		R.review_id, R.log_id, R.user_id, R.rating, R.title, R.photo, R.content, L.date reg_date
     	from
     		wine.review R
     	inner join

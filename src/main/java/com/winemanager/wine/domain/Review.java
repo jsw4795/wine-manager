@@ -1,5 +1,7 @@
 package com.winemanager.wine.domain;
 
+import java.sql.Date;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -23,4 +25,6 @@ public class Review {
 	private String title;
 	private String content;
 	private String photo;
+	
+	private Date regDate;
 }

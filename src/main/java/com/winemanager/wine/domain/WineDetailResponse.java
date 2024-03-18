@@ -11,7 +11,7 @@ public class WineDetailResponse {
 	private List<Review> reviewList;
 	
 	private int userAveragePrice; // 사용자의 구매 평균 가격 (원)
-	private Integer userAverageRating; // 사용자의 평균 별점
+	private Double userAverageRating; // 사용자의 평균 별점
 	private int numberOfBuying; // 누적 구매 개수
 	private int numberOfDrinking; // 누적 마신 개수
 }
