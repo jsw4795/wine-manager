@@ -243,7 +243,7 @@ public class WineServiceImpl implements WineService{
 		// 리뷰가 같이 들어왔으면 리뷰 등록
 		if(drinkWineRequest.getReviewRating() != null) {
 			Review review = Review.builder()
-								  .logId(drinkWineRequest.getWineLogId())
+								  .logId(wineLog.getLogId())
 								  .userId(userId)
 								  .rating(drinkWineRequest.getReviewRating())
 								  .title(drinkWineRequest.getReviewTitle())

@@ -146,7 +146,7 @@
 		left join
 			wine.review R
 		on
-			LO.wine_id = W.wine_id and LO.user_id = W.user_id
+			R.log_id = LO.log_id
 		where
 			W.user_id = #{userId}
 			and
