@@ -112,7 +112,7 @@
 									</clipPath>
 								</defs>
 					        </svg>
-							<span th:text="${userAverageRating != null} ? ${userAverageRating} : 'N/A' " class="text-3xl font-medium">유저 평점</span> 
+							<span th:text="${userAverageRating != null} ? ${T(java.lang.Math).floor(userAverageRating * 10) / 10} : 'N/A' " class="text-3xl font-medium">유저 평점</span> 
 							<span th:text="|(${#numbers.formatDecimal(reviewList.size(),1,'COMMA',0,'POINT')} ratings)|" class="text-sm pt-3">유저 평점 개수</span>
 						</div>
 					</div>
