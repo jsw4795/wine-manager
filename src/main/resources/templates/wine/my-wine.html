@@ -68,7 +68,8 @@
 	
 	<!-- Contents -->
 	<div class="flex justify-center w-full">
-		<div class="grid grid-cols-4 gap-8 w-full">
+		<h2 th:if="${wineList == null}" class="text-xl font-semibold">No Wine</h2>
+		<div th:if="${wineList != null}" class="grid grid-cols-4 gap-8 w-full">
 		
 			<div th:each="wine : ${wineList}" class="wine flex flex-col items-center">
 				<a th:href="@{|/wine/${wine.wineId}|}" class=" w-full text-center relative">
@@ -117,9 +118,9 @@
 			</li>
 			
 			<li th:each="page : ${#numbers.sequence(pagination.startPage, pagination.endPage) }" >
-				<a th:text="${page}" th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${page}|"
-				th:class="${page == myWineRequest.page} ? 'inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9' : 'inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9' "
-				class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9">
+				<a th:text="${page == 0} ? '1' : ${page} " th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${page}|"
+				th:class="${page == myWineRequest.page || page == 0} ? 'pointer-events-none text-blue-500 text-base inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9' : 'inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9' "
+				>
 					pageNum </a>
 			</li>
 

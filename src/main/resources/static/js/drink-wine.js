@@ -97,6 +97,7 @@ $(() => {
 		if($(this).prop("checked")){
 			$("#review-wrap").removeClass("hidden");
 			$("#review-wrap input").removeAttr("disabled");
+			$("#review-wrap textarea").removeAttr("disabled");
 		} else {
 			$("#review-wrap").addClass("hidden");
 			$("#review-wrap input").attr("disabled", "");
