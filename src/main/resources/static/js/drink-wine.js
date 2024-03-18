@@ -104,6 +104,9 @@ $(() => {
 		}
 	})
 	
+	$("#rating").on("input", function() {
+		$("#rating-display").text($(this).val());
+	})
 	
 })
 
