@@ -122,14 +122,17 @@ function searchOwnWine(keyword) {
 		}
 	});
 }
+var uuid;
 function searchNewWine(keyword) {
+	uuid = uuidv4();
 	$.ajax({
 		url: "/add-wine/search-new",
 		type: "GET",
-		data: {keyword: keyword},
+		data: {keyword: keyword, uuid: uuid},
 		dataType: "HTML",
 		success: function(resultHTML) {
-			$("#search-modal-content-new").html(resultHTML);
+			if($(resultHTML).find("#uuid").text() == uuid)
+				$("#search-modal-content-new").html(resultHTML);
 		}
 	});
 }
@@ -157,6 +160,13 @@ function addPlace(place) {
 }
 
 
+// uuid 생성 함수
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 
 

@@ -115,7 +115,7 @@ public class WineController {
 		return "wine/searchResultTemplate-add-wine";
 	}
 	@GetMapping("/add-wine/search-new")
-	public String searchWineInVivino(String keyword, Model model) {
+	public String searchWineInVivino(String keyword, String uuid, Model model) {
 		if(keyword == null || keyword.trim().length() == 0)
 			return "wine/emptyResultTemplate-add-wine";
 		
@@ -126,6 +126,7 @@ public class WineController {
 		
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("type", "new");
+		model.addAttribute("uuid", uuid);
 		
 		return "wine/searchResultTemplate-add-wine";
 	}

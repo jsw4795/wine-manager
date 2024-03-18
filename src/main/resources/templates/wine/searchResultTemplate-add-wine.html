@@ -1,5 +1,5 @@
 <div xmlns:th="http://www.thymeleaf.org" class="flex flex-col space-y-1" >
-
+	<i id="uuid" th:text="${uuid}" class="hidden" ></i>
 	<div th:each="wine : ${wineList}" th:classappend="${type == 'old'} ? 'own-wine bg-sky-50' : 'new-wine' " 
 		class="wine-in-search-result p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
 		<img th:src="@{|${wine.thumbBottom}|}" th:alt="${wine.name}"
