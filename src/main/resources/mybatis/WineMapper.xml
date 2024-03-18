@@ -138,7 +138,7 @@
 			W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.average_rating, W.rating, W.average_price, W.vintage, W.count, W.size, W.wine_type
 			, (sum(LI.price * LI.count) / SUM(LI.count)) user_average_price
 			, (sum(R.rating) / count(R.rating)) user_average_rating
-			, sum(LI.count) number_of_buying
+			, sum(LI.count) / (if(count(LO.log_id) > 0, count(LO.log_id), 1)) number_of_buying
 			, sum(LO.count) number_of_drinking
 		from
 			wine.wine W
