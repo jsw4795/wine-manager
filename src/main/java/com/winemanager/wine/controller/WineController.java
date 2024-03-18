@@ -218,7 +218,7 @@ public class WineController {
 	
 	@GetMapping("/my-wine")
 	public String redirectToMyWine() {
-		return "redirect:/my-wine/all?sortBy=reg_desc";
+		return "redirect:/my-wine/all?sortBy=price_asc";
 	}
 	@GetMapping("/my-wine/{type}")
 	public String getMyWine(MyWineRequest myWineRequest, Principal principal, HttpServletRequest request, Model model) {
@@ -229,7 +229,6 @@ public class WineController {
 		model.addAttribute("myWineRequest", myWineRequest);
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pagination", myWineRequest.getPagination());
-		System.out.println(myWineRequest.getPagination());
 		
 		return "wine/my-wine";
 	}

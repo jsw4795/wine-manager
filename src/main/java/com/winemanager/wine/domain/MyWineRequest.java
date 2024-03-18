@@ -3,7 +3,9 @@ package com.winemanager.wine.domain;
 import com.winemanager.wine.util.Pagination;
 
 import lombok.Data;
+import lombok.ToString;
 
+@ToString
 @Data
 public class MyWineRequest {
 	private String keyword; // 와인 이름 ((추가 예정))
@@ -24,7 +26,7 @@ public class MyWineRequest {
         this.page = 1;
         this.recordSize = 20;
         this.pageSize = 5;
-        this.sortBy = "reg_desc";
+        this.sortBy = "price_asc";
     }
     
 }
