@@ -75,26 +75,33 @@
     
     <select id="selectMyWine" parameterType="com.winemanager.wine.domain.MyWineRequest" resultType="com.winemanager.wine.domain.Wine">
     	select
-    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    		W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.rating, W.average_rating, W.vintage, W.count, W.size, W.wine_type
+			, IFNULL(W.average_price, avg(L.price) / (select USD from wine.exchange_rate)) average_price
     	from
-    		wine.wine
+    		wine.wine W
+		left join
+			wine.wine_log L
+		on
+			L.wine_id = W.wine_id
     	<where>
-    		user_id = #{userId}
+    		W.user_id = #{userId}
     		<if test="type != 'all'">
-    			and wine_type = #{type}
+    			and W.wine_type = #{type}
     		</if>
     	</where>
+    	group by
+			W.wine_id
     	order by
 	    	<if test="sortBy != null">
-		    	<if test="sortBy.equals('reg_asc')">wine_id asc,</if>
-		    	<if test="sortBy.equals('name_asc')">name asc,</if>
-		    	<if test="sortBy.equals('name_desc')">name desc,</if>
+		    	<if test="sortBy.equals('reg_asc')">W.wine_id asc,</if>
+		    	<if test="sortBy.equals('name_asc')">W.name asc,</if>
+		    	<if test="sortBy.equals('name_desc')">W.name desc,</if>
 		    	<if test="sortBy.equals('price_asc')">average_price asc,</if>
-		    	<if test="sortBy.equals('price_desc')">average_price desc,</if>
-		    	<if test="sortBy.equals('count_asc')">count asc,</if>
-		    	<if test="sortBy.equals('count_desc')">count desc,</if>
+		    	<if test="sortBy.equals('price_desc')">W.average_price desc,</if>
+		    	<if test="sortBy.equals('count_asc')">W.count asc,</if>
+		    	<if test="sortBy.equals('count_desc')">W.count desc,</if>
 	    	</if>
-    		wine_id desc
+    		W.wine_id desc
     	limit
     		#{pagination.limitStart}, #{recordSize}
     </select>
@@ -205,5 +212,12 @@
 		(#{logId}, #{userId}, #{rating}, #{title}, #{content}, #{photo});
 		
     </insert>
+    
+    <update id="updateExchangeRate" parameterType="double">
+    	update
+    		wine.exchange_rate
+    	set
+    		usd = #{usd}
+    </update>
 
 </mapper>

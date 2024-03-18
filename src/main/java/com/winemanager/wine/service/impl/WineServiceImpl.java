@@ -58,6 +58,7 @@ public class WineServiceImpl implements WineService{
 			ObjectMapper objectMapper = new ObjectMapper();
 		    List<Map<String, Object>> result = objectMapper.readValue(jsonData, new TypeReference<List<Map<String,Object>>>() {});
 		    this.exchangeRate = (double)result.get(0).get("basePrice");
+		    wineMapper.updateExchangeRate(this.exchangeRate);
 		    System.out.println("환율 설정: " + this.exchangeRate);
 		    
 		} catch (Exception e) {
@@ -268,8 +269,6 @@ public class WineServiceImpl implements WineService{
 		
 		return wineLog.getWineId();
 	}
-
-	
 	
 	
 }
