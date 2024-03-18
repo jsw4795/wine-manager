@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,11 +70,13 @@ public class WineServiceImpl implements WineService{
 		return exchangeRate;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<String> getBuyPlace(String userId) {
 		return wineMapper.selectPlaceById(userId);
 	}
 	
+	@Transactional
 	@Override
 	public void insertBuyPlace(String place, String userId) {
 		Map<String, Object> param = new HashMap<>();
@@ -82,6 +85,7 @@ public class WineServiceImpl implements WineService{
 		wineMapper.insertPlace(param);
 	}
 
+	@Transactional
 	@Override
 	public Integer addNewWine(AddWineRequest addWineRequest, String userId) {
 		Wine wine = Wine.builder()
@@ -120,6 +124,7 @@ public class WineServiceImpl implements WineService{
 		return wine.getWineId();
 	}
 
+	@Transactional
 	@Override
 	public Integer addBuyWineLog(AddWineRequest addWineRequest, String userId) {
 		WineLog wineLog = WineLog.builder()
@@ -137,6 +142,7 @@ public class WineServiceImpl implements WineService{
 		return wineLog.getWineId();
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<Wine> getWineListByWineName(String keyword, String userId) {
 		Map<String, Object> param = new HashMap<>();
@@ -144,6 +150,7 @@ public class WineServiceImpl implements WineService{
 		param.put("keyword", keyword);
 		return wineMapper.selectWineListByName(param);
 	}
+
 
 	@Override
 	public List<Wine> searchWineInVivino(String keyword) {
@@ -185,6 +192,7 @@ public class WineServiceImpl implements WineService{
 		return wineList;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<Wine> getMyWineList(MyWineRequest myWineRequest, String userId) {
 		myWineRequest.setUserId(userId);
@@ -198,6 +206,7 @@ public class WineServiceImpl implements WineService{
 		return wineMapper.selectMyWine(myWineRequest);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public WineDetailResponse getWineDetail(int wineId, String userId) {
 		WineDetailResponse response = wineMapper.selectWineDetail(Wine.builder()
@@ -217,16 +226,19 @@ public class WineServiceImpl implements WineService{
 		return response;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public boolean isMyWine(int wineId, String userId) {
 		return userId.equals(wineMapper.selectUserIdByWineId(wineId));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Wine getWine(int wineId) {
 		return wineMapper.selectWineById(wineId);
 	}
 
+	@Transactional
 	@Override
 	public Integer drinkWine(DrinkWineRequest drinkWineRequest, String userId) {
 		WineLog wineLog = WineLog.builder()

@@ -2,6 +2,7 @@ package com.winemanager.user.service.impl;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.User;
@@ -16,7 +17,8 @@ public class UserServiceImpl implements UserService{
 	
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
-
+	
+	@Transactional(readOnly = true)
 	@Override
 	public User findByUserId(String userId) {
 		return userMapper.selectUserById(User.builder()
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService{
 											 .build());
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public boolean checkIdExist(String userId) {
 		User user = userMapper.selectUserById(User.builder()
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService{
 		return user != null;
 	}
 
+	@Transactional
 	@Override
 	public boolean signUp(SignUpRequest signUpRequest) {
 		try {
