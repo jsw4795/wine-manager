@@ -3,7 +3,9 @@ package com.winemanager.wine.util;
 import com.winemanager.wine.domain.MyWineRequest;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class Pagination {
 

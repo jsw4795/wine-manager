@@ -229,6 +229,7 @@ public class WineController {
 		model.addAttribute("myWineRequest", myWineRequest);
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pagination", myWineRequest.getPagination());
+		System.out.println(myWineRequest.getPagination());
 		
 		return "wine/my-wine";
 	}
