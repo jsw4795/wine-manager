@@ -76,7 +76,7 @@
     <select id="selectMyWine" parameterType="com.winemanager.wine.domain.MyWineRequest" resultType="com.winemanager.wine.domain.Wine">
     	select
     		W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.rating, W.average_rating, W.vintage, W.count, W.size, W.wine_type
-			, IFNULL(W.average_price, avg(L.price) / (select USD from wine.exchange_rate)) average_price
+			, avg(L.price) / (select USD from wine.exchange_rate) average_price
     	from
     		wine.wine W
 		left join
@@ -97,7 +97,7 @@
 		    	<if test="sortBy.equals('name_asc')">W.name asc,</if>
 		    	<if test="sortBy.equals('name_desc')">W.name desc,</if>
 		    	<if test="sortBy.equals('price_asc')">average_price asc,</if>
-		    	<if test="sortBy.equals('price_desc')">W.average_price desc,</if>
+		    	<if test="sortBy.equals('price_desc')">average_price desc,</if>
 		    	<if test="sortBy.equals('count_asc')">W.count asc,</if>
 		    	<if test="sortBy.equals('count_desc')">W.count desc,</if>
 	    	</if>

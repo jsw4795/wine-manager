@@ -68,8 +68,8 @@
 					<div class="flex justify-between">
 						<div>
 							<h2 class="text-lg font-semibold">Avg Price <span class="text-xs opacity-70">(750ml)</span></h2>
-							<p th:text="${wine.averagePrice != null} ? |$ ${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}| : 'N/A' " class="text-2xl font-bold">비비노 평균 가격</p>
-							<p th:text="${wine.averagePrice != null} ? |(₩ ${#numbers.formatDecimal(wine.averagePrice * exchangeRate,1,'COMMA',0,'POINT')})| : '(N/A)' " class="text-sm">비비노 평균 가격(원)</p>
+							<p th:text="${wine.averagePrice != null} ? |$ ${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}| : '$ N/A' " class="text-2xl font-bold">비비노 평균 가격</p>
+							<p th:text="${wine.averagePrice != null} ? |(₩ ${#numbers.formatDecimal(wine.averagePrice * exchangeRate,1,'COMMA',0,'POINT')})| : '(₩ N/A)' " class="text-sm">비비노 평균 가격(원)</p>
 							
 						</div>
 						<div>
