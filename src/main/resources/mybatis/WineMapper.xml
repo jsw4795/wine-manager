@@ -156,7 +156,7 @@
     	where
 			wine_id = #{wineId}
 		order by
-			date desc
+			date desc, type desc
     </select>
     
     <select id="selectReviewListByWineId" resultType="com.winemanager.wine.domain.Review">
