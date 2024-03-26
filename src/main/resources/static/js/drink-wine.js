@@ -105,7 +105,7 @@ $(() => {
 	})
 	
 	$("#rating").on("input", function() {
-		$("#rating-display").text($(this).val());
+		$("#rating-display").text((Number)($(this).val()).toFixed(1));
 	})
 	
 })
