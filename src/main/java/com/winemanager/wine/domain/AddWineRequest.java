@@ -2,6 +2,8 @@ package com.winemanager.wine.domain;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,6 +32,8 @@ public class AddWineRequest {
 	private String wineThumb;
 	private String wineThumbBottom;
 	private String wineLink;
+	
+	MultipartFile customImage;
 	
 	
 	@NotBlank(message = "Place of purchase must be entered.")

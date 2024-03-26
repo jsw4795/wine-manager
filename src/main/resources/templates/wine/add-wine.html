@@ -51,17 +51,19 @@
 		<hr />
 		<input th:field="*{wineId}" type="hidden" name="wineId" />
 		
-		<div class="flex space-x-2 place-content-center">
-			<div class="w-72 h-80 bg-gray-200 rounded-md text-center">
+		<div class="flex flex-col">
+			<div class="w-72 h-80 bg-gray-200 rounded-md text-center inline-block mx-auto">
 				<!--_pb_x600.png : 와인 전체 사진   /   https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pb_x600.png
 					_pl_375x500.png : 와인 밑쪽 썸네일   /   https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png 
 				-->
 				<img id="wine-thumb" th:src="@{*{wineThumb != null} ? *{wineThumb} : '/images/wine-default.png' }" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
 			</div>
-			<!-- 파일 추후 추가 예정 
-			<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-			  id="wine-image" type="file" /> 
-			-->
+			
+			<div class="mt-2 inline-block mx-auto">
+				<button type="button" id="custom-image-btn" class="px-3 py-2 text-xs font-medium text-center text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900  rounded-lg">Change Image</button>
+				<input id="custom-image" type="file" accept="image/*" name="customImage" class="hidden">
+			</div>
+			
 		</div>
 		<div class="flex flex-col space-y-4">
 			<div class="grid grid-cols-4 gap-4">
