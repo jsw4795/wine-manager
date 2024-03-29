@@ -53,7 +53,9 @@ public class WineController {
 		
 		// 와인 아이디가 주어지면, 내 와인일 때 자동 정보 입력
 		if(addWineRequest.getWineId() != null) {
-			Wine wine = wineService.getWine(addWineRequest.getWineId());
+			Wine wine = wineService.getWine(addWineRequest.getWineId()); 
+			setWineImage(wine);
+			
 			if(wine != null && wine.getUserId().equals(principal.getName())) {
 				addWineRequest.setWineId(wine.getWineId());
 				addWineRequest.setWineName(wine.getName());
@@ -103,8 +105,11 @@ public class WineController {
 	}
 	@GetMapping("/add-wine/my-wine-list")
 	public String getMyWineList(Principal principal, String keyword, Model model) {
+		if(keyword == null || keyword.trim().length() == 0)
+			return "wine/emptyResultTemplate-add-wine";
 		
 		List<Wine> wineList = wineService.getWineListByWineName(keyword, principal.getName());
+		setWineImage(wineList);
 		
 		if(wineList == null || wineList.size() == 0)
 			return "wine/emptyResultTemplate-add-wine";
@@ -120,6 +125,7 @@ public class WineController {
 			return "wine/emptyResultTemplate-add-wine";
 		
 		List<Wine> wineList = wineService.searchWineInVivino(keyword);
+		setWineImage(wineList);
 		
 		if(wineList == null || wineList.size() == 0)
 			return "wine/emptyResultTemplate-add-wine";
@@ -170,6 +176,7 @@ public class WineController {
 		
 		if(drinkWineRequest.getWineId() != null) {
 			Wine wine = wineService.getWine(drinkWineRequest.getWineId());
+			setWineImage(wine);
 			if(wine != null && wine.getUserId().equals(principal.getName())) {
 				drinkWineRequest.setWineId(wine.getWineId());
 				drinkWineRequest.setWineName(wine.getName());
@@ -215,6 +222,53 @@ public class WineController {
 		return "redirect:/wine/" + wineId;
 	}
 	
+	// 와인 수정 폼
+	@GetMapping("/edit-wine/{wineId}")
+	public String getEditWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result, @PathVariable int wineId,
+							Principal principal, Model model) {
+		
+		// 내 와인일 때 만
+		Wine wine = wineService.getWine(addWineRequest.getWineId());
+		setWineImage(wine);
+		if(wine != null && wine.getUserId().equals(principal.getName())) {
+			addWineRequest.setWineId(wine.getWineId());
+			addWineRequest.setWineName(wine.getName());
+			addWineRequest.setWineVintage(wine.getVintage());
+			addWineRequest.setWineCountry(wine.getCountry());
+			addWineRequest.setWineRegion(wine.getRegion());
+			addWineRequest.setWineAverageRating(wine.getAverageRating());
+			addWineRequest.setWineRating(wine.getRating());
+			addWineRequest.setWineSize(wine.getSize());
+			addWineRequest.setWineType(wine.getWineType());
+			addWineRequest.setWineAveragePrice(wine.getAveragePrice());
+			addWineRequest.setWineThumb(wine.getThumb());
+			addWineRequest.setWineThumbBottom(wine.getThumbBottom());
+			addWineRequest.setWineLink(wine.getLink());
+		} else {
+			model.addAttribute("errorMessage", "You do not have access.");
+			return "error";
+		}
+		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		
+		return "wine/edit-wine";
+	}
+	@PostMapping("edit-wine")
+	public String editWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
+							Principal principal, Model model) {
+		
+		// 내 와인일 때 만
+		Wine wine = wineService.getWine(addWineRequest.getWineId());
+		if(wine != null && wine.getUserId().equals(principal.getName())) {
+			wineService.editWine(addWineRequest, principal.getName());
+		} else {
+			model.addAttribute("errorMessage", "You do not have access.");
+			return "error";
+		}
+		
+		return "redirect:/wine/" + addWineRequest.getWineId();
+	}
+	
 	
 	@GetMapping("/my-wine")
 	public String redirectToMyWine() {
@@ -224,6 +278,7 @@ public class WineController {
 	public String getMyWine(MyWineRequest myWineRequest, Principal principal, HttpServletRequest request, Model model) {
 		
 		List<Wine> wineList = wineService.getMyWineList(myWineRequest, principal.getName());
+		setWineImage(wineList);
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("myWineRequest", myWineRequest);
@@ -233,10 +288,8 @@ public class WineController {
 		return "wine/my-wine";
 	}
 	@GetMapping("/wine/{wineId}")
-	public String getWineDetail(@PathVariable(name = "wineId") Integer wineId, 
-							Principal principal,
-							HttpServletRequest request,
-							Model model) {
+	public String getWineDetail(@PathVariable(name = "wineId") Integer wineId, Principal principal,
+							HttpServletRequest request, Model model) {
 		// 내 와인이 아닌것은 볼 수 없다
 		if(!wineService.isMyWine(wineId, principal.getName())) {
 			String errorMessage = "You do not have access.";
@@ -245,6 +298,7 @@ public class WineController {
 		}
 		
 		WineDetailResponse response = wineService.getWineDetail(wineId, principal.getName());
+		setWineImage(response.getWine());
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("response", response);
@@ -254,6 +308,20 @@ public class WineController {
 	}
 	
 	
+	
+	
+	
+	
+	private void setWineImage(Wine wine) {
+		if(!wine.getThumb().startsWith("https://")) {
+			wine.setThumb("/images/wine/" + wine.getThumb());
+			wine.setThumbBottom("images/wine/" + wine.getThumbBottom());
+		}
+	}
+	private void setWineImage(List<Wine> wineList) {
+		for(Wine wine : wineList) 
+			this.setWineImage(wine);
+	}
 	
 	
 	// String으로 넘어오는 Date 바인딩

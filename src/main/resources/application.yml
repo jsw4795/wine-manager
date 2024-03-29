@@ -13,7 +13,6 @@ spring:
 #    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:mysql://localhost:3306/wine?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowMultiQueries=true
 #    url: jdbc:log4jdbc:mysql://movie.goosia.com:3306/movie?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowMultiQueries=true
-
     username: wine
     password: 4795
   devtools:
@@ -21,6 +20,10 @@ spring:
       enabled: true  # LiveReload 활성화
     restart:
       enabled: true  # 자동 재시작 활성화
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
     
 # mybatis 설정
 mybatis:

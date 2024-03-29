@@ -4,7 +4,7 @@
 		class="wine-in-search-result p-1 flex items-center space-x-4 cursor-pointer hover:bg-gray-100"> 
 		<img th:src="@{|${wine.thumbBottom}|}" th:alt="${wine.name}"
 			class="h-14 w-14 rounded" width="40" height="40"
-			style="aspect-ratio: 40/40; object-fit: cover;" /> 
+			style="aspect-ratio: 40/40; object-fit: contain;" /> 
 			
 		<span class="text-lg font-semibold">
 			<span th:text="${wine.name}"></span>

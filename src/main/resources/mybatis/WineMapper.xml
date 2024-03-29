@@ -207,5 +207,14 @@
     	set
     		usd = #{usd}
     </update>
+    
+    <update id="updateWine" parameterType="com.winemanager.wine.domain.Wine" >
+    	update
+    		wine.wine
+		set 
+			name = #{name}, link = #{link}, thumb = #{thumb}, thumb_bottom = #{thumbBottom}, country = #{country}, region = #{region}, average_rating = #{averageRating}, rating = #{rating}, average_price = #{averagePrice}, vintage = #{vintage}, size = #{size}, wine_type = #{wineType}
+		where
+			wine_id = #{wineId} and user_id = #{userId}
+    </update>
 
 </mapper>

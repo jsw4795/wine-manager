@@ -1,5 +1,6 @@
 package com.winemanager.wine.service.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -8,10 +9,12 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +40,7 @@ public class WineServiceImpl implements WineService{
 	private final VivinoAPI vivinoAPI;
 	
 	private double exchangeRate = 1300;
+	private String winePicPath = "/Users/jsw4795/springboot-workspace/wine-manager-images/wine-pic";
 	
 	// 한시간마다 원-달러 환율 업데이트
 	@Scheduled(fixedRate = 60 * 60 * 1000) // 1시간에 한번 실행
@@ -89,6 +93,7 @@ public class WineServiceImpl implements WineService{
 	@Transactional
 	@Override
 	public Integer addNewWine(AddWineRequest addWineRequest, String userId) {
+		
 		Wine wine = Wine.builder()
 						.userId(userId)
 						.name(addWineRequest.getWineName().trim())
@@ -149,7 +154,9 @@ public class WineServiceImpl implements WineService{
 		Map<String, Object> param = new HashMap<>();
 		param.put("userId", userId);
 		param.put("keyword", keyword);
-		return wineMapper.selectWineListByName(param);
+		List<Wine> wineList = wineMapper.selectWineListByName(param);
+		
+		return wineList;
 	}
 
 
@@ -204,16 +211,18 @@ public class WineServiceImpl implements WineService{
 		if(count < 1) return null;
 		
 		
-		return wineMapper.selectMyWine(myWineRequest);
+		List<Wine> wineList = wineMapper.selectMyWine(myWineRequest);
+		
+		return wineList;
 	}
 
 	@Transactional(readOnly = true)
 	@Override
 	public WineDetailResponse getWineDetail(int wineId, String userId) {
 		WineDetailResponse response = wineMapper.selectWineDetail(Wine.builder()
-											    .wineId(wineId)
-											    .userId(userId)
-											    .build());
+																      .wineId(wineId)
+																      .userId(userId)
+																      .build());
 		
 		// 와인 로그에 재고 계산
 		List<WineLog> wineLogList = response.getWineLogList();
@@ -236,7 +245,9 @@ public class WineServiceImpl implements WineService{
 	@Transactional(readOnly = true)
 	@Override
 	public Wine getWine(int wineId) {
-		return wineMapper.selectWineById(wineId);
+		Wine wine = wineMapper.selectWineById(wineId);
+		
+		return wine;
 	}
 
 	@Transactional
@@ -269,6 +280,64 @@ public class WineServiceImpl implements WineService{
 		
 		return wineLog.getWineId();
 	}
-	
+
+	@Transactional
+	@Override
+	public void editWine(AddWineRequest addWineRequest, String userId) {
+		
+		Wine wine = Wine.builder()
+						.userId(userId)
+						.wineId(addWineRequest.getWineId())
+						.name(addWineRequest.getWineName().trim())
+						.wineType(addWineRequest.getWineType().trim())
+						.size(addWineRequest.getWineSize().trim())
+						.vintage(addWineRequest.getWineVintage())
+						.country(addWineRequest.getWineCountry().trim())
+						.region(addWineRequest.getWineRegion().trim())
+						.averageRating(addWineRequest.getWineAverageRating())
+						.rating(addWineRequest.getWineRating())
+						.averagePrice(addWineRequest.getWineAveragePrice())
+						.link(addWineRequest.getWineLink().trim())
+						.thumb(addWineRequest.getWineThumb().trim())
+						.thumbBottom(addWineRequest.getWineThumbBottom().trim())
+						.build();
+		
+		// 입력받은 파일 처리
+		Wine originWine = wineMapper.selectWineById(wine.getWineId());
+		
+		String originThumb = originWine.getThumb();
+		String originThumbBottom = originWine.getThumbBottom();
+		if(addWineRequest.getCustomImage() != null) {
+			MultipartFile uploadPic = addWineRequest.getCustomImage();
+			String originalFileName = uploadPic.getOriginalFilename();
+			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 파일 확장자 (.jpg, .png)
+			String randomFileName = "WINE" + "_" + UUID.randomUUID().toString()+ fileExtension; // 파일명 랜덤으로 변경
+			
+			File saveFile = new File(this.winePicPath, randomFileName);
+			
+			try {
+				uploadPic.transferTo(saveFile);
+				
+				// 오류 없으면 DB에 사진 이름 변경
+				wine.setThumb(randomFileName);
+				wine.setThumbBottom(randomFileName);
+				
+				// TODO: 전에 사진이 사진 파일이었다면 전 사진 파일 삭제..?
+				File originThumbFile = new File(this.winePicPath, originThumb); // thumbBottom 사진 파일은 따로 없으므로 생략한다
+				originThumbFile.delete();
+				
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+				// 오류 발생 시 사진은 원래 있던 걸로 설정, 새로 저장된 사진 삭제
+				wine.setThumb(originThumb);
+				wine.setThumbBottom(originThumbBottom);
+				
+				saveFile.delete();
+			}
+		}
+		
+		wineMapper.updateWine(wine);
+		
+	}
 	
 }

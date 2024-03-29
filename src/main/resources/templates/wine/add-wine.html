@@ -58,12 +58,6 @@
 				-->
 				<img id="wine-thumb" th:src="@{*{wineThumb != null} ? *{wineThumb} : '/images/wine-default.png' }" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
 			</div>
-			
-			<div class="mt-2 inline-block mx-auto">
-				<button type="button" id="custom-image-btn" class="px-3 py-2 text-xs font-medium text-center text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900  rounded-lg">Change Image</button>
-				<input id="custom-image" type="file" accept="image/*" name="customImage" class="hidden">
-			</div>
-			
 		</div>
 		<div class="flex flex-col space-y-4">
 			<div class="grid grid-cols-4 gap-4">
@@ -107,7 +101,7 @@
 					<p th:if="${#fields.hasErrors('wineAverageRating')}" th:errors="*{wineAverageRating}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label for="rating" class="font-semibold">Rating</label> 
+					<label for="rating" class="font-semibold">Ratings</label> 
 					<input th:field="*{wineRating}" th:classappend="${#fields.hasErrors('wineRating')} ? 'border-red-600' : ''"     
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="rating" placeholder="Rating" type="number" min="0" step="1" name="wineRating" autocomplete="off" readonly/>

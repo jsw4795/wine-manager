@@ -20,6 +20,7 @@ public interface WineService {
 	public boolean isMyWine(int wineId, String userId);
 	public Wine getWine(int wineId);
 	public Integer drinkWine(DrinkWineRequest drinkWineRequest, String userId);
+	public void editWine(AddWineRequest addWineRequest, String userId);
 	
 	public double getExchangeRate();
 }
