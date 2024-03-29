@@ -22,8 +22,10 @@
 		<div class="min-w-[700px] max-w-[1000px] space-y-6 mx-auto px-4">
 			<div class="flex justify-between">
 				<div class="flex items-center gap-2">
-					<h1 th:text="${wine.name}" class="text-3xl font-bold">와인 이름</h1>
-					<span th:text="${wine.vintage != null} ? ${wine.vintage} : '' " class="text-lg font-medium opacity-70">와인 빈티지</span>
+					<h1 class="text-3xl font-bold max-w-[750px]">
+						<span th:text="${wine.name}" class="text-3xl font-bold">와인 이름</span>
+						<span th:text="${wine.vintage != null} ? ${wine.vintage} : '' " class="text-lg font-medium opacity-70">와인 빈티지</span>
+					</h1>
 				</div>
 				<div class="inline-block">
 					<button type="button" class="focus:outline-none text-white bg-gray-400 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-base rounded-full text-xs px-3 py-1.5 mb-2 "
