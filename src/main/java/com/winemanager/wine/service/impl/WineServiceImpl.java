@@ -298,8 +298,6 @@ public class WineServiceImpl implements WineService{
 						.rating(addWineRequest.getWineRating())
 						.averagePrice(addWineRequest.getWineAveragePrice())
 						.link(addWineRequest.getWineLink().trim())
-						.thumb(addWineRequest.getWineThumb().trim())
-						.thumbBottom(addWineRequest.getWineThumbBottom().trim())
 						.build();
 		
 		// 입력받은 파일 처리
@@ -307,6 +305,11 @@ public class WineServiceImpl implements WineService{
 		
 		String originThumb = originWine.getThumb();
 		String originThumbBottom = originWine.getThumbBottom();
+		
+		// 앞에 /images/wine/이 붙어서 넘어오기때문에 이게 없는 원래 값으로 넣어줌
+		wine.setThumb(originThumb);
+		wine.setThumbBottom(originThumbBottom);
+		
 		if(!addWineRequest.getCustomImage().isEmpty()) {
 			MultipartFile uploadPic = addWineRequest.getCustomImage();
 			String originalFileName = uploadPic.getOriginalFilename();
