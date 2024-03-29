@@ -307,10 +307,10 @@ public class WineServiceImpl implements WineService{
 		
 		String originThumb = originWine.getThumb();
 		String originThumbBottom = originWine.getThumbBottom();
-		if(addWineRequest.getCustomImage() != null) {
+		if(!addWineRequest.getCustomImage().isEmpty()) {
 			MultipartFile uploadPic = addWineRequest.getCustomImage();
 			String originalFileName = uploadPic.getOriginalFilename();
-			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 파일 확장자 (.jpg, .png)
+			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 파일 확장자 (.jpg, .png, webp)
 			String randomFileName = "WINE" + "_" + UUID.randomUUID().toString()+ fileExtension; // 파일명 랜덤으로 변경
 			
 			File saveFile = new File(this.winePicPath, randomFileName);

@@ -3,6 +3,8 @@ package com.winemanager.wine.controller;
 import java.security.Principal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
@@ -30,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class WineController {
+	
+	private final List<String> validFileExtension = new ArrayList<>(Arrays.asList(new String[] {".jpg", ".jpeg", ".png", ".webp"}));
 	
 	private final WineService wineService;
 	
@@ -253,11 +258,37 @@ public class WineController {
 		
 		return "wine/edit-wine";
 	}
-	@PostMapping("edit-wine")
+	@PostMapping("edit-wine/{wineId}")
 	public String editWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
 							Principal principal, Model model) {
 		
-		// 내 와인일 때 만
+		// 파일 체크
+		if(!addWineRequest.getCustomImage().isEmpty()) {
+			MultipartFile inputFile = addWineRequest.getCustomImage();
+			// 파일 확장자 체크
+			String fileExtension = inputFile.getOriginalFilename().substring(inputFile.getOriginalFilename().lastIndexOf("."));
+			
+			boolean isExtensionValid = false;
+			for(String validFileExtension : this.validFileExtension) {
+				if(fileExtension.equalsIgnoreCase(validFileExtension))
+					isExtensionValid = true;
+			}
+			
+			if(!isExtensionValid) {
+				result.rejectValue("customImage", "errer.customImage", "Only extensions of jpg, jpeg, and png are allowed.");
+				return "wine/edit-wine";
+			}
+			
+			
+			// 파일 크기 체크
+			if(inputFile.getSize() > 15 * 1024 * 1024) {
+				result.rejectValue("customImage", "errer.customImage", "The file size is up to 15MB.");
+				return "wine/edit-wine";
+			}
+			
+		}
+		
+		// 내 와인인지 체크 후, 로직 실행
 		Wine wine = wineService.getWine(addWineRequest.getWineId());
 		if(wine != null && wine.getUserId().equals(principal.getName())) {
 			wineService.editWine(addWineRequest, principal.getName());
