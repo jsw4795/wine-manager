@@ -25,6 +25,7 @@
 			</div>
 			
 			<div class="mt-2 inline-block mx-auto ">
+				<p th:if="${!#fields.hasErrors('customImage')}" class="text-green-600 mb-2">png, jpg, webp available and up to 15 megabytes.</p>
 				<div class="text-center">
 					<button type="button" id="custom-image-btn" class="inline-block px-3 py-2 text-xs font-medium text-center text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900  rounded-lg">Change Image</button>
 				</div>
