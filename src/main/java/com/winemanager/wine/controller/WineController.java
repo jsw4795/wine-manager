@@ -344,12 +344,18 @@ public class WineController {
 	
 	
 	private void setWineImage(Wine wine) {
+		if(wine == null)
+			return;
+		
 		if(!wine.getThumb().startsWith("https://")) {
 			wine.setThumb("/images/wine/" + wine.getThumb());
 			wine.setThumbBottom("images/wine/" + wine.getThumbBottom());
 		}
 	}
 	private void setWineImage(List<Wine> wineList) {
+		if(wineList == null)
+			return;
+		
 		for(Wine wine : wineList) 
 			this.setWineImage(wine);
 	}
