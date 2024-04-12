@@ -172,8 +172,8 @@ public class WineServiceImpl implements WineService{
 				
 				// vivino에 사진이 없으면, 자체 기본 이미지로 변경
 				if(thumbOrigin.contains("default_label")) {
-					wine.setThumb("/images/wine-default.png");
-					wine.setThumbBottom("/images/wine-default.png");
+					wine.setThumb("wine-default.png");
+					wine.setThumbBottom("wine-default.png");
 					continue;
 				}
 				
