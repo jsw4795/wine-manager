@@ -100,6 +100,13 @@ public class SecurityConfig {
 					logoutConfig
 						.logoutSuccessUrl("/")
 				)
+				.rememberMe(rememberMeConfig -> {
+					rememberMeConfig
+						.key("UK") // 쿠키에 사용되는 값을 암호화 할때 사용할 키
+						.alwaysRemember(true)
+						.tokenValiditySeconds(3600 * 24 * 365);
+						
+				})
 				.build();
 		
 	}
