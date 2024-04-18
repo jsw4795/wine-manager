@@ -128,8 +128,10 @@ public class WineController {
 	}
 	@GetMapping("/add-wine/search-new")
 	public String searchWineInVivino(String keyword, String uuid, Model model) {
-		if(keyword == null || keyword.trim().length() == 0)
+		if(keyword == null || keyword.trim().length() == 0) {
+			model.addAttribute("uuid", uuid);
 			return "wine/emptyResultTemplate-add-wine";
+		}
 		
 		List<Wine> wineList = wineService.searchWineInVivino(keyword);
 		setWineImage(wineList);
