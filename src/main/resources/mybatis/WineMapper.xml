@@ -32,21 +32,7 @@
 			wine.wine_log
 		(user_id, wine_id, type, date, place, price, count)
 		values
-		(#{userId}, #{wineId}, #{type}, #{date}, #{place}, #{price}, #{count});
-		
-		update 
-			wine.wine
-		set
-			<if test="type == 'IN' ">
-				count = count + #{count}
-			</if>
-			<if test="type == 'OUT' ">
-				count = count - #{count}
-			</if>
-		where 
-			wine_id = #{wineId} 
-			and 
-			user_id = #{userId}
+		(#{userId}, #{wineId}, #{type}, #{date}, #{place}, #{price}, #{count})
     </insert>
     
     <select id="selectWineListByName" parameterType="Map" resultType="com.winemanager.wine.domain.Wine">
@@ -216,5 +202,6 @@
 		where
 			wine_id = #{wineId} and user_id = #{userId}
     </update>
+    
 
 </mapper>
