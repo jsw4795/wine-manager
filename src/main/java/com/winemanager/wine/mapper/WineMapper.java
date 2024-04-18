@@ -26,4 +26,6 @@ public interface WineMapper {
 	public void insertReview(Review review);
 	public void updateExchangeRate(Double usd);
 	public void updateWine(Wine wine);
+	public WineLog selectWineLog(WineLog wineLog);
+	public void updateWineLog(WineLog wineLog);
 }

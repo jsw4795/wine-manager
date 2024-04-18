@@ -21,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
+import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailResponse;
+import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.service.WineService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -97,7 +99,7 @@ public class WineController {
 		
 		String userId = principal.getName();
 		int wineId = 0;
-		
+
 		if(addWineRequest.getWineId() == null) // 새로운 와인 등록
 			wineId = wineService.addNewWine(addWineRequest, userId);
 		 else { // 원래 있던 와인 추가
@@ -338,7 +340,50 @@ public class WineController {
 		return "wine/wine-detail";
 	}
 	
+	@GetMapping("/edit-wineLog/{logId}")
+	public String getEditWineLog(@PathVariable(name = "logId", required = true) Integer logId, Principal principal,
+							@ModelAttribute EditWineLogRequest editWineLogRequest, BindingResult result,
+							HttpServletRequest request, Model model) {
+		WineLog wineLog = wineService.getWineLog(logId, principal.getName());
+		Wine wine = wineService.getWine(wineLog.getWineId());
+		setWineImage(wine);
+		
+		editWineLogRequest = EditWineLogRequest.builder()
+											   .wineId(wine.getWineId())
+											   .wineName(wine.getName())
+											   .wineVintage(wine.getVintage())
+											   .wineSize(wine.getSize())
+											   .wineThumb(wine.getThumb())
+											   .logId(wineLog.getLogId())
+											   .type(wineLog.getType())
+											   .place(wineLog.getPlace())
+											   .date(wineLog.getDate())
+											   .count(wineLog.getCount())
+											   .price(wineLog.getPrice())
+											   .build();
+		
+		
+		List<String> buyPlaceList = wineService.getBuyPlace(principal.getName());
+		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		model.addAttribute(editWineLogRequest);
+		model.addAttribute("buyPlaceList", buyPlaceList);
+		
+		return "/wine/edit-wine-log";
+	}
 	
+	@PostMapping("/edit-wine-log")
+	public String editWineLog(@ModelAttribute EditWineLogRequest editWineLogRequest, BindingResult result,
+			Principal principal, Model model) {
+		
+		if(result.hasErrors())
+			return "/wine/edit-wine-log";
+		
+		wineService.editWineLog(editWineLogRequest, principal.getName());	
+		
+		
+		return "redirect:/wine/" + editWineLogRequest.getWineId();
+	}
 	
 	
 	
@@ -349,7 +394,7 @@ public class WineController {
 		
 		if(!wine.getThumb().startsWith("https://")) {
 			wine.setThumb("/images/wine/" + wine.getThumb());
-			wine.setThumbBottom("images/wine/" + wine.getThumbBottom());
+			wine.setThumbBottom("/images/wine/" + wine.getThumbBottom());
 		}
 	}
 	private void setWineImage(List<Wine> wineList) {

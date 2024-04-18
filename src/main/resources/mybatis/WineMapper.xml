@@ -203,5 +203,26 @@
 			wine_id = #{wineId} and user_id = #{userId}
     </update>
     
+    <select id="selectWineLog" parameterType="com.winemanager.wine.domain.WineLog" resultType="com.winemanager.wine.domain.WineLog">
+    	select 
+    		log_id, wine_id, user_id, wine_id, type, date, place, price, count
+    	from
+    		wine.wine_log
+    	where
+    		log_id = #{logId}
+    		and
+    		user_id = #{userId}
+    </select>
+    
+    <update id="updateWineLog" parameterType="com.winemanager.wine.domain.WineLog">
+    	update
+    		wine.wine_log
+    	set
+    		date = #{date}, place = #{place}, price = #{price}, count = #{count}
+    	where
+    		log_id = #{logId}
+    		and 
+    		user_id = #{userId}
+    </update>
 
 </mapper>

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
+import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Review;
 import com.winemanager.wine.domain.Wine;
@@ -340,6 +341,28 @@ public class WineServiceImpl implements WineService{
 		}
 		
 		wineMapper.updateWine(wine);
+		
+	}
+
+	@Override
+	public WineLog getWineLog(int logId, String userId) {
+		return wineMapper.selectWineLog(WineLog.builder()
+											   .logId(logId)
+											   .userId(userId)
+											   .build());
+	}
+
+	@Override
+	public void editWineLog(EditWineLogRequest editWineLogRequest, String userId) {
+		wineMapper.updateWineLog(WineLog.builder()
+										.logId(editWineLogRequest.getLogId())
+										.userId(userId)
+										.wineId(editWineLogRequest.getWineId())
+										.place(editWineLogRequest.getPlace())
+										.date(editWineLogRequest.getDate())
+										.price(editWineLogRequest.getPrice())
+										.count(editWineLogRequest.getCount())
+										.build());
 		
 	}
 	

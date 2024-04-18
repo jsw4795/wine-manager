@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
+import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailResponse;
+import com.winemanager.wine.domain.WineLog;
 
 public interface WineService {
 	public List<String> getBuyPlace(String userId);
@@ -21,6 +23,8 @@ public interface WineService {
 	public Wine getWine(int wineId);
 	public Integer drinkWine(DrinkWineRequest drinkWineRequest, String userId);
 	public void editWine(AddWineRequest addWineRequest, String userId);
+	public WineLog getWineLog(int logId, String userId);
+	public void editWineLog(EditWineLogRequest editLogRequest, String userId);
 	
 	public double getExchangeRate();
 }
