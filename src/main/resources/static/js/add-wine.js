@@ -126,11 +126,11 @@ $(() => {
 		
 	})
 	
+	// 장소 추가 모달에서 엔터키 클릭 처리
 	$("#place-add-input").on("keypress", function(e) {
 		if(e.keyCode == 13)
 			return false;	
 	})
-	
 	$("#place-add-input").on("keyup", function(e) {
 		if(e.keyCode == 13){
 			let place = $("#place-add-input").val();

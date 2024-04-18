@@ -25,7 +25,7 @@
 				<!--_pb_x600.png : 와인 전체 사진   /   https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pb_x600.png
 					_pl_375x500.png : 와인 밑쪽 썸네일   /   https://images.vivino.com/thumbs/diN0gK6qSpKsgbMApBbxNw_pl_375x500.png 
 				-->
-				<img id="wine-thumb" th:src="@{*{wineThumb != null} ? *{wineThumb} : '/images/wine-default.png' }" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
+				<img id="wine-thumb" th:src="@{*{wineThumb != null && wineThumb != ''} ? *{wineThumb} : '/images/wine-default.png' }" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
 			</div>
 		</div>
 		<div class="flex flex-col space-y-4">

@@ -53,7 +53,7 @@
 		
 		<div class="flex space-x-2 place-content-center">
 			<div class="w-72 h-80 bg-gray-200 rounded-md text-center">
-				<img id="wine-thumb" th:src="@{*{wineThumb != null} ? *{wineThumb} : '/images/wine-default.png' }" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
+				<img id="wine-thumb" th:src="@{*{wineThumb != null && wineThumb != ''} ? *{wineThumb} : '/images/wine-default.png' }" alt="wine-thumb" class="inline-block h-72 my-4 px-2"/>
 				<h4 th:classappend="${wineCount == null} ? 'hidden' : '' "
 					class="text-orange-600 text-base w-full text-center"
 					id="stock-message">
