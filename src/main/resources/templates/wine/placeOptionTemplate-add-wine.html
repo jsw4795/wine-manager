@@ -1,4 +1,5 @@
-<option xmlns:th="http://www.thymeleaf.org" th:if="${isBuyPlaceValid == true}" value="" selected hidden="" >Select or add new place</option>
+
+<option xmlns:th="http://www.thymeleaf.org" th:if="${isBuyPlaceValid == true}" value="DI" selected >=Direct Input=</option>
 <option xmlns:th="http://www.thymeleaf.org" th:if="${isBuyPlaceValid == true}" th:each="place : ${buyPlaceList}" th:value="${place}" th:text="${place}"></option>
 
 <div xmlns:th="http://www.thymeleaf.org" th:if="${isBuyPlaceValid == false}" class="error flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 "

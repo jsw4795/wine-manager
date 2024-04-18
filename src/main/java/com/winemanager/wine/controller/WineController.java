@@ -82,10 +82,10 @@ public class WineController {
 			}
 		}
 		
-		List<String> buyPlaceList = wineService.getBuyPlace(principal.getName());
+		List<String> placeList = wineService.getBuyPlace(principal.getName());
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
-		model.addAttribute("buyPlaceList", buyPlaceList);
+		model.addAttribute("placeList", placeList);
 		
 		return "wine/add-wine";
 	}
@@ -197,7 +197,10 @@ public class WineController {
 			}
 		}
 		
+		List<String> placeList = wineService.getBuyPlace(principal.getName());
+		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		model.addAttribute("placeList", placeList);
 		
 		return "wine/drink-wine";
 	}
@@ -367,7 +370,7 @@ public class WineController {
 		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute(editWineLogRequest);
-		model.addAttribute("buyPlaceList", buyPlaceList);
+		model.addAttribute("placeList", buyPlaceList);
 		
 		return "/wine/edit-wine-log";
 	}

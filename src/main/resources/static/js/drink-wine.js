@@ -108,6 +108,49 @@ $(() => {
 		$("#rating-display").text((Number)($(this).val()).toFixed(1));
 	})
 	
+	// 장소 추가 버튼 클릭
+	$("#add-place-btn").on("click", function() {
+		$("#place-add-input").val('');
+		$("#place-modal-error").html('');
+		$("#place-modal-background").removeClass("hidden");
+	})
+	// 모달 안에서 장소 추가 확인 버튼 클릭
+	$("#add-place-submit").on("click", function() {
+		let place = $("#place-add-input").val();
+		
+		addPlace(place);
+	})
+	
+	// 장소 리스트에서 선택하면 인풋값 바뀜
+	$("#buy-place-select").on("input", function() {
+		let input = $(this).val();
+		let $buyPlaceInput = $("#buy-place-text");
+		
+		if(input == "DI") {
+			$buyPlaceInput.val('');
+			$buyPlaceInput.removeAttr("readOnly")
+			$buyPlaceInput.removeClass("bg-gray-200");
+		} else {
+			$buyPlaceInput.val(input);
+			$buyPlaceInput.attr("readOnly", '')
+			$buyPlaceInput.addClass("bg-gray-200");
+		}
+		
+	})
+	
+	// 장소 추가 모달에서 엔터키 클릭 처리
+	$("#place-add-input").on("keypress", function(e) {
+		if(e.keyCode == 13)
+			return false;	
+	})
+	$("#place-add-input").on("keyup", function(e) {
+		if(e.keyCode == 13){
+			let place = $("#place-add-input").val();
+		
+			addPlace(place);
+		}	
+	})
+	
 })
 
 function searchOwnWine(keyword) {
@@ -122,6 +165,28 @@ function searchOwnWine(keyword) {
 	});
 }
 
+function addPlace(place) {
+	$.ajax({
+		url: "/add-place",
+		type: "POST",
+		data: {place: place},
+		dataType: "HTML",
+		success: function(resultHTML) {
+			// 에러가 리턴된 경우
+			if($(resultHTML).hasClass("error")){
+				$("#place-modal-error").html(resultHTML);
+			} else {
+				// 리턴된 새로운 option태그로 변경
+				$("#buy-place-select").html(resultHTML);
+				$("#buy-place-text").removeAttr("readOnly")
+				$("#buy-place-text").removeClass("bg-gray-200");
+				// 모달 닫기
+				$(".modal-background").addClass("hidden");
+			}
+			
+		}
+	});
+}
 
 // HTML Code
 function getLoadingHTML(content) {

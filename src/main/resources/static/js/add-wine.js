@@ -109,6 +109,36 @@ $(() => {
 		addPlace(place);
 	})
 	
+	// 장소 리스트에서 선택하면 인풋값 바뀜
+	$("#buy-place-select").on("input", function() {
+		let input = $(this).val();
+		let $buyPlaceInput = $("#buy-place-text");
+		
+		if(input == "DI") {
+			$buyPlaceInput.val('');
+			$buyPlaceInput.removeAttr("readOnly")
+			$buyPlaceInput.removeClass("bg-gray-200");
+		} else {
+			$buyPlaceInput.val(input);
+			$buyPlaceInput.attr("readOnly", '')
+			$buyPlaceInput.addClass("bg-gray-200");
+		}
+		
+	})
+	
+	$("#place-add-input").on("keypress", function(e) {
+		if(e.keyCode == 13)
+			return false;	
+	})
+	
+	$("#place-add-input").on("keyup", function(e) {
+		if(e.keyCode == 13){
+			let place = $("#place-add-input").val();
+		
+			addPlace(place);
+		}	
+	})
+	
 })
 
 function searchOwnWine(keyword) {
@@ -150,7 +180,8 @@ function addPlace(place) {
 			} else {
 				// 리턴된 새로운 option태그로 변경
 				$("#buy-place-select").html(resultHTML);
-				
+				$("#buy-place-text").removeAttr("readOnly")
+				$("#buy-place-text").removeClass("bg-gray-200");
 				// 모달 닫기
 				$(".modal-background").addClass("hidden");
 			}

@@ -127,19 +127,26 @@
 			
 			<label class="font-semibold pt-14 text-2xl"> About drinking </label>
 			<hr />
-			<div class="grid grid-cols-4 gap-4">
+			<div class="grid grid-cols-5 gap-4">
 				<div class="flex flex-col">
 					<label for="date" class="font-semibold"> Date </label> 
 					<input th:field="*{drinkDate}" 
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="date" type="date" name="drinkDate" required/>
 				</div>
-				<div class="flex flex-col col-span-2">
+				<div class="flex flex-col col-span-3">
 					<label for="place" class="font-semibold"> Place </label>
-					<div class="">
-						<input th:field="*{drinkPlace}" 
-							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-							id="drinkPlace" placeholder="Place" type="text" name="drinkPlace" autocomplete="off"/> 
+					<div class="grid grid-cols-12 space-x-1">
+						<input th:field="*{drinkPlace}" th:classappend="${#fields.hasErrors('drinkPlace')} ? 'border-red-600' : ''" 
+							class="col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+							id="buy-place-text" placeholder="Select or write place" type="text" name="drinkPlace" required autocomplete="off"/> 
+						<select id="buy-place-select"        
+							class="col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
+							style="white-space: nowrap; overflow-wrap: normal;" name="placeList" >
+							<option value="DI" selected >=Direct Input=</option>
+							<option th:each="place : ${placeList}" th:value="${place}" th:text="${place}"></option>
+						</select> 
+						<button id="add-place-btn" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
 					</div>
 				
 				</div>
@@ -237,6 +244,28 @@
 		</div>
 	</div>
 	
+	<div id="place-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
+		<div id="place-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 30vw; max-width: 80vw">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-xl font-semibold">Add place</h2>
+				<button type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+					Close</button>
+			</div>
+			<div id="place-modal-content" class="modal-content flex justify-center w-full">
+				
+				<div class="grid grid-cols-10 space-x-1 w-full">
+					<input type="text" id="place-add-input" class="col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+						style="white-space: nowrap; overflow-wrap: normal;" placeholder="Add a new place where you bought wine" />
+						
+					<button type="button" id="add-place-submit" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
+				</div>
+				
+			</div>
+			<div id="place-modal-error">
+				
+			</div>
+		</div>
+	</div>
 	
 </form>
 

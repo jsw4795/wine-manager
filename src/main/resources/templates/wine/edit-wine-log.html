@@ -101,19 +101,17 @@
 			<div class="grid grid-cols-4 gap-4">
 				<div class="flex flex-col col-span-3">
 					<label for="place" class="font-semibold"> Place </label>
-					<div th:if="${editWineLogRequest.type == 'IN'}" class="grid grid-cols-12 space-x-1">
-						<select id="buy-place-select" th:field="*{place}" th:classappend="${#fields.hasErrors('place')} ? 'border-red-600' : ''"         
-							class="col-span-11 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-							style="white-space: nowrap; overflow-wrap: normal;" name="buyPlace" required >
-							<option value="" selected hidden="" >Select or add new place</option>
-							<option th:each="place : ${buyPlaceList}" th:value="${place}" th:text="${place}"></option>
+					<div class="grid grid-cols-12 space-x-1">
+						<input th:field="*{place}" th:classappend="${#fields.hasErrors('place')} ? 'border-red-600' : ''" 
+							class="col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+							id="buy-place-text" placeholder="Select or write place" type="text" name="place" required autocomplete="off"/> 
+						<select id="buy-place-select"        
+							class="col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
+							style="white-space: nowrap; overflow-wrap: normal;" name="placeList" >
+							<option value="DI" selected >=Direct Input=</option>
+							<option th:each="place : ${placeList}" th:value="${place}" th:text="${place}"></option>
 						</select> 
 						<button id="add-place-btn" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
-					</div>
-					<div th:if="${editWineLogRequest.type == 'OUT'}" class="">
-						<input th:field="*{place}" 
-							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-							id="drinkPlace" placeholder="Place" type="text" name="place" autocomplete="off"/> 
 					</div>
 					<p th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="text-red-600"></p>
 				</div>
