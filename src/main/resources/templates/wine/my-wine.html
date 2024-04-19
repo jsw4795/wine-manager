@@ -11,7 +11,7 @@
 	<!-- <link rel="stylesheet" th:href="@{/css/header.css}" /> -->
 </th:block>
 
-<div layout:fragment="content" class="w-4/5 mx-auto py-10 mt-40">
+<div layout:fragment="content" class="w-11/12 md:w-4/5 mx-auto py-10 mt-40">
 	<h1 th:text="${#strings.capitalize(myWineRequest.type)}" class="text-5xl font-bold mb-6">All</h1>
 	<nav class="flex space-x-4 pb-3 mb-20">
 		<a th:classappend="${myWineRequest.type == 'all'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/all"> All </a> 
@@ -23,14 +23,14 @@
 	
 	<div class="flex justify-between pb-3 mb-10 border-b">
 		<div class="mb-4 pt-3">
-			<h2 th:text="${pagination == null} ? '0 Wines' : |${pagination.totalRecordCount} Wines|" class="text-2xl font-semibold">0 Wines</h2>
+			<h2 th:text="${pagination == null} ? '0 Wines' : |${pagination.totalRecordCount} Wines|" class="text-xl md:text-2xl font-semibold">0 Wines</h2>
 		</div>
-		<div class="flex space-x-4 mb-4 pt-3">
+		<div class="flex space-x-4 mb-4 pt-3 text-base md:text-lg">
 			<!-- asc가 활성화 상태일 경우 해당 요소 desc로 변경 -->
-			<div>
+			<div class="">
 				<a th:classappend="${myWineRequest.sortBy.contains('reg')} ? font-semibold : font-normal" 
 					th:href="${myWineRequest.sortBy == 'reg_asc'} ? '?sortBy=reg_desc' :'?sortBy=reg_asc'"
-					class="text-lg" > Reg </a> 
+					class="" > Reg </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('reg')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -39,7 +39,7 @@
 			<div>
 				<a th:classappend="${myWineRequest.sortBy.contains('name')} ? font-semibold : font-normal" 
 					th:href="${myWineRequest.sortBy == 'name_asc'} ? '?sortBy=name_desc' :'?sortBy=name_asc'"
-					class="text-lg" > Name </a> 
+					class="" > Name </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('name')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,7 +48,7 @@
 			<div>
 				<a th:classappend="${myWineRequest.sortBy.contains('price')} ? font-semibold : font-normal" 
 					th:href="${myWineRequest.sortBy == 'price_asc'} ? '?sortBy=price_desc' :'?sortBy=price_asc'"
-					class="text-lg" > Price </a> 
+					class="" > Price </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('price')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -57,7 +57,7 @@
 			<div>
 				<a th:classappend="${myWineRequest.sortBy.contains('count')} ? font-semibold : font-normal" 
 					th:href="${myWineRequest.sortBy == 'count_asc'} ? '?sortBy=count_desc' :'?sortBy=count_asc'"
-					class="text-lg" > Count </a> 
+					class="" > Count </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('count')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -69,7 +69,7 @@
 	<!-- Contents -->
 	<div class="flex justify-center w-full">
 		<h2 th:if="${wineList == null}" class="text-xl font-semibold">No Wine</h2>
-		<div th:if="${wineList != null}" class="grid grid-cols-4 gap-8 w-full">
+		<div th:if="${wineList != null}" class="grid grid-cols-2 xl:grid-cols-4 gap-8 w-full">
 		
 			<div th:each="wine : ${wineList}" class="wine flex flex-col items-center">
 				<a th:href="@{|/wine/${wine.wineId}|}" class=" w-full text-center relative">
@@ -77,8 +77,8 @@
 					
 						<div th:if="${wine.size != 'Standard' }" 
 							th:classappend="${wine.size == 'Double Magnum'} ? 'bg-red-700' : (${wine.size == 'Magnum'} ? 'bg-blue-700' : (${wine.size == 'Half'} ? 'bg-orange-500' : 'bg-yellow-500')) "
-							class="absolute top-0 left-0  p-2 rounded-br-lg ">
-							<span th:text="${wine.size}" class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
+							class="absolute top-0 left-0 p-1 pb-2 md:p-2 rounded-br-lg ">
+							<span th:text="${wine.size}" class="text-xs md:text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
 						</div>
 						
 						<div th:if="${wine.count == 0}" class="absolute top-1/2 right-0 bg-black opacity-70 p-2 w-full rounded-lg">
@@ -86,10 +86,10 @@
 						</div>
 						
 						<img th:src="@{${wine.thumb}}" alt="Red Sculpture"
-							class="inline-block my-2 h-[300px] object-cover" 
+							class="inline-block my-2 h-[225px] lg:h-[300px] object-cover" 
 							height="300" style="object-fit: cover;" />
 					</div>
-					<h2 th:text="${wine.name}" class="text-lg font-semibold">와인 이름</h2>
+					<h2 th:text="${wine.name}" class="text-sm md:text-base lg:text-lg font-semibold">와인 이름</h2>
 					<h3 th:text="${wine.vintage != null} ? ${wine.vintage} : 'NV' " class="text-base font-medium">빈티지</h3>
 					<p th:text="${wine.averagePrice != null} ? |$${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}| : |$N/A|" class="mt-1 text-sm text-gray-700">평균 가격</p>
 				</a>

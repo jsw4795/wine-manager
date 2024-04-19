@@ -29,8 +29,8 @@
 			</div>
 		</div>
 		<div class="flex flex-col space-y-4">
-			<div class="grid grid-cols-4 gap-4">
-				<div class="flex flex-col col-span-3">
+			<div class="grid md:grid-cols-4 gap-4">
+				<div class="flex flex-col md:col-span-3">
 					<label for="wine-name" class="font-semibold"> Name </label> 
 					<input th:field="*{wineName}" th:classappend="${#fields.hasErrors('wineName')} ? 'border-red-600' : ''" 
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -48,8 +48,8 @@
 			
 			<div>
 				<label class="font-semibold">Size</label> 
-				<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex ">
-				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
+				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3 ">
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"    
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
@@ -57,7 +57,7 @@
 				            <label for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
 				        </div>
 				    </li>
-				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"       
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
@@ -65,7 +65,7 @@
 				            <label for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
 				        </div>
 				    </li>
-				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
@@ -73,7 +73,7 @@
 				            <label for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
 				        </div>
 				    </li>
-				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
@@ -81,7 +81,7 @@
 				            <label for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
 				        </div>
 				    </li>
-				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
@@ -98,20 +98,20 @@
 			<input th:field="*{logId}" type="hidden" name="logId" />
 			
 			<hr />
-			<div class="grid grid-cols-4 gap-4">
-				<div class="flex flex-col col-span-3">
+			<div class="grid md:grid-cols-4 gap-4">
+				<div class="flex flex-col md:col-span-3">
 					<label for="place" class="font-semibold"> Place </label>
 					<div class="grid grid-cols-12 space-x-1">
 						<input th:field="*{place}" th:classappend="${#fields.hasErrors('place')} ? 'border-red-600' : ''" 
-							class="col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+							class="col-span-6 md:col-span-8  h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 							id="buy-place-text" placeholder="Select or write place" type="text" name="place" required autocomplete="off"/> 
 						<select id="buy-place-select"        
-							class="col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
+							class="col-span-4 md:col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
 							style="white-space: nowrap; overflow-wrap: normal;" name="placeList" >
 							<option value="DI" selected >=Direct Input=</option>
 							<option th:each="place : ${placeList}" th:value="${place}" th:text="${place}"></option>
 						</select> 
-						<button id="add-place-btn" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
+						<button id="add-place-btn" type="button" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
 					</div>
 					<p th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="text-red-600"></p>
 				</div>
@@ -123,12 +123,12 @@
 					<p th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-red-600"></p>
 				</div>
 			</div>
-			<div class="grid grid-cols-2 gap-4">
+			<div class="grid md:grid-cols-2 gap-4">
 				<div class="flex flex-col">
 					<label for="price" class="font-semibold">Price</label> 
 					<div class="relative">
 				        <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-				            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400"  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+				            <svg class="w-5 h-5 text-gray-500 "  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
 								<!-- <path xmlns="http://www.w3.org/2000/svg" d="M6 12L8 19L10 12M6 12L4 5M6 12H3M6 12H10M14 12L16 19L18 12M14 12L12 5L10 12M14 12H10M14 12H18M18 12L20 5M18 12H21" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> -->
 								<polyline xmlns="http://www.w3.org/2000/svg" id="primary" points="20 3 16 21 12 6 8 21 4 3" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
 								<path xmlns="http://www.w3.org/2000/svg" id="primary-2" data-name="primary" d="M3,10H21M3,14H21" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
@@ -158,7 +158,7 @@
 	</div>
 	
 	<div id="place-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
-		<div id="place-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 30vw; max-width: 80vw">
+		<div id="place-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 30vw; ">
 			<div class="flex items-center justify-between mb-4">
 				<h2 class="text-xl font-semibold">Add place</h2>
 				<button type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
@@ -167,10 +167,10 @@
 			<div id="place-modal-content" class="modal-content flex justify-center w-full">
 				
 				<div class="grid grid-cols-10 space-x-1 w-full">
-					<input type="text" id="place-add-input" class="col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+					<input type="text" id="place-add-input" class="col-span-8 md:col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
 						style="white-space: nowrap; overflow-wrap: normal;" placeholder="Add a new place where you bought wine" />
 						
-					<button type="button" id="add-place-submit" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
+					<button type="button" id="add-place-submit" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
 				</div>
 				
 			</div>

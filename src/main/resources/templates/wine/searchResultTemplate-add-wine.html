@@ -6,7 +6,7 @@
 			class="h-14 w-14 rounded" width="40" height="40"
 			style="aspect-ratio: 40/40; object-fit: contain;" /> 
 			
-		<span class="text-lg font-semibold">
+		<span class="text-sm md:text-lg font-semibold">
 			<span th:text="${wine.name}"></span>
 			<span th:if="${type == 'old'}" th:text="${wine.vintage == null ? '--NV' : '--'+wine.vintage}" class="font-black"></span>
 			<span th:if="${type == 'old'}" th:text="${wine.size == 'Standard' ? '' : '--'+wine.size}" class="font-black"></span>

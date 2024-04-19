@@ -62,8 +62,8 @@
 			</div>
 		</div>
 		<div class="flex flex-col space-y-4">
-			<div class="grid grid-cols-4 gap-4">
-				<div class="flex flex-col col-span-3">
+			<div class="grid md:grid-cols-4 gap-4">
+				<div class="flex flex-col md:col-span-3">
 					<label for="wine-name" class="font-semibold"> Name </label> 
 					<input th:field="*{wineName}" 
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -81,8 +81,8 @@
 			
 			<div>
 				<label class="font-semibold">Size</label> 
-				<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex ">
-				    <li class="w-full border-b border-gray-200 bg-gray-200 border-gray-300 sm:border-b-0 sm:border-r ">
+				<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
+				    <li class="w-full border-b border-gray-200 bg-gray-200 border-gray-300 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3 ">
 				            <input th:field="*{wineSize}" 
 				            	onclick="return false"
@@ -90,7 +90,7 @@
 				            <label for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
 				        </div>
 				    </li>
-				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r bg-gray-200 border-gray-300">
+				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}"    
 				            	onclick="return false"
@@ -98,7 +98,7 @@
 				            <label for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
 				        </div>
 				    </li>
-				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r bg-gray-200 border-gray-300">
+				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}"  
 				            	onclick="return false"
@@ -106,7 +106,7 @@
 				            <label for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
 				        </div>
 				    </li>
-				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r bg-gray-200 border-gray-300">
+				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}"   
 				            	onclick="return false"
@@ -114,7 +114,7 @@
 				            <label for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
 				        </div>
 				    </li>
-				    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r bg-gray-200 border-gray-300">
+				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineSize}" 
 				            	onclick="return false"
@@ -127,26 +127,26 @@
 			
 			<label class="font-semibold pt-14 text-2xl"> About drinking </label>
 			<hr />
-			<div class="grid grid-cols-5 gap-4">
+			<div class="grid md:grid-cols-5 gap-4">
 				<div class="flex flex-col">
 					<label for="date" class="font-semibold"> Date </label> 
 					<input th:field="*{drinkDate}" 
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="date" type="date" name="drinkDate" required/>
 				</div>
-				<div class="flex flex-col col-span-3">
+				<div class="flex flex-col md:col-span-3">
 					<label for="place" class="font-semibold"> Place </label>
 					<div class="grid grid-cols-12 space-x-1">
 						<input th:field="*{drinkPlace}" th:classappend="${#fields.hasErrors('drinkPlace')} ? 'border-red-600' : ''" 
-							class="col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+							class="col-span-6 md:col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 							id="buy-place-text" placeholder="Select or write place" type="text" name="drinkPlace" required autocomplete="off"/> 
 						<select id="buy-place-select"        
-							class="col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
+							class="col-span-4 md:col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
 							style="white-space: nowrap; overflow-wrap: normal;" name="placeList" >
 							<option value="DI" selected >=Direct Input=</option>
 							<option th:each="place : ${placeList}" th:value="${place}" th:text="${place}"></option>
 						</select> 
-						<button id="add-place-btn" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
+						<button id="add-place-btn" type="button" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
 					</div>
 				
 				</div>
@@ -192,7 +192,7 @@
 								<span id="rating-display" class="text-4xl font-medium">2.5</span> 
 							</div>
 						
-							<input disabled id="rating" name="reviewRating" type="range" min="0.5" max="5" value="2.5" step="0.5" class="block mx-auto w-1/2 h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer ">
+							<input disabled id="rating" name="reviewRating" type="range" min="0.5" max="5" value="2.5" step="0.5" class="block mx-auto mb-6 w-10/12 md:w-1/2 h-4 md:h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer ">
 						</div>
 					
 						<div class="grid gap-1">
@@ -254,10 +254,10 @@
 			<div id="place-modal-content" class="modal-content flex justify-center w-full">
 				
 				<div class="grid grid-cols-10 space-x-1 w-full">
-					<input type="text" id="place-add-input" class="col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+					<input type="text" id="place-add-input" class="col-span-8 md:col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
 						style="white-space: nowrap; overflow-wrap: normal;" placeholder="Add a new place where you bought wine" />
 						
-					<button type="button" id="add-place-submit" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
+					<button type="button" id="add-place-submit" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
 				</div>
 				
 			</div>
