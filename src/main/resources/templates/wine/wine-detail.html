@@ -19,16 +19,16 @@
 	class=" w-full ">
 	<div class="w-screen bg-gray-100 pt-40 pb-20">
 	
-		<div class="min-w-[700px] max-w-[1000px] space-y-6 mx-auto px-4">
-			<div class="flex justify-between">
+		<div class="md:min-w-[700px] max-w-[1000px] space-y-6 mx-auto px-4">
+			<div class="md:flex md:justify-between">
 				<div class="flex items-center gap-2">
-					<h1 class="text-3xl font-bold max-w-[750px]">
-						<span th:text="${wine.name}" class="text-3xl font-bold">와인 이름</span>
+					<div class="text-3xl font-bold max-w-[750px]">
+						<span th:text="${wine.name}" class=" font-bold">와인 이름</span>
 						<span th:text="${wine.vintage != null} ? ${wine.vintage} : '' " class="text-lg font-medium opacity-70">와인 빈티지</span>
-					</h1>
+					</div>
 				</div>
-				<div class="inline-block">
-					<button type="button" class="focus:outline-none text-white bg-gray-400 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-base rounded-full text-xs px-3 py-1.5 mb-2 "
+				<div class="relative  md:inline-block">
+					<button type="button" class="absolute right-0 focus:outline-none text-white bg-gray-400 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-base rounded-full text-xs px-3 py-1.5 mb-2 "
 						th:onclick="|location='/edit-wine/${wine.wineId}'|">
 						Modify</button>
 				</div>
@@ -156,10 +156,40 @@
 	</div>
 	<div class="w-full ">
 		<div class="w-4/5 h-full mx-auto">
-		
-			<div class="w-3/4 mx-auto my-10">
-				<h3 class="text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
-				<div class="w-full relative overflow-x-auto shadow-md sm:rounded-lg ">
+			<div class="w-full md:w-3/4 mx-auto my-10">
+				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
+				
+				<div class="history-for-mobile md:hidden ">
+					<div th:each="wineLog : ${wineLogList}"  class="w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
+						<div class="text-sm text-gray-700">
+							<div>
+								<span th:text="${wineLog.place}" class="text-lg text-black font-bold">모바일 로그 장소</span>
+							</div>
+							<div>
+								<span th:text="${wineLog.date}">모바일 로그 날짜</span>
+							</div>
+							<div>
+								<span th:text="|${wineLog.count} bottle(s)|"  class="">모바일 로그 개수</span>
+								<span th:if="${wineLog.price != null}">/</span>
+								<span th:text="${wineLog.price != null} ? (|₩${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|) : '' " class="">모바일 로그 가격</span>
+							</div>
+						</div>
+						<div class="flex items-center">
+							<a th:href="@{|/edit-wineLog/${wineLog.logId}|}" class="inline-block me-3">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+									<path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</a>
+							<div th:classappend="${wineLog.type == 'IN'} ? 'bg-green-100' : 'bg-red-100' " class="w-20 rounded-lg py-1 px-3  text-center ">
+								<span th:text="${wineLog.type == 'IN'} ? 'Buy' : 'Drink' "
+									th:classappend="${wineLog.type == 'IN'} ? 'text-green-600' : 'text-red-600' " class="text-green-600 font-bold">Buy</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="w-full hidden md:block relative overflow-x-auto shadow-md rounded-lg ">
 					<table class="w-full text-sm text-center rtl:text-right text-gray-700 max-h-[400px] overflow-y-scroll">
 						<colgroup>
 							<col width="15%">
@@ -205,16 +235,17 @@
 				</div>
 			</div>
 			
-			<div class="w-3/4 mx-auto my-10 mt-20">
-				<h3 class="text-3xl font-semibold ml-4 mb-4">Review</h3>
+			<div class="w-full md:w-3/4 mx-auto my-10 mt-20">
+				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Review</h3>
 				<h3 th:if="${reviewList.size() == 0}" class="text-xl font-semibold ml-4 mb-4 p-4 text-center rounded-lg border bg-card text-card-foreground shadow-sm" >No review</h3>
 				<div class="w-full py-2 lg:py-4">
 				  <div class="container grid items-start gap-6 lg:gap-12">
 				    <div class="grid gap-4">
 				      <div th:each="review : ${reviewList}" class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
 				        <div class="p-4 space-y-4">
-				          <div class="flex items-center space-x-4">
-				            <div class="flex items-center space-x-1">
+				        
+				          <div class="md:flex items-center md:space-x-4 ">
+				            <div class="flex items-center space-x-1 justify-center md:justify-start mb-2">
 				              <svg th:each="fill : ${#numbers.sequence(1, review.rating, 1)}" xmlns="http://www.w3.org/2000/svg" fill="#ffa400" width="23px" height="23px" viewBox="0 0 24 24" enable-background="new 0 0 24 24"><path d="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1z"/></svg>
 				              <svg th:if="${review.rating % 1 != 0}" xmlns="http://www.w3.org/2000/svg" fill="#ffa400" width="23px" height="23px" viewBox="0 0 24 24" enable-background="new 0 0 24 24"><path d="M22,10.1c0.1-0.5-0.3-1.1-0.8-1.1l-5.7-0.8L12.9,3c-0.1-0.2-0.2-0.3-0.4-0.4C12,2.3,11.4,2.5,11.1,3L8.6,8.2L2.9,9C2.6,9,2.4,9.1,2.3,9.3c-0.4,0.4-0.4,1,0,1.4l4.1,4l-1,5.7c0,0.2,0,0.4,0.1,0.6c0.3,0.5,0.9,0.7,1.4,0.4l5.1-2.7l5.1,2.7c0.1,0.1,0.3,0.1,0.5,0.1v0c0.1,0,0.1,0,0.2,0c0.5-0.1,0.9-0.6,0.8-1.2l-1-5.7l4.1-4C21.9,10.5,22,10.3,22,10.1z M15.8,13.6c-0.2,0.2-0.3,0.6-0.3,0.9l0.7,4.2l-3.8-2c-0.1-0.1-0.3-0.1-0.5-0.1V5.7l1.9,3.8c0.1,0.3,0.4,0.5,0.8,0.5l4.2,0.6L15.8,13.6z"/></svg>
 				              <svg th:each="empty : ${#numbers.sequence(1, 5 - review.rating, 1)}" xmlns="http://www.w3.org/2000/svg" fill="#ffa400" width="23px" height="23px" viewBox="0 0 24 24"><path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.81.68,1,1,0,0,0,.25,1l4.13,4-1,5.68a1,1,0,0,0,.4,1,1,1,0,0,0,1.05.07L12,18.76l5.1,2.68a.93.93,0,0,0,.46.12,1,1,0,0,0,.59-.19,1,1,0,0,0,.4-1l-1-5.68,4.13-4A1,1,0,0,0,22,9.67Zm-6.15,4a1,1,0,0,0-.29.89l.72,4.19-3.76-2a1,1,0,0,0-.94,0l-3.76,2,.72-4.19a1,1,0,0,0-.29-.89l-3-3,4.21-.61a1,1,0,0,0,.76-.55L12,5.7l1.88,3.82a1,1,0,0,0,.76.55l4.21.61Z"/></svg>
@@ -222,6 +253,7 @@
 				            <h4 th:text="${review.title}" class="text-lg font-semibold tracking-tight">리뷰 제목</h4>
 				            <div th:text="${review.regDate}" class="text-sm text-gray-500">리뷰 날짜</div>
 				          </div>
+				          
 				          <p th:text="${review.content}" class="text-sm text-gray-500">리뷰 내용</p>
 				        </div>
 				      </div>
