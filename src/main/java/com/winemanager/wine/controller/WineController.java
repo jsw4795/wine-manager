@@ -23,7 +23,9 @@ import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
 import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
+import com.winemanager.wine.domain.Review;
 import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineDetailRequest;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.service.WineService;
@@ -327,7 +329,7 @@ public class WineController {
 	}
 	@GetMapping("/wine/{wineId}")
 	public String getWineDetail(@PathVariable(name = "wineId") Integer wineId, Principal principal,
-							HttpServletRequest request, Model model) {
+							 Model model) {
 		// 내 와인이 아닌것은 볼 수 없다
 		if(!wineService.isMyWine(wineId, principal.getName())) {
 			String errorMessage = "You do not have access.";
@@ -343,6 +345,24 @@ public class WineController {
 		model.addAttribute("exchangeRate", wineService.getExchangeRate());
 		
 		return "wine/wine-detail";
+	}
+	@GetMapping("/wine/load")
+	public String getWineLogInWineDetail(WineDetailRequest wineDetailRequest, Principal principal, Model model) {
+		wineDetailRequest.setUserId(principal.getName());
+		
+		if(wineDetailRequest.getType().equalsIgnoreCase("log")) {
+			List<WineLog> wineLogList = wineService.getWineLogList(wineDetailRequest);
+			model.addAttribute("wineLogList", wineLogList);
+			return "/wine/wineLogResultTemplate-wine-detail";
+			
+		} else if (wineDetailRequest.getType().equalsIgnoreCase("review")) {
+			List<Review> reviewList = wineService.getWineReviewList(wineDetailRequest);
+			model.addAttribute("reviewList", reviewList);
+			return "/wine/reviewResultTemplate-detail";
+			
+		}
+		
+		return null;
 	}
 	
 	@GetMapping("/edit-wineLog/{logId}")

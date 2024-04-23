@@ -4,7 +4,7 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="script">
-	<!-- <script th:src="@{/js/index.js}" type="text/javascript"></script> -->
+	<script th:src="@{/js/wine-detail.js}" type="text/javascript"></script>
 </th:block>
 
 <th:block layout:fragment="css">
@@ -18,7 +18,7 @@
 			, numberOfBuying = ${response.numberOfBuying}, numberOfDrinking = ${response.numberOfDrinking}" 
 	class=" w-full ">
 	<div class="w-screen bg-gray-100 pt-40 pb-20">
-	
+		<i id="wine-id" th:text="${wine.wineId}"></i>
 		<div class="md:min-w-[700px] max-w-[1000px] space-y-6 mx-auto px-4">
 			<div class="md:flex md:justify-between">
 				<div class="flex items-center gap-2">
@@ -132,7 +132,7 @@
 						    <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-black px-4 py-2 mt-1 text-white">
 						        Learn More
 						    </button>
-					    </a>
+					    	</a>
 						</div>
 						<br />
 						<p class="text-sm">Number of buying: <span th:text="${numberOfBuying}"></span> bottle(s)</p>
@@ -159,8 +159,8 @@
 			<div class="w-full md:w-3/4 mx-auto my-10">
 				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
 				
-				<div class="history-for-mobile md:hidden ">
-					<div th:each="wineLog : ${wineLogList}"  class="w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
+				<div id="history-mobile-container" class="history-for-mobile xl:hidden ">
+					<div th:each="wineLog : ${wineLogList}"  class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
 						<div class="text-sm text-gray-700">
 							<div>
 								<span th:text="${wineLog.place}" class="text-lg text-black font-bold">모바일 로그 장소</span>
@@ -189,7 +189,7 @@
 					</div>
 				</div>
 				
-				<div class="w-full hidden md:block relative overflow-x-auto shadow-md rounded-lg ">
+				<div class="w-full hidden xl:block relative overflow-x-auto shadow-md rounded-lg mb-3">
 					<table class="w-full text-sm text-center rtl:text-right text-gray-700 max-h-[400px] overflow-y-scroll">
 						<colgroup>
 							<col width="15%">
@@ -211,14 +211,14 @@
 								<th scope="col" class="px-6 py-3">Edit</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="history-pc-container">
 							<tr th:each="wineLog : ${wineLogList}" 
 								th:classappend="${wineLog.type == 'IN'} ? 'bg-green-600' : 'bg-red-600' "
-								class=" bg-opacity-20 border-b ">
+								class="history bg-opacity-20 border-b border-white">
 								<th th:text="${wineLog.date}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">로그 날짜</th>
 								<td th:text="${wineLog.type == 'IN'} ? 'Buy' : 'Drink' " class="px-6 py-4">로그 타입</td>
 								<td th:text="${wineLog.place}" class="px-6 py-4">로그 장소</td>
-								<td th:text="${wineLog.price != null} ? (|₩ ${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|) : '' " class="px-6 py-4">와인 가격</td>
+								<td th:text="${wineLog.price != null} ? (|₩${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|) : '' " class="px-6 py-4">와인 가격</td>
 								<td th:text="${wineLog.count}" class="px-6 py-4">로그 개수</td>
 								<td th:text="${wineLog.stock}" class="px-6 py-4">로그 재고</td>
 								<td class="px-6 py-4">
@@ -233,15 +233,23 @@
 						</tbody>
 					</table>
 				</div>
+				
+				<div th:if="${wineLogList.size() == 5}" class="text-center">
+					<button id="history-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
+				        Load More
+				    </button>
+				</div>
+				
 			</div>
 			
 			<div class="w-full md:w-3/4 mx-auto my-10 mt-20">
 				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Review</h3>
 				<h3 th:if="${reviewList.size() == 0}" class="text-xl font-semibold ml-4 mb-4 p-4 text-center rounded-lg border bg-card text-card-foreground shadow-sm" >No review</h3>
 				<div class="w-full py-2 lg:py-4">
-				  <div class="container grid items-start gap-6 lg:gap-12">
-				    <div class="grid gap-4">
-				      <div th:each="review : ${reviewList}" class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+				  <div class=" grid items-start gap-6 lg:gap-12">
+				    <div id="review-container" class=" grid gap-4">
+				    
+				      <div th:each="review : ${reviewList}" class="review rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
 				        <div class="p-4 space-y-4">
 				        
 				          <div class="md:flex items-center md:space-x-4 ">
@@ -257,6 +265,12 @@
 				          <p th:text="${review.content}" class="text-sm text-gray-500">리뷰 내용</p>
 				        </div>
 				      </div>
+				      
+				      <div th:if="${reviewList.size() == 5}" class="text-center">
+						<button id="review-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
+					        Load More
+					    </button>
+					</div>
 				      
 				    </div>
 				  </div>

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Review;
 import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineDetailRequest;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 
@@ -28,4 +29,6 @@ public interface WineMapper {
 	public void updateWine(Wine wine);
 	public WineLog selectWineLog(WineLog wineLog);
 	public void updateWineLog(WineLog wineLog);
+	public List<WineLog> selectWineLogWithPagination(WineDetailRequest wineDetailRequest);
+	public List<Review> selectWineReviewWithPagination(WineDetailRequest wineDetailRequest);
 }

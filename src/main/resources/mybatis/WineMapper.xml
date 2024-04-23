@@ -143,6 +143,8 @@
 			wine_id = #{wineId}
 		order by
 			date desc, type desc
+		limit
+			0, 5
     </select>
     
     <select id="selectReviewListByWineId" resultType="com.winemanager.wine.domain.Review">
@@ -158,6 +160,8 @@
     		L.wine_id = #{wineId}
     	order by
     		L.date desc
+    	limit
+    		0, 5
     </select>
     
     <select id="selectUserIdByWineId" parameterType="int" resultType="String">
@@ -224,5 +228,39 @@
     		and 
     		user_id = #{userId}
     </update>
+    
+    <select id="selectWineLogWithPagination" parameterType="com.winemanager.wine.domain.WineDetailRequest" resultType="com.winemanager.wine.domain.WineLog">
+    	select
+    		log_id, user_id, wine_id, type, date, place, price, count
+    	from
+    		wine.wine_log
+    	where
+			wine_id = #{wineId}
+			and 
+			user_id = #{userId}
+		order by
+			date desc, type desc
+		limit
+			${(page - 1) * 5}, #{pageSize}
+    </select>
+    
+    <select id="selectWineReviewWithPagination" parameterType="com.winemanager.wine.domain.WineDetailRequest" resultType="com.winemanager.wine.domain.Review">
+    	select
+    		R.review_id, R.log_id, R.user_id, R.rating, R.title, R.photo, R.content, L.date reg_date
+    	from
+    		wine.review R
+    	inner join
+    		wine.wine_log L
+    	on
+    		R.log_id = L.log_id
+    	where
+    		L.wine_id = #{wineId}
+    		and
+    		L.user_id = #{userId}
+    	order by
+    		L.date desc
+    	limit
+    		${(page - 1) * 5}, #{pageSize}
+    </select>
 
 </mapper>

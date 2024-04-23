@@ -24,6 +24,7 @@ import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Review;
 import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineDetailRequest;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.mapper.WineMapper;
@@ -364,6 +365,16 @@ public class WineServiceImpl implements WineService{
 										.count(editWineLogRequest.getCount())
 										.build());
 		
+	}
+
+	@Override
+	public List<WineLog> getWineLogList(WineDetailRequest wineDetailRequest) {
+		return wineMapper.selectWineLogWithPagination(wineDetailRequest);
+	}
+
+	@Override
+	public List<Review> getWineReviewList(WineDetailRequest wineDetailRequest) {
+		return wineMapper.selectWineReviewWithPagination(wineDetailRequest);
 	}
 	
 }
