@@ -27,4 +27,5 @@ public class Review {
 	private String photo;
 	
 	private Date regDate;
+	private String place;
 }
