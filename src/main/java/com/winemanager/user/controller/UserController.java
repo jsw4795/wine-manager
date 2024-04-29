@@ -74,4 +74,11 @@ public class UserController {
 		return "redirect:/login";
 	}
 	
+	@GetMapping("/my-page")
+	public String myPage(Principal principal, Model model) {
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		
+		return "/user/my-page";
+	}
+	
 }
