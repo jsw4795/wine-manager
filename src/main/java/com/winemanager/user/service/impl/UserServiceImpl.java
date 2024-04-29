@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.User;
 import com.winemanager.user.mapper.UserMapper;
@@ -50,6 +51,11 @@ public class UserServiceImpl implements UserService{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public MainStats getMainStats(String userId) {
+		return userMapper.selectMainStats(userId); 
 	}
 	
 	

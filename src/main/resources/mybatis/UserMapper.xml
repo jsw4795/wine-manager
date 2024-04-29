@@ -19,5 +19,18 @@
     	values
     	(#{userId}, #{password}, #{nickname}, #{email})
     </insert>
+    
+    <select id="selectMainStats" parameterType="String">
+    	select
+			IFNULL((select sum(count) from wine.wine_log where type = "IN" and user_id = wl.user_id), 0) number_of_buying
+		    , IFNULL((select sum(count) from wine.wine_log where type = "OUT" and user_id = wl.user_id), 0) number_of_drinking
+		    , IFNULL((select sum(price * count) from wine.wine_log where type = "IN" and user_id = wl.user_id), 0) money_spent
+		from
+			wine_log wl
+		where
+			wl.user_id = #{userId}
+		group by
+			wl.user_id
+    </select>
 
 </mapper>

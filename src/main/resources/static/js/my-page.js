@@ -56,7 +56,7 @@ function resize_to_fit($target){
 		textWidth += $(this).width();
 	})
 
-    if(textWidth > $target.parent().width() ){
+    if(textWidth > $target.parent().width() && $target.height() < 70){
 	    $target.parent().css('fontSize', parseFloat(fontsize) - 1);
     }
 }

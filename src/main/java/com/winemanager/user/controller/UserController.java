@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.winemanager.security.domain.SecurityUser;
+import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.service.UserService;
+import com.winemanager.wine.service.WineService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	
 	private final UserService userService;
+	private final WineService wineService;
 	
 	@GetMapping("/login")
 	public String getLogin(@ModelAttribute SecurityUser securityUser, Principal principal, Model model, @RequestParam(required = false) String error) {
@@ -76,7 +79,11 @@ public class UserController {
 	
 	@GetMapping("/my-page")
 	public String myPage(Principal principal, Model model) {
+		MainStats mainStats = userService.getMainStats(principal.getName());
+		
 		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		model.addAttribute("mainStats", mainStats);
+		model.addAttribute("exchangeRate", wineService.getExchangeRate());
 		
 		return "/user/my-page";
 	}
