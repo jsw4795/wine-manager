@@ -56,7 +56,7 @@ function resize_to_fit($target){
 		textWidth += $(this).width();
 	})
 
-    if(textWidth > $target.parent().width() && $target.height() < 70){
+    if(textWidth > $target.parent().width() && $target.height() <= 70){
 	    $target.parent().css('fontSize', parseFloat(fontsize) - 1);
     }
 }
@@ -65,7 +65,7 @@ function resize_to_fit_to_small($target){
     $target.siblings().each(function() {
 		textWidth += $(this).width();
 	})
-    while(textWidth > $target.parent().width() && $target.height() < 70){
+    while(textWidth > $target.parent().width() && $target.height() <= 70){
 	    $target.parent().css('fontSize', parseFloat($target.css('font-size')) - 1);
 	    
 	    textWidth = $target.width();
