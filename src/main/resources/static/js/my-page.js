@@ -6,7 +6,6 @@ $(()=> {
 		$statsCard.addClass("mb-0");
 		$statsCard.removeClass("opacity-0");
 		$statsCard.addClass("opacity-100");
-		
 	}
 	$('.count').each(function() {
 		$(this).prop('Counter', 0).animate({
@@ -23,6 +22,28 @@ $(()=> {
 		});
 	});
 	
+	// 버벅임이 심해서 트렌지션 끝날때 실행되도록 변경
+	/*$(window).on("resize", function() {
+		if($(this).width() < 767) { // 작아질때
+			$(".count").each(function(idx, obj) {
+				resize_to_fit_to_small($(obj))
+			})
+		} else {
+			$(".count").each(function(idx, obj) {
+				resize_to_fit_to_large($(obj))
+			})
+		}
+	})*/
+	
+	$(".stats-card").on("transitionend webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd", function() {
+		if($(window).width() < 767) {
+			resize_to_fit_to_small($(this).find(".count").eq(0))
+			resize_to_fit_to_small($(this).find(".count").eq(1))
+		} else {
+			resize_to_fit_to_large($(this).find(".count").eq(0))
+			resize_to_fit_to_large($(this).find(".count").eq(1))
+		}
+	})
 	
 })
 
@@ -30,12 +51,41 @@ $(()=> {
 function resize_to_fit($target){
     let fontsize = $target.css('font-size');
     
-    let textWith = $target.width();
+    let textWidth = $target.width();
     $target.siblings().each(function() {
-		textWith += $(this).width();
+		textWidth += $(this).width();
 	})
 
-    if(textWith > $target.parent().width()){
+    if(textWidth > $target.parent().width() ){
 	    $target.parent().css('fontSize', parseFloat(fontsize) - 1);
     }
 }
+function resize_to_fit_to_small($target){
+	let textWidth = $target.width();
+    $target.siblings().each(function() {
+		textWidth += $(this).width();
+	})
+    while(textWidth > $target.parent().width() && $target.height() < 70){
+	    $target.parent().css('fontSize', parseFloat($target.css('font-size')) - 1);
+	    
+	    textWidth = $target.width();
+	    $target.siblings().each(function() {
+			textWidth += $(this).width();
+		})
+    }
+}
+function resize_to_fit_to_large($target){
+    let textWidth = $target.width();
+    $target.siblings().each(function() {
+		textWidth += $(this).width();
+	})
+    while(textWidth < $target.parent().width() && $target.height() < 70){
+	    $target.parent().css('fontSize', parseFloat($target.css('font-size')) + 1);
+	    
+	    textWidth = $target.width();
+	    $target.siblings().each(function() {
+			textWidth += $(this).width();
+		})
+    }
+}
+
