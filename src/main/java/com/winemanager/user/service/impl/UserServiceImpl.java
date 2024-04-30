@@ -1,11 +1,15 @@
 package com.winemanager.user.service.impl;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
+import com.winemanager.user.domain.Timeline;
+import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
 import com.winemanager.user.mapper.UserMapper;
 import com.winemanager.user.service.UserService;
@@ -56,6 +60,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public MainStats getMainStats(String userId) {
 		return userMapper.selectMainStats(userId); 
+	}
+
+	@Override
+	public List<Timeline> getTimeline(TimelineRequest timelineRequest) {
+		return userMapper.selectTimeline(timelineRequest);
 	}
 	
 	

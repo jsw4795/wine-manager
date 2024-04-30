@@ -1,6 +1,7 @@
 package com.winemanager.user.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.winemanager.security.domain.SecurityUser;
 import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
+import com.winemanager.user.domain.Timeline;
+import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.service.UserService;
+import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.service.WineService;
 
 import jakarta.validation.Valid;
@@ -86,6 +90,40 @@ public class UserController {
 		model.addAttribute("exchangeRate", wineService.getExchangeRate());
 		
 		return "/user/my-page";
+	}
+	
+	@GetMapping("/my-page/timeline")
+	@ResponseBody
+	public List<Timeline> getTimeline(TimelineRequest timelineRequest, Principal principal) {
+		timelineRequest.setUserId(principal.getName());
+		List<Timeline> timeLineList = userService.getTimeline(timelineRequest);
+		
+		setWineImage(timeLineList);
+		
+		return timeLineList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	private void setWineImage(Timeline timeline) {
+		if(timeline == null)
+			return;
+		
+		if(!timeline.getThumb().startsWith("https://")) {
+			timeline.setThumb("/images/wine/" + timeline.getThumb());
+			timeline.setThumbBottom("/images/wine/" + timeline.getThumbBottom());
+		}
+	}
+	private void setWineImage(List<Timeline> timelineList) {
+		if(timelineList == null)
+			return;
+		
+		for(Timeline timeline : timelineList) 
+			this.setWineImage(timeline);
 	}
 	
 }

@@ -12,7 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MainStats {
-	private int numberOfBuying;
-	private int numberOfDrinking;
-	private int moneySpent;
+	private Integer numberOfBuying;
+	private Integer numberOfDrinking;
+	private Integer moneySpent;
 }

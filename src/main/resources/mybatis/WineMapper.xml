@@ -260,7 +260,7 @@
     	order by
     		L.date desc
     	limit
-    		${(page - 1) * 5}, #{pageSize}
+    		${(page - 1) * pageSize}, #{pageSize}
     </select>
 
 </mapper>

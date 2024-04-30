@@ -32,5 +32,28 @@
 		group by
 			wl.user_id
     </select>
+    
+    <select id="selectTimeline" parameterType="com.winemanager.user.domain.TimelineRequest" resultType="com.winemanager.user.domain.Timeline">
+    	select
+			w.wine_id, l.log_id, l.date, l.type, w.name wine_name, w.vintage, w.size wine_size, l.count, l.price, l.place, r.rating rate, w.thumb, w.thumb_bottom
+		from
+			wine.wine w
+		left join
+			wine.wine_log l
+		on
+			l.wine_id = w.wine_id
+		left join
+			wine.review r
+		on
+			r.log_id = l.log_id
+		where
+			w.user_id = #{userId}
+		order by
+			l.date desc, l.type, l.log_id desc
+		limit
+			${(page - 1) * pageSize}, #{pageSize}
+    </select>
+    
+    
 
 </mapper>
