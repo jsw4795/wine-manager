@@ -134,15 +134,15 @@ function renderTimeline(jsonList) {
 function makeTimelineHTML(data) {
 	let html = 
 				'<li>'
-		            +'<div data-wineId="'+data.wineId+'" data-logId="'+data.logId+'" class="timeline items-center block p-3 sm:flex hover:bg-gray-100 cursor-pointer">'
-		                +'<img class="w-16 h-16 mb-3 me-3 sm:mb-0 rounded" src="'+data.thumb+'" style="object-fit: contain;"/>'
+		            +'<div data-wineId="'+data.wineId+'" data-logId="'+data.logId+'" class="timeline items-center block p-3 flex hover:bg-gray-100 cursor-pointer">'
+		                +'<img class="shrink-0 sm:w-16 h-16 me-5 sm:me-3 rounded" src="'+data.thumb+'" style="object-fit: contain;"/>'
 		                +'<div class="text-gray-600 ">'
 		                    +'<div class="text-base font-normal">';
 		                    
 	if(data.type == "IN"){
 		html += '<span class="font-medium text-gray-900">Bought</span> ';
 	} else if(data.type == "OUT") {
-		html += '<span class="font-medium text-gray-900">Drank</span>';
+		html += '<span class="font-medium text-gray-900">Drank</span> ';
 	}
 	html += 
 		                    	'<span class="font-medium text-gray-900 ">'+data.count+'</span> bottle of ' 
