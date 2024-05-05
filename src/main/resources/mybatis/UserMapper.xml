@@ -49,7 +49,7 @@
 		where
 			w.user_id = #{userId}
 		order by
-			l.date desc, l.type, l.log_id desc
+			l.date desc, l.type, w.name desc, l.log_id desc
 		limit
 			${(page - 1) * pageSize}, #{pageSize}
     </select>
