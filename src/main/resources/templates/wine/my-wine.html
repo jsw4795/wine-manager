@@ -21,42 +21,44 @@
 		<a th:classappend="${myWineRequest.type == 'rose'} ? 'underline' : ''" class="text-lg font-semibold" href="/my-wine/rose"> Rose </a> 
 	</nav>
 	
-	<div class="flex justify-between pb-3 mb-10 border-b">
-		<div class="mb-4 pt-3">
+	<div class="flex flex-col-reverse md:flex-row md:justify-between pb-3 mb-10 border-b">
+		<div class="md:pt-3 mb-2  align-middle">
 			<h2 th:text="${pagination == null} ? '0 Wines' : |${pagination.totalRecordCount} Wines|" class="text-xl md:text-2xl font-semibold">0 Wines</h2>
 		</div>
-		<div class="flex space-x-4 mb-4 pt-3 text-base md:text-lg">
-			<!-- asc가 활성화 상태일 경우 해당 요소 desc로 변경 -->
-			<div class="">
+		<div class="space-x-2 md:flex md:space-x-4 mb-4 pt-3 text-base md:text-lg text-right">
+			<button id="history-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-xs font-medium rounded-full bg-gray-900 px-3 py-2 text-white">
+		        <a th:href="|?sortBy=${myWineRequest.sortBy}&hideSoldOut=${!myWineRequest.hideSoldOut}|">Hide sold out</a>
+		    </button>
+			<div class="inline-block">
 				<a th:classappend="${myWineRequest.sortBy.contains('reg')} ? font-semibold : font-normal" 
-					th:href="${myWineRequest.sortBy == 'reg_asc'} ? '?sortBy=reg_desc' :'?sortBy=reg_asc'"
+					th:href="${myWineRequest.sortBy == 'reg_asc'} ? |?sortBy=reg_desc&hideSoldOut=${myWineRequest.hideSoldOut}| : |?sortBy=reg_asc&hideSoldOut=${myWineRequest.hideSoldOut}|"
 					class="" > Reg </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('reg')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
-			<div>
+			<div class="inline-block">
 				<a th:classappend="${myWineRequest.sortBy.contains('name')} ? font-semibold : font-normal" 
-					th:href="${myWineRequest.sortBy == 'name_asc'} ? '?sortBy=name_desc' :'?sortBy=name_asc'"
+					th:href="${myWineRequest.sortBy == 'name_asc'} ? |?sortBy=name_desc&hideSoldOut=${myWineRequest.hideSoldOut}| : |?sortBy=name_asc&hideSoldOut=${myWineRequest.hideSoldOut}|"
 					class="" > Name </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('name')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
-			<div>
+			<div class="inline-block">
 				<a th:classappend="${myWineRequest.sortBy.contains('price')} ? font-semibold : font-normal" 
-					th:href="${myWineRequest.sortBy == 'price_asc'} ? '?sortBy=price_desc' :'?sortBy=price_asc'"
+					th:href="${myWineRequest.sortBy == 'price_asc'} ? |?sortBy=price_desc&hideSoldOut=${myWineRequest.hideSoldOut}| : |?sortBy=price_asc&hideSoldOut=${myWineRequest.hideSoldOut}|"
 					class="" > Price </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('price')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
 			</div>
-			<div>
+			<div class="inline-block">
 				<a th:classappend="${myWineRequest.sortBy.contains('count')} ? font-semibold : font-normal" 
-					th:href="${myWineRequest.sortBy == 'count_asc'} ? '?sortBy=count_desc' :'?sortBy=count_asc'"
+					th:href="${myWineRequest.sortBy == 'count_asc'} ? |?sortBy=count_desc&hideSoldOut=${myWineRequest.hideSoldOut}| : |?sortBy=count_asc&hideSoldOut=${myWineRequest.hideSoldOut}|"
 					class="" > Count </a> 
 				<svg th:if="${myWineRequest.sortBy.contains('count')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -103,7 +105,7 @@
 	<nav role="navigation" aria-label="pagination" class="mx-auto mt-16 flex w-full justify-center">
 		<ul class="flex flex-row items-center gap-1">
 			<li class="">
-				<a th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${pagination.startPage - 1}|"
+				<a th:href="|?sortBy=${myWineRequest.sortBy}&page=${pagination.startPage - 1}&hideSoldOut=${myWineRequest.hideSoldOut}|"
 					th:classappend="${pagination.existPrevPage} ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900' : 'text-gray-300 pointer-events-none' "
 					class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors h-8 px-3 py-2 gap-1 pl-2.5"
 					aria-label="Go to previous page" > 
@@ -118,14 +120,14 @@
 			</li>
 			
 			<li th:each="page : ${#numbers.sequence(pagination.startPage, pagination.endPage) }" >
-				<a th:text="${page == 0} ? '1' : ${page} " th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${page}|"
+				<a th:text="${page == 0} ? '1' : ${page} " th:href="|?sortBy=${myWineRequest.sortBy}&page=${page}&hideSoldOut=${myWineRequest.hideSoldOut}|"
 				th:class="${page == myWineRequest.page || page == 0} ? 'pointer-events-none text-blue-500 text-base inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm font-medium hover:bg-accent hover:text-accent-foreground h-9 w-9' : 'inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 h-9 w-9' "
 				>
 					pageNum </a>
 			</li>
 
 			<li class="">
-				<a th:href="|/my-wine/${myWineRequest.type}?sortBy=${myWineRequest.sortBy}&page=${pagination.endPage + 1}|"
+				<a th:href="|?sortBy=${myWineRequest.sortBy}&page=${pagination.endPage + 1}&hideSoldOut=${myWineRequest.hideSoldOut}|"
 					th:classappend="${pagination.existNextPage} ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900' : 'text-gray-300 pointer-events-none ' "
 					class="inline-flex items-center whitespace-nowrap shrink-0 justify-center rounded-md text-sm font-medium transition-colors h-8 px-3 py-2 gap-1 pl-2.5"
 					aria-label="Go to next page"> 

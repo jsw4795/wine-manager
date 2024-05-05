@@ -56,6 +56,9 @@
     		<if test="type != 'all'">
     			and wine_type = #{type}
     		</if>
+    		<if test="hideSoldOut == true">
+    			and count > 0
+    		</if>
     	</where>
     </select>
     
@@ -73,6 +76,9 @@
     		W.user_id = #{userId}
     		<if test="type != 'all'">
     			and W.wine_type = #{type}
+    		</if>
+    		<if test="hideSoldOut == true">
+    			and W.count > 0
     		</if>
     	</where>
     	group by

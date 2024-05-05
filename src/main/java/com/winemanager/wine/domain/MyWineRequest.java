@@ -14,6 +14,7 @@ public class MyWineRequest {
 	
 	private String type; // 와인 타입 all, red, white, sparkling, rose
 	private String sortBy; // reg_, name_, price_, count_  +  asc or desc
+	private boolean hideSoldOut;
 	
 	private int page;             // 현재 페이지 번호
     private int recordSize;       // 페이지당 출력할 데이터 개수
