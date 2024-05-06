@@ -54,6 +54,26 @@ $(()=> {
 	$("main").on("click", "#timeline-load-btn", function() {
 		requestTimeline();
 	})
+	
+	
+	// my-page 네비게이션 클릭 시 초기화
+	$(".my-page-nav").on("click", function() {
+		$(".my-page-nav").removeClass("border-2");
+		$(".my-page-nav").removeClass("pointer-events-none");
+		$(this).addClass("border-2");
+		$(this).addClass("pointer-events-none");
+		$("main").html('');
+		page = 1;
+	})
+	$("#timeline-btn").on("click", function() {
+		requestTimeline();
+	})
+	$("#stats-btn").on("click", function() {
+		// stats 버튼 클릭 시 로직
+	})
+	$("#settings-btn").on("click", function() {
+		// settings 버튼 클릭 시 로직
+	})
 })
 
 // 글자 사이즈 컨테이너에 맞게 조절
