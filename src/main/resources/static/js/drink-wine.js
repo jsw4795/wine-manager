@@ -105,7 +105,7 @@ $(() => {
 	})
 	
 	$("#rating").on("input", function() {
-		$("#rating-display").text((Number)($(this).val()).toFixed(1));
+		$("#rating-display").text((Number)($(this).val()).toFixed(2));
 	})
 	
 	// 장소 추가 버튼 클릭

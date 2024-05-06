@@ -153,7 +153,8 @@ function makeTimelineHTML(data) {
 		                    ;
 		                    
 	if(data.rate != null && data.type == "OUT"){
-		html += ' and you rated it at <span class="font-medium text-gray-900 ">'+data.rate+'</span></div>';
+		let num = (Number)(data.rate);
+		html += ' and you rated it at <span class="font-medium text-gray-900 ">'+num.toFixed(Math.max(1, (num.toString().split('.')[1] || []).length))+'</span></div>';
 	} else if(data.rate == null && data.type == "OUT") {
 		html += " and haven't rated it yet.</div> ";
 	} else if(data.type == "IN") {
