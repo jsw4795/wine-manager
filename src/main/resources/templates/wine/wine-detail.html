@@ -250,7 +250,7 @@
 				    <div id="review-container" class=" grid gap-4">
 				    
 				      <div th:each="review : ${reviewList}" class="review rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-				        <div class="p-4 space-y-4">
+				        <div class="p-4">
 				        
 				          <div class="md:flex items-center md:space-x-4 ">
 				            <div class="flex items-center space-x-1 justify-center md:justify-start ">
@@ -262,14 +262,14 @@
 			            	<span th:text="${review.rating * 10 % 1 == 0} ? ${#numbers.formatDecimal(review.rating,1,1)} : ${#numbers.formatDecimal(review.rating,1,2)}" class="inline-block md:hidden w-full text-sm align-top text-center text-orange-400 font-semibold">별점</span>
 				            
 				            <h4 th:text="${review.title}" class="text-lg font-semibold tracking-tight ">리뷰 제목</h4>
-				            <div class="text-sm text-gray-500">
-				            	<span th:text="${review.regDate}">리뷰 날짜</span>
-				            	<br class="md:hidden"/>
-				            	<span th:text="${review.place}" class="md:ms-2">마신 장소</span>
-				            </div>
+				          </div>
+				          <div class="text-sm text-gray-700 mt-1 mb-5">
+					          <span th:text="${review.regDate}">리뷰 날짜</span>
+					          <br class="md:hidden"/>
+					          <span th:text="${review.place}" class="md:ms-2">마신 장소</span>
 				          </div>
 				          
-				          <p th:text="${review.content}" class="text-sm text-gray-500 whitespace-pre-line">리뷰 내용</p>
+				          <p th:text="${review.content}" class="text-sm text-gray-700 whitespace-pre-line">리뷰 내용</p>
 				        </div>
 				      </div>
 				      
