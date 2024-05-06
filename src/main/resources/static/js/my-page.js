@@ -134,6 +134,7 @@ function renderTimeline(jsonList) {
 function makeTimelineHTML(data) {
 	let html = 
 				'<li>'
+					+'<a href="/wine/'+data.wineId+'">'
 		            +'<div data-wineId="'+data.wineId+'" data-logId="'+data.logId+'" class="timeline items-center block p-3 flex hover:bg-gray-100 cursor-pointer">'
 		                +'<img class="shrink-0 sm:w-16 h-16 me-5 sm:me-3 rounded" src="'+data.thumb+'" style="object-fit: contain;"/>'
 		                +'<div class="text-gray-600 ">'
@@ -160,7 +161,7 @@ function makeTimelineHTML(data) {
 	}
 	
 	if(data.type == "IN"){
-		html += '<span class="inline-flex items-center text-xs font-normal text-gray-500 ">'
+		html += 			'<span class="inline-flex items-center text-xs font-normal text-gray-500 ">'
 		                        +'<svg class="w-4 h-4 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">'
 									+'<g xmlns="http://www.w3.org/2000/svg" id="SVGRepo_bgCarrier" stroke-width="0"/>'
 									+'<g xmlns="http://www.w3.org/2000/svg" id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>'
@@ -168,12 +169,8 @@ function makeTimelineHTML(data) {
 		                        +'</svg>'
 		                        +'Buy'
 		                    +'</span>' 
-		                +'</div>'
-		            +'</div>'
-		       +'</li>'
-		       ;
 	} else if(data.type == "OUT") {
-		html += '<span class="inline-flex items-center text-xs font-normal text-gray-500 ">'
+		html += 			'<span class="inline-flex items-center text-xs font-normal text-gray-500 ">'
 								+'<svg class="w-4 me-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#6B7280" version="1.1" id="Capa_1" viewBox="0 0 329.257 329.257" xml:space="preserve" stroke="#6B7280" stroke-width="3.6218270000000006">'
 									+'<g id="SVGRepo_bgCarrier" stroke-width="0"/>'
 									+'<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>'
@@ -181,11 +178,13 @@ function makeTimelineHTML(data) {
 								+'</svg>'
 		                        +'Drink'
 		                    +'</span>' 
-		                +'</div>'
+	}
+	
+	html += 			 '</div>'
 		            +'</div>'
+		            +'</a>'
 		        +'</li>'
 		        ;
-	}
 	
 	return html;
 	
