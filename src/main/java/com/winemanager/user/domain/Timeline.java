@@ -32,5 +32,8 @@ public class Timeline {
 	@Setter
 	private String thumb; // wine
 	@Setter
-	private String thumbBottom; // wine
+	private String thumbBottom; // wine 
+	
+	private Integer spendToday;
+	private Integer drinkToday;
 }

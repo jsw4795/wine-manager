@@ -35,7 +35,9 @@
     
     <select id="selectTimeline" parameterType="com.winemanager.user.domain.TimelineRequest" resultType="com.winemanager.user.domain.Timeline">
     	select
-			w.wine_id, l.log_id, l.date, l.type, w.name wine_name, w.vintage, w.size wine_size, l.count, l.price, l.place, r.rating rate, w.thumb, w.thumb_bottom
+			w.wine_id, l.log_id, l.date, l.type, w.name wine_name, w.vintage, w.size wine_size, l.count, l.price, l.place, r.rating rate, w.thumb, w.thumb_bottom,
+			(select sum(price * count) from wine.wine_log where date = l.date and type = "IN") spend_today,
+    		(select sum(count) from wine.wine_log where date = l.date and type = "OUT") drink_today
 		from
 			wine.wine w
 		left join
