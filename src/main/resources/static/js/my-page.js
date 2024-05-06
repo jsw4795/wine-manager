@@ -112,7 +112,7 @@ function requestTimeline() {
 			
 			$("#timeline-load-btn").remove();
 			
-			if(result.length == pageSize){
+			if(result.length == pageSize + 1){
 				$("main").append(loadTimelineBtn);
 			}
 		}
@@ -120,7 +120,11 @@ function requestTimeline() {
 }
 
 function renderTimeline(jsonList) {
+	let index = 0;
 	for(data of jsonList) {
+		if(index >= pageSize)
+			return;
+		
 		let html = makeTimelineHTML(data);
 		
 		if($("time[data-date='"+data.date+"']").length < 1) {
@@ -128,6 +132,7 @@ function renderTimeline(jsonList) {
 		}
 		
 		$("time[data-date='"+data.date+"']").parent().parent().find("ol").append(html);
+		index++;
 	}
 }
 

@@ -1,6 +1,8 @@
 <div xmlns:th="http://www.thymeleaf.org" >
+	<i th:text="${wineLogList.size() == wineDetailRequest.pageSize + 1}" id="hasNext"></i>
+	
 	<div id="wine-log-mobile">
-		<div th:each="wineLog : ${wineLogList}"  class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
+		<div th:each="wineLog, stat : ${wineLogList}" th:if="${stat.index < 5}"  class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
 			<div class="text-sm text-gray-700">
 				<div>
 					<span th:text="${wineLog.place}" class="text-lg text-black font-bold">모바일 로그 장소</span>
@@ -31,7 +33,7 @@
 	
 	<table id="wine-log-pc">
 		<tbody>
-			<tr th:each="wineLog : ${wineLogList}" 
+			<tr th:each="wineLog, stat : ${wineLogList} " th:if="${stat.index < 5}"
 				th:classappend="${wineLog.type == 'IN'} ? 'bg-green-600' : 'bg-red-600' "
 				class="history bg-opacity-20 border-b border-white">
 				<th th:text="${wineLog.date}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">로그 날짜</th>

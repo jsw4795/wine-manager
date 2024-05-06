@@ -212,7 +212,7 @@
 							</tr>
 						</thead>
 						<tbody id="history-pc-container">
-							<tr th:each="wineLog : ${wineLogList}" 
+							<tr th:each="wineLog, stat : ${wineLogList}"  th:if="${stat.index < 5}"
 								th:classappend="${wineLog.type == 'IN'} ? 'bg-green-600' : 'bg-red-600' "
 								class="history bg-opacity-20 border-b border-white">
 								<th th:text="${wineLog.date}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">로그 날짜</th>
@@ -234,7 +234,7 @@
 					</table>
 				</div>
 				
-				<div th:if="${wineLogList.size() == 5}" class="text-center">
+				<div th:if="${wineLogList.size() == 5 + 1}" class="text-center">
 					<button id="history-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
 				        Load More
 				    </button>
@@ -273,7 +273,7 @@
 				        </div>
 				      </div>
 				      
-				      <div th:if="${reviewList.size() == 5}" class="text-center">
+				      <div th:if="${reviewList.size() == 5 + 1}" class="text-center">
 						<button id="review-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
 					        Load More
 					    </button>

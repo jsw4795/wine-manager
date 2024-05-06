@@ -349,6 +349,7 @@ public class WineController {
 	@GetMapping("/wine/load")
 	public String getWineLogInWineDetail(WineDetailRequest wineDetailRequest, Principal principal, Model model) {
 		wineDetailRequest.setUserId(principal.getName());
+		model.addAttribute("wineDetailRequest", wineDetailRequest);
 		
 		if(wineDetailRequest.getType().equalsIgnoreCase("log")) {
 			List<WineLog> wineLogList = wineService.getWineLogList(wineDetailRequest);
