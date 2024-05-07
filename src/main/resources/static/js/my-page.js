@@ -1,5 +1,47 @@
-var page = 1;
-var pageSize = 10;
+var globalPage = 1;
+var globalPageSize = 10;
+
+// 뒤로가기를 통해 페이지에 들어온 경우, 페이지 뿌려주기
+window.onpageshow = function(event) {
+	// 뒤로가기로 온 경우
+	if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+		switch(sessionStorage.getItem("type")){
+			case undefined :
+				requestTimeline(globalPage, globalPageSize);
+				break;
+			case "timeline" : 
+				navBtnOn("timeline");
+				globalPage = sessionStorage.getItem("page");
+				let scroll = sessionStorage.getItem("scroll");
+				requestTimeline(1, sessionStorage.getItem("page") * globalPageSize, function() {
+					$(document).scrollTop(scroll)
+				});
+				break;
+			case "stats" : 
+				navBtnOn("stats");
+				break;
+			case "settings" : 
+				navBtnOn("settings");
+				break;
+		}
+	} else { // 새로고침도 포함
+		switch(sessionStorage.getItem("type")){
+			case undefined :
+				requestTimeline(globalPage, globalPageSize);
+				break;
+			case "timeline" : 
+				navBtnOn("timeline");
+				requestTimeline(globalPage, globalPageSize);
+				break;
+			case "stats" : 
+				navBtnOn("stats");
+				break;
+			case "settings" : 
+				navBtnOn("settings");
+				break;
+		}
+	}
+}
 
 $(()=> {
 	let $statsCard = $(".stats-card");
@@ -48,11 +90,8 @@ $(()=> {
 		}
 	})
 	
-	// timeline 데이터 요청
-	requestTimeline()
-	
 	$("main").on("click", "#timeline-load-btn", function() {
-		requestTimeline();
+		requestTimeline(globalPage, globalPageSize);
 	})
 	
 	
@@ -66,13 +105,20 @@ $(()=> {
 		page = 1;
 	})
 	$("#timeline-btn").on("click", function() {
-		requestTimeline();
+		sessionStorage.setItem("type", "timeline");
+		requestTimeline(globalPage, globalPageSize);
 	})
 	$("#stats-btn").on("click", function() {
+		sessionStorage.setItem("type", "stats");
 		// stats 버튼 클릭 시 로직
 	})
 	$("#settings-btn").on("click", function() {
+		sessionStorage.setItem("type", "settings");
 		// settings 버튼 클릭 시 로직
+	})
+	
+	$(document).on("scroll", function() {
+		sessionStorage.setItem('scroll', $(document).scrollTop());
 	})
 })
 
@@ -119,27 +165,32 @@ function resize_to_fit_to_large($target){
 }
 
 // 타임라인 데이터 요청
-function requestTimeline() {
+function requestTimeline(page, pageSize, callback) {
+	sessionStorage.setItem('page', globalPage);
+	
 	$.ajax({
 		url: "/my-page/timeline",
 		type: "GET",
 		data: {page: page, pageSize: pageSize},
 		dataType: "JSON",
 		success: function(result) {
-			page++;
+			globalPage++;
 			
-			renderTimeline(result);
+			renderTimeline(result, pageSize);
 			
 			$("#timeline-load-btn").remove();
 			
 			if(result.length == pageSize + 1){
 				$("main").append(loadTimelineBtn);
 			}
+			
+			if(callback)
+				callback();
 		}
 	});
 }
 
-function renderTimeline(jsonList) {
+function renderTimeline(jsonList, pageSize) {
 	let index = 0;
 	for(data of jsonList) {
 		if(index >= pageSize)
@@ -267,3 +318,28 @@ const loadTimelineBtn =
 			        +'Load More'
 			   +'</button>'
 			+'</div>';
+
+			
+			
+			
+			
+			
+function navBtnOn(type) {
+	$(".my-page-nav").removeClass("border-2");
+	$(".my-page-nav").removeClass("pointer-events-none");
+	
+	let btnId;
+	switch(type){
+		case "timeline": 
+			btnId = "timeline-btn"
+			break;
+		case "stats":
+			btnId = "stats-btn"
+			break;
+		case "settings":
+			btnId = "settings-btn"			
+			break;
+	}
+	$("#"+btnId).addClass("border-2");
+	$("#"+btnId).addClass("pointer-events-none");
+}
