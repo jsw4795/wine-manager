@@ -19,7 +19,7 @@ import lombok.ToString;
 public class Timeline {
 	private Integer wineId; // wine
 	private Integer logId; // wine_log
-	@JsonFormat(pattern = "MMMM d, yyyy (EEE)", locale = "en-US")
+	@JsonFormat(pattern = "MMMM d, yyyy (EEE)", locale = "en-US", timezone = "Asia/Seoul")
 	private Date date; // wine_log
 	private String type; // wine_log
 	private String wineName; // wine
