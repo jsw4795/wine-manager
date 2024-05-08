@@ -6,9 +6,6 @@ window.onpageshow = function(event) {
 	// 뒤로가기로 온 경우
 	if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
 		switch(sessionStorage.getItem("type")){
-			case undefined :
-				requestTimeline(globalPage, globalPageSize);
-				break;
 			case "timeline" : 
 				navBtnOn("timeline");
 				globalPage = sessionStorage.getItem("page");
@@ -23,12 +20,12 @@ window.onpageshow = function(event) {
 			case "settings" : 
 				navBtnOn("settings");
 				break;
+			default:
+				navBtnOn("timeline");
+				requestTimeline(globalPage, globalPageSize);
 		}
 	} else { // 새로고침도 포함
 		switch(sessionStorage.getItem("type")){
-			case undefined :
-				requestTimeline(globalPage, globalPageSize);
-				break;
 			case "timeline" : 
 				navBtnOn("timeline");
 				requestTimeline(globalPage, globalPageSize);
@@ -39,6 +36,9 @@ window.onpageshow = function(event) {
 			case "settings" : 
 				navBtnOn("settings");
 				break;
+			default:
+				navBtnOn("timeline")
+				requestTimeline(globalPage, globalPageSize);
 		}
 	}
 }
