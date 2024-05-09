@@ -60,7 +60,6 @@ window.onpageshow = function(event) {
 }
 
 $(()=> {
-	console.log(myPageData)
 	let $statsCard = $(".stats-card");
 	
 	for($card of $statsCard){
