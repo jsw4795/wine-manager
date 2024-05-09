@@ -24,7 +24,7 @@ window.onpageshow = function(event) {
 				navBtnOn("timeline");
 				requestTimeline(globalPage, globalPageSize);
 		}
-	} else { // 새로고침도 포함
+	} else if(window.performance.navigation.type == 1) { // 새로고침
 		switch(sessionStorage.getItem("type")){
 			case "timeline" : 
 				navBtnOn("timeline");
@@ -40,6 +40,9 @@ window.onpageshow = function(event) {
 				navBtnOn("timeline")
 				requestTimeline(globalPage, globalPageSize);
 		}
+	} else { // 그 외 (my page 클릭해서 들어온 경우)
+		navBtnOn("timeline")
+		requestTimeline(globalPage, globalPageSize);
 	}
 }
 
