@@ -1,17 +1,22 @@
-var globalPage = 1;
 var globalPageSize = 10;
+
+var myPageData = {
+	type: "timeline",
+	page: 1,
+	scroll: 0,
+}
 
 // 뒤로가기를 통해 페이지에 들어온 경우, 페이지 뿌려주기
 window.onpageshow = function(event) {
 	// 뒤로가기로 온 경우
-	if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
-		switch(sessionStorage.getItem("type")){
+	if (event.persisted || (window.performance && window.performance.navigation.type == 2 && sessionStorage.getItem("myPageData"))) {
+		myPageData = JSON.parse(sessionStorage.getItem("myPageData"));
+		switch(myPageData.type){
 			case "timeline" : 
 				navBtnOn("timeline");
-				globalPage = sessionStorage.getItem("page");
-				let scroll = sessionStorage.getItem("scroll");
-				requestTimeline(1, sessionStorage.getItem("page") * globalPageSize, function() {
-					$(document).scrollTop(scroll)
+				let scroll = myPageData.scroll; // 미리 저장을 안해놓으면 중간에 값이 바뀌기도함
+				requestTimeline(1, myPageData.page * globalPageSize, function() {
+					$(document).scrollTop(scroll);
 				});
 				break;
 			case "stats" : 
@@ -22,13 +27,19 @@ window.onpageshow = function(event) {
 				break;
 			default:
 				navBtnOn("timeline");
-				requestTimeline(globalPage, globalPageSize);
+				requestTimeline(myPageData.page, globalPageSize, function() {
+					$(document).scrollTop(0);
+				});
 		}
-	} else if(window.performance.navigation.type == 1) { // 새로고침
-		switch(sessionStorage.getItem("type")){
+	} else if(window.performance.navigation.type == 1 && sessionStorage.getItem("myPageData")) { // 새로고침
+		myPageData = JSON.parse(sessionStorage.getItem("myPageData"));
+		myPageData.page = 1;
+		switch(myPageData.type){
 			case "timeline" : 
 				navBtnOn("timeline");
-				requestTimeline(globalPage, globalPageSize);
+				requestTimeline(myPageData.page, globalPageSize, function() {
+					$(document).scrollTop(0);
+				});
 				break;
 			case "stats" : 
 				navBtnOn("stats");
@@ -38,15 +49,18 @@ window.onpageshow = function(event) {
 				break;
 			default:
 				navBtnOn("timeline")
-				requestTimeline(globalPage, globalPageSize);
+				requestTimeline(myPageData.page, globalPageSize, function() {
+					$(document).scrollTop(0);
+				});
 		}
 	} else { // 그 외 (my page 클릭해서 들어온 경우)
 		navBtnOn("timeline")
-		requestTimeline(globalPage, globalPageSize);
+		requestTimeline(myPageData.page, globalPageSize);
 	}
 }
 
 $(()=> {
+	console.log(myPageData)
 	let $statsCard = $(".stats-card");
 	
 	for($card of $statsCard){
@@ -94,7 +108,7 @@ $(()=> {
 	})
 	
 	$("main").on("click", "#timeline-load-btn", function() {
-		requestTimeline(globalPage, globalPageSize);
+		requestTimeline(myPageData.page, globalPageSize);
 	})
 	
 	
@@ -108,20 +122,30 @@ $(()=> {
 		page = 1;
 	})
 	$("#timeline-btn").on("click", function() {
-		sessionStorage.setItem("type", "timeline");
-		requestTimeline(globalPage, globalPageSize);
+		myPageData.type = "timeline";
+		
+		requestTimeline(myPageData.page, globalPageSize);
 	})
 	$("#stats-btn").on("click", function() {
-		sessionStorage.setItem("type", "stats");
+		myPageData.type = "stats";
+		
 		// stats 버튼 클릭 시 로직
 	})
 	$("#settings-btn").on("click", function() {
-		sessionStorage.setItem("type", "settings");
+		myPageData.type = "settings";
+		
 		// settings 버튼 클릭 시 로직
 	})
 	
 	$(document).on("scroll", function() {
-		sessionStorage.setItem('scroll', $(document).scrollTop());
+		myPageData.scroll = $(document).scrollTop();
+	})
+	
+	// 페이지를 벗어날 때, 세션스토리지에 데이터 저장
+	$(window).on("beforeunload", function() {
+		// 여기서 페이지는 다음에 불러올 페이지를 저장하고 있기때문에 -1
+		myPageData.page = Math.max(1, myPageData.page - 1); 
+		sessionStorage.setItem("myPageData", JSON.stringify(myPageData));
 	})
 })
 
@@ -169,15 +193,13 @@ function resize_to_fit_to_large($target){
 
 // 타임라인 데이터 요청
 function requestTimeline(page, pageSize, callback) {
-	sessionStorage.setItem('page', globalPage);
-	
 	$.ajax({
 		url: "/my-page/timeline",
 		type: "GET",
 		data: {page: page, pageSize: pageSize},
 		dataType: "JSON",
 		success: function(result) {
-			globalPage++;
+			myPageData.page++;
 			
 			renderTimeline(result, pageSize);
 			
