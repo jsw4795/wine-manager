@@ -8,8 +8,8 @@ var wineDetailData = {
 }
 
 window.onpageshow = function(event) {
-	// 뒤로가기로 온 경우
-	if (event.persisted || (window.performance && window.performance.navigation.type == 2 && sessionStorage.getItem("wineDetailData"))) {
+	// 뒤로가기, 일반적인 방법으로 온 경우
+	if ((window.performance && window.performance.navigation.type == 2 && sessionStorage.getItem("wineDetailData")) || (window.performance && window.performance.navigation.type == 0 && sessionStorage.getItem("wineDetailData"))) {
 		console.log(JSON.parse(sessionStorage.getItem("wineDetailData")));
 		
 		// 저장된 와인 아이디와 같을 때만 로직 실행
@@ -31,7 +31,7 @@ window.onpageshow = function(event) {
 			})
 		}
 		
-	}
+	} 
 }
 
 $(()=> {
