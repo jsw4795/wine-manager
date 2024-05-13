@@ -9,7 +9,11 @@ var myPageData = {
 // 뒤로가기를 통해 페이지에 들어온 경우, 페이지 뿌려주기
 window.onpageshow = function(event) {
 	// 뒤로가기로 온 경우
-	if (event.persisted || (window.performance && window.performance.navigation.type == 2 && sessionStorage.getItem("myPageData"))) {
+	if (window.performance && window.performance.navigation.type == 2) {
+		
+		if(!sessionStorage.getItem("myPageData"))
+			return;
+			
 		myPageData = JSON.parse(sessionStorage.getItem("myPageData"));
 		switch(myPageData.type){
 			case "timeline" : 
@@ -31,7 +35,11 @@ window.onpageshow = function(event) {
 					$(document).scrollTop(0);
 				});
 		}
-	} else if(window.performance.navigation.type == 1 && sessionStorage.getItem("myPageData")) { // 새로고침
+	} else if(window.performance.navigation.type == 1) { // 새로고침
+	
+		if(!sessionStorage.getItem("myPageData"))
+			return;
+			
 		myPageData = JSON.parse(sessionStorage.getItem("myPageData"));
 		myPageData.page = 1;
 		switch(myPageData.type){

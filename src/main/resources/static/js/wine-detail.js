@@ -9,11 +9,11 @@ var wineDetailData = {
 
 window.onpageshow = function(event) {
 	// 뒤로가기, 일반적인 방법으로 온 경우
-	if ((window.performance && window.performance.navigation.type == 2 && sessionStorage.getItem("wineDetailData")) || (window.performance && window.performance.navigation.type == 0 && sessionStorage.getItem("wineDetailData"))) {
+	if (window.performance.navigation.type == 2 || window.performance.navigation.type == 0) {
 		console.log(JSON.parse(sessionStorage.getItem("wineDetailData")));
 		
-		// 저장된 와인 아이디와 같을 때만 로직 실행
-		if(JSON.parse(sessionStorage.getItem("wineDetailData")).wineId != $("#wine-id").text()) {
+		// 세션스토리지에 데이터가 존재하고, 와인 아이디가 일치할 때만 로직 실행
+		if(!sessionStorage.getItem("wineDetailData") || JSON.parse(sessionStorage.getItem("wineDetailData")).wineId != $("#wine-id").text()) {
 			return;
 		}
 		
