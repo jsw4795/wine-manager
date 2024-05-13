@@ -145,7 +145,7 @@ $(()=> {
 	})
 	
 	// 페이지를 벗어날 때, 세션스토리지에 데이터 저장
-	$(window).on("beforeunload", function() {
+	$(window).on("pagehide", function() {
 		// 여기서 페이지는 다음에 불러올 페이지를 저장하고 있기때문에 -1
 		myPageData.page = Math.max(1, myPageData.page - 1); 
 		myPageData.scroll = $(document).scrollTop();

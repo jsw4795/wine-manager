@@ -46,7 +46,7 @@ $(()=> {
 	})
 	
 	// 페이지 나갈때 정보 저장
-	$(window).on("beforeunload", function() {
+	$(window).on("pagehide", function() {
 		wineDetailData.historyPage = Math.max(2, wineDetailData.historyPage);
 		wineDetailData.reviewPage = Math.max(2, wineDetailData.reviewPage);
 		wineDetailData.scroll = $(document).scrollTop();
