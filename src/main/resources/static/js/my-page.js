@@ -126,7 +126,7 @@ $(()=> {
 		$(this).addClass("border-2");
 		$(this).addClass("pointer-events-none");
 		$("main").html('');
-		page = 1;
+		myPageData.page = 1;
 	})
 	$("#timeline-btn").on("click", function() {
 		myPageData.type = "timeline";
