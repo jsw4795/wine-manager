@@ -19,6 +19,12 @@ window.onpageshow = function(event) {
 		
 		wineDetailData = JSON.parse(sessionStorage.getItem("wineDetailData"));
 		
+		// 사파리는 새로 안불러와도 페이지가 유지됨
+		if(isSafari){
+			myPageData.page++;		
+			return;
+		}
+		
 		let scroll = wineDetailData.scroll;
 		if(wineDetailData.historyPage > 2){
 			loadHistory(2, (wineDetailData.historyPage - 1) * globalPageSize, function() {
