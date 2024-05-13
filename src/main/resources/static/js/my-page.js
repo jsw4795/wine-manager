@@ -136,14 +136,11 @@ $(()=> {
 		// settings 버튼 클릭 시 로직
 	})
 	
-	$(document).on("scroll", function() {
-		myPageData.scroll = $(document).scrollTop();
-	})
-	
 	// 페이지를 벗어날 때, 세션스토리지에 데이터 저장
 	$(window).on("beforeunload", function() {
 		// 여기서 페이지는 다음에 불러올 페이지를 저장하고 있기때문에 -1
 		myPageData.page = Math.max(1, myPageData.page - 1); 
+		myPageData.scroll = $(document).scrollTop();
 		sessionStorage.setItem("myPageData", JSON.stringify(myPageData));
 	})
 })
