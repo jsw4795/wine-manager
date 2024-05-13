@@ -160,7 +160,7 @@
 				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
 				
 				<div id="history-mobile-container" class="history-for-mobile xl:hidden ">
-					<div th:each="wineLog : ${wineLogList}"  class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
+					<div th:each="wineLog, stat : ${wineLogList}" th:if="${stat.index < 5}" class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
 						<div class="text-sm text-gray-700">
 							<div>
 								<span th:text="${wineLog.place}" class="text-lg text-black font-bold">모바일 로그 장소</span>
