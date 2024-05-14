@@ -30,10 +30,10 @@
 		        <a th:text="${myWineRequest.hideSoldOut == true} ? 'Show sold out' : 'Hide sold out' " th:href="|?sortBy=${myWineRequest.sortBy}&hideSoldOut=${!myWineRequest.hideSoldOut}|">Hide sold out</a>
 		    </button>
 			<div class="inline-block">
-				<a th:classappend="${myWineRequest.sortBy.contains('reg')} ? font-semibold : font-normal" 
-					th:href="${myWineRequest.sortBy == 'reg_asc'} ? |?sortBy=reg_desc&hideSoldOut=${myWineRequest.hideSoldOut}| : |?sortBy=reg_asc&hideSoldOut=${myWineRequest.hideSoldOut}|"
-					class="" > Reg </a> 
-				<svg th:if="${myWineRequest.sortBy.contains('reg')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
+				<a th:classappend="${myWineRequest.sortBy.contains('purchase')} ? font-semibold : font-normal" 
+					th:href="${myWineRequest.sortBy == 'purchase_asc'} ? |?sortBy=purchase_desc&hideSoldOut=${myWineRequest.hideSoldOut}| : |?sortBy=purchase_asc&hideSoldOut=${myWineRequest.hideSoldOut}|"
+					class="" > Purchase </a> 
+				<svg th:if="${myWineRequest.sortBy.contains('purchase')}" class="inline-block" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: -5px">
 					<path th:if="${myWineRequest.sortBy.contains('asc')}" d="M12 5V19M12 5L6 11M12 5L18 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					<path th:if="${myWineRequest.sortBy.contains('desc')}" d="M12 6V18M12 18L7 13M12 18L17 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
