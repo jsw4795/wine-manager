@@ -1,33 +1,26 @@
 package com.winemanager.wine.domain;
 
-import java.sql.Date;
-
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Review {
+public class EditReviewRequest {
 	private int reviewId;
 	private int logId;
-	private String userId;
 	private double rating;
 	private String title;
 	private String content;
 	private String photo;
 	
-	private Date regDate;
-	private String place;
-	
 	private String wineId;
+	
 }

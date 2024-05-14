@@ -270,5 +270,29 @@
     	limit
     		${(page - 1) * pageSize}, ${pageSize + 1}
     </select>
+    
+    <select id="selectReview" parameterType="com.winemanager.wine.domain.Review" resultType="com.winemanager.wine.domain.Review">
+    	select
+    		R.review_id, R.log_id, R.user_id, R.rating, R.title, R.photo, R.content, L.date reg_date, L.place, L.wine_id
+    	from
+    		wine.review R
+    	inner join
+    		wine.wine_log L
+    	on
+    		R.log_id = L.log_id
+    	where
+    		R.review_id = #{reviewId}
+    		and
+    		L.user_id = #{userId}
+    </select>
+    
+    <update id="updateReview" parameterType="com.winemanager.wine.domain.Review">
+    	update
+    		wine.review
+    	set
+    		rating = #{rating}, title = #{title}, photo = #{photo}, content = #{content}
+    	where
+    		review_id = #{reviewId} and user_id = #{userId}
+    </update>
 
 </mapper>

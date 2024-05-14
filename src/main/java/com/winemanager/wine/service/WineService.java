@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
+import com.winemanager.wine.domain.EditReviewRequest;
 import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Review;
@@ -29,6 +30,8 @@ public interface WineService {
 	public void editWineLog(EditWineLogRequest editLogRequest, String userId);
 	public List<WineLog> getWineLogList(WineDetailRequest wineDetailRequest);
 	public List<Review> getWineReviewList(WineDetailRequest wineDetailRequest);
+	public Review getReivew(int reviewId, String userId);
+	public void editReview(EditReviewRequest editReviewRequest, String userId);
 	
 	public double getExchangeRate();
 }

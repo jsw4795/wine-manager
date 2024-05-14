@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
+import com.winemanager.wine.domain.EditReviewRequest;
 import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Review;
@@ -375,6 +376,27 @@ public class WineServiceImpl implements WineService{
 	@Override
 	public List<Review> getWineReviewList(WineDetailRequest wineDetailRequest) {
 		return wineMapper.selectWineReviewWithPagination(wineDetailRequest);
+	}
+
+	@Override
+	public Review getReivew(int reviewId, String userId) {
+		return wineMapper.selectReview(Review.builder()
+											 .reviewId(reviewId)
+											 .userId(userId)
+											 .build());
+	}
+
+	@Override
+	public void editReview(EditReviewRequest editReviewRequest, String userId) {
+		wineMapper.updateReview(Review.builder()
+									  .reviewId(editReviewRequest.getReviewId())
+									  .logId(editReviewRequest.getLogId())
+									  .userId(userId)
+									  .rating(editReviewRequest.getRating())
+									  .title(editReviewRequest.getTitle())
+									  .content(editReviewRequest.getContent())
+									  .photo(editReviewRequest.getPhoto())
+									  .build());
 	}
 	
 }

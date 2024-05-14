@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
+import com.winemanager.wine.domain.EditReviewRequest;
 import com.winemanager.wine.domain.EditWineLogRequest;
 import com.winemanager.wine.domain.MyWineRequest;
 import com.winemanager.wine.domain.Review;
@@ -409,6 +410,28 @@ public class WineController {
 		
 		
 		return "redirect:/wine/" + editWineLogRequest.getWineId();
+	}
+	
+	@GetMapping("/edit-review/{reviewId}")
+	public String getEditReview(@PathVariable(name = "reviewId", required = true) Integer reviewId, Principal principal,
+			@ModelAttribute EditReviewRequest editReviewRequest, BindingResult result, Model model) {
+		Review review = wineService.getReivew(reviewId, principal.getName());
+		
+		model.addAttribute("userId", principal != null ? principal.getName() : null);
+		model.addAttribute("review", review);
+		
+		return "/wine/edit-review";
+	}
+	
+	@PostMapping("/edit-review")
+	public String editReview(@ModelAttribute EditReviewRequest editReviewRequest, BindingResult result, Principal principal, Model model) {
+		
+		if(result.hasErrors())
+			return "/wine/edit-wine-log";
+		
+		wineService.editReview(editReviewRequest, principal.getName());
+		
+		return "redirect:/wine/" + editReviewRequest.getWineId();
 	}
 	
 	

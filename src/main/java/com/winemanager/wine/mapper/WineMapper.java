@@ -31,4 +31,6 @@ public interface WineMapper {
 	public void updateWineLog(WineLog wineLog);
 	public List<WineLog> selectWineLogWithPagination(WineDetailRequest wineDetailRequest);
 	public List<Review> selectWineReviewWithPagination(WineDetailRequest wineDetailRequest);
+	public Review selectReview(Review review);
+	public void updateReview(Review review);
 }
