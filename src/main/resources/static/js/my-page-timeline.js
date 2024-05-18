@@ -9,6 +9,7 @@ $(()=>{
 
 // 타임라인 데이터 요청
 function requestTimeline(page, pageSize, callback) {
+	editMainWidth("timeline")
 	$.ajax({
 		url: "/my-page/timeline",
 		type: "GET",

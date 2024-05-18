@@ -11,8 +11,12 @@ import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
+import com.winemanager.user.domain.stats.SpendByTime;
+import com.winemanager.user.domain.stats.StatsRequest;
+import com.winemanager.user.domain.stats.StockByTime;
 import com.winemanager.user.mapper.UserMapper;
 import com.winemanager.user.service.UserService;
+import com.winemanager.wine.domain.WineLog;
 
 import lombok.RequiredArgsConstructor;
 
@@ -65,6 +69,24 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<Timeline> getTimeline(TimelineRequest timelineRequest) {
 		return userMapper.selectTimeline(timelineRequest);
+	}
+
+	@Override
+	public List<SpendByTime> getSpendByTime(StatsRequest statsRequest) {
+		return userMapper.selectSpendByMonth(statsRequest);
+	}
+
+	@Override
+	public List<StockByTime> getStockByTime(String userId) {
+		// 와인 로그에 재고 계산
+		List<StockByTime> stockByTimeList = userMapper.selectStockByDate(userId);
+		int stock = 0;
+		for(StockByTime stockByTime : stockByTimeList) {
+				stock += stockByTime.getCount();
+			stockByTime.setStock(stock);
+		}
+		
+		return stockByTimeList;
 	}
 	
 	

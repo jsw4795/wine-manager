@@ -1,7 +1,10 @@
 package com.winemanager.user.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +20,11 @@ import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
+import com.winemanager.user.domain.stats.SpendByTime;
+import com.winemanager.user.domain.stats.StatsRequest;
+import com.winemanager.user.domain.stats.StockByTime;
 import com.winemanager.user.service.UserService;
-import com.winemanager.wine.domain.Wine;
+import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.service.WineService;
 
 import jakarta.validation.Valid;
@@ -103,6 +109,45 @@ public class UserController {
 		return timeLineList;
 	}
 	
+	@GetMapping("/my-page/stats")
+	public String getStats() {
+		return "/user/my-page-stats";
+	}
+	
+	@GetMapping("/my-page/stats/spend-by-time")
+	@ResponseBody
+	public List<Map<String, Object>> getSpendByTimeData(StatsRequest statsRequest, Principal principal) {
+		statsRequest.setUserId(principal.getName());
+		List<SpendByTime> dataList = userService.getSpendByTime(statsRequest);
+		
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		dataList.forEach((data) -> {
+			Map<String, Object> dataMap = new HashMap<>();
+			dataMap.put("x", data.getMonth());
+			dataMap.put("y", data.getMoney());
+			
+			result.add(dataMap);
+		});
+		
+		return result;
+	}
+	
+	@GetMapping("/my-page/stats/stock-by-time")
+	@ResponseBody
+	public List<Map<String, Object>> getStockByTimeData(Principal principal) {
+		List<StockByTime> dataList = userService.getStockByTime(principal.getName());
+		
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		dataList.forEach((data) -> {
+			Map<String, Object> dataMap = new HashMap<>();
+			dataMap.put("x", data.getDate());
+			dataMap.put("y", data.getStock());
+			
+			result.add(dataMap);
+		});
+		
+		return result;
+	}
 	
 	
 	

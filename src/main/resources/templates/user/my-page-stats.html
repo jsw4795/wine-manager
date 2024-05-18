@@ -1,0 +1,150 @@
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/NjrO6n2Z0cn
+-->
+
+<main xmlns:th="http://www.thymeleaf.org" class="flex flex-col gap-8 p-6 md:p-10">
+	<div class="space-y-2">
+		<h1 class="text-3xl font-bold tracking-tighter md:text-4xl">
+			Analytics Dashboard
+		</h1>
+		<p class="text-gray-500 md:text-xl dark:text-gray-400">
+			Check the record of wine on the graph.
+		</p>
+	</div>
+	<div class="grid gap-6 grid-cols-1">
+		<div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<div class="flex justify-between">
+						<div class="space-y-1.5">
+							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+								Monthly Consumption
+							</h3>
+							<p class="text-sm text-muted-foreground">Last 12 months</p>
+						</div>
+						<div class="relative">
+							<select id="spend-by-time-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
+								onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+								<optgroup label="----------------">
+								    <option value="-1" selected>Last 1 year</option>
+								    <option value="-2">Last 2 year</option>
+								    <option value="-3">Last 3 year</option>
+								    <option value="-5">Last 5 year</option>
+								    <option value="0">All time</option>
+								</optgroup>
+							    <optgroup label="----------------">
+							    	<option th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()),1970)}" th:value="${year}" th:text="${year}" ></option>
+							    </optgroup>
+						  	</select>
+						</div>
+					</div>
+				</div>
+				<div class="p-6">
+					<div class="aspect-[4/3] relative">
+						<canvas id="spend-by-time"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Change In Wine Stocks
+					</h3>
+					<p class="text-sm text-muted-foreground">The entire period</p>
+				</div>
+				<div class="p-6">
+					<div class="aspect-[4/3]">
+						<canvas id="stock-by-time"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="grid gap-6 grid-col-1 lg:grid-cols-2 2xl:grid-cols-4">
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Bottles By Location
+					</h3>
+					<p class="text-sm text-muted-foreground hidden">The entire period</p>
+				</div>
+				<div class="p-6">
+					<div class="aspect-[4/3]">
+						<canvas id="wine-by-place"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Wine Type
+					</h3>
+					<p class="text-sm text-muted-foreground hidden">The entire period</p>
+				</div>
+				<div class="p-6">
+					<div class="aspect-[4/3]">
+						<canvas id="wine-by-type"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Country Of Wine
+					</h3>
+					<p class="text-sm text-muted-foreground hidden">The entire period</p>
+				</div>
+				<div class="p-6">
+					<div class="aspect-[4/3]">
+						<canvas id="wine-by-country"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Wine By Price
+					</h3>
+					<p class="text-sm text-muted-foreground hidden">The entire period</p>
+				</div>
+				<div class="p-6">
+					<div class="aspect-[4/3]">
+						<canvas id="wine-by-price"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+			data-v0-t="card">
+			<div class="flex flex-col space-y-1.5 p-6">
+				<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					Top Referrers
+				</h3>
+				<p class="text-sm text-muted-foreground">Last 30 days</p>
+			</div>
+			<div class="p-6">
+				<div class="grid gap-4">
+					<div class="flex items-center justify-between">
+						<div>google.com</div>
+						<div class="font-medium">3,456</div>
+					</div>
+					<div class="flex items-center justify-between">
+						<div>twitter.com</div>
+						<div class="font-medium">2,345</div>
+					</div>
+					<div class="flex items-center justify-between">
+						<div>facebook.com</div>
+						<div class="font-medium">1,234</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

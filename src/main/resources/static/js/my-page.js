@@ -32,6 +32,7 @@ window.onpageshow = function(event) {
 				break;
 			case "stats" : 
 				navBtnOn("stats");
+				requestStats();
 				break;
 			case "settings" : 
 				navBtnOn("settings");
@@ -58,6 +59,7 @@ window.onpageshow = function(event) {
 				break;
 			case "stats" : 
 				navBtnOn("stats");
+				requestStats();
 				break;
 			case "settings" : 
 				navBtnOn("settings");
@@ -141,7 +143,7 @@ $(()=> {
 	$("#stats-btn").on("click", function() {
 		myPageData.type = "stats";
 		
-		// stats 버튼 클릭 시 로직
+		requestStats();
 	})
 	$("#settings-btn").on("click", function() {
 		myPageData.type = "settings";
@@ -201,11 +203,6 @@ function resize_to_fit_to_large($target){
 }
 
 
-			
-			
-			
-			
-			
 function navBtnOn(type) {
 	$(".my-page-nav").removeClass("border-2");
 	$(".my-page-nav").removeClass("pointer-events-none");
@@ -224,4 +221,26 @@ function navBtnOn(type) {
 	}
 	$("#"+btnId).addClass("border-2");
 	$("#"+btnId).addClass("pointer-events-none");
+}
+
+function editMainWidth(type) {
+	switch(type) {
+		case "timeline": 
+			$("main").removeClass("md:w-11/12");
+			$("main").removeClass("xl:w-10/12");
+			
+			$("main").addClass("md:w-4/5");
+			$("main").addClass("xl:w-3/5");
+			break;
+		case "stats":
+			$("main").removeClass("md:w-4/5");
+			$("main").removeClass("xl:w-3/5");
+			
+			$("main").addClass("md:w-11/12");
+			$("main").addClass("xl:w-10/12");
+			break;
+		case "settings":
+			
+			break;
+	}
 }
