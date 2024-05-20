@@ -77,17 +77,8 @@
 				<if test="year == 0">
 				DD.date >= (select min(date) from wine.wine_log where user_id = #{userId} and type = 'IN')
 				</if>
-				<if test="year == -1">
-				DATE_FORMAT(DD.DATE, '%Y-%m') between DATE_FORMAT(ADDDATE(now(),  INTERVAL -1 YEAR), '%Y-%m') AND DATE_FORMAT(now(), '%Y-%m')
-				</if>
-				<if test="year == -2">
-				DATE_FORMAT(DD.DATE, '%Y-%m') between DATE_FORMAT(ADDDATE(now(),  INTERVAL -2 YEAR), '%Y-%m') AND DATE_FORMAT(now(), '%Y-%m')
-				</if>
-				<if test="year == -3">
-				DATE_FORMAT(DD.DATE, '%Y-%m') between DATE_FORMAT(ADDDATE(now(),  INTERVAL -3 YEAR), '%Y-%m') AND DATE_FORMAT(now(), '%Y-%m')
-				</if>
-				<if test="year == -5">
-				DATE_FORMAT(DD.DATE, '%Y-%m') between DATE_FORMAT(ADDDATE(now(),  INTERVAL -5 YEAR), '%Y-%m') AND DATE_FORMAT(now(), '%Y-%m')
+				<if test="year lt 0">
+				DATE_FORMAT(DD.DATE, '%Y-%m') between DATE_FORMAT(ADDDATE(now(),  INTERVAL -${year * -1} YEAR), '%Y-%m') AND DATE_FORMAT(now(), '%Y-%m')
 				</if>
 			</where>
 			GROUP BY DATE_FORMAT(DD.Date, '%Y-%m')
@@ -102,25 +93,76 @@
 			month asc
     </select>
     
-    <select id="selectStockByDate" parameterType="String" resultType="com.winemanager.user.domain.stats.StockByTime">
+    <select id="selectStockByDate" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.StockByTime">
     	WITH recursive Date_Ranges AS (
-		    select (select DATE_FORMAT(min(date), '%Y-%m-%d') from wine.wine_log where user_id = #{userId}) as date
+		    select 
+		    	LEAST(
+		    	<if test="year == null">
+		    	DATE_FORMAT(ADDDATE(now(),  INTERVAL -1 YEAR), '%Y-%m-%d')
+				</if>
+				<if test="year > 0">
+				DATE_FORMAT(CONCAT(#{year}, '-01-01'), '%Y-%m-%d')
+				</if>
+				<if test="year == 0">
+				(select DATE_FORMAT(min(date), '%Y-%m-%d') from wine.wine_log where user_id = #{userId})
+				</if>
+				<if test="year lt 0">
+				DATE_FORMAT(ADDDATE(now(),  INTERVAL -${year * -1} YEAR), '%Y-%m-%d')
+				</if>
+				, (select DATE_FORMAT(min(date), '%Y-%m-%d') from wine.wine_log where user_id = #{userId})
+				)
+				
+		    as date
 		   union all
 		   select Date + interval 1 day
 		   from Date_Ranges
-		   where Date <![CDATA[<=]]> now())
-		
-		select A.date, sum(A.count_in + IFNULL(LO.count, 0) * (-1)) count, A.count_in, sum(IFNULL(LO.count, 0)) count_out
+		   where Date <![CDATA[<]]> 
+		   <if test="year == null">
+			DATE_FORMAT(now(), '%Y-%m-%d')
+			</if>
+			<if test="year > 0">
+			DATE_FORMAT(CONCAT(#{year}, '-12-31'), '%Y-%m-%d')
+			and
+			Date <![CDATA[<]]> DATE_FORMAT(now(), '%Y-%m-%d')
+			</if>
+			<if test="year == 0">
+			DATE_FORMAT(now(), '%Y-%m-%d')
+			</if>
+			<if test="year lt 0">
+			DATE_FORMAT(now(), '%Y-%m-%d')
+			</if>
+		)
+		select C.date, C.count, C.count_in, C.count_out, C.stock
 		from (
-			select D.date, sum(IFNULL(LI.count, 0)) count_in
-			from Date_Ranges D
-			left join (select DATE_FORMAT(date, '%Y-%m-%d') date, count, type from wine.wine_log where user_id = #{userId} and type = 'IN') LI
-			on D.date = LI.date
-			group by D.date
-		) A
-		left join (select DATE_FORMAT(date, '%Y-%m-%d') date, count, type from wine.wine_log where user_id = #{userId} and type = 'OUT') LO
-		on A.date = LO.date
-		group by A.date
+			select B.date, B.count, B.count_in, B.count_out, sum(B.count) over(order by B.date) stock
+			from (
+				select A.date, sum(A.count_in + IFNULL(LO.count, 0) * (-1)) count, A.count_in, sum(IFNULL(LO.count, 0)) count_out
+				from (
+					select D.date, sum(IFNULL(LI.count, 0)) count_in
+					from Date_Ranges D
+					left join (select DATE_FORMAT(date, '%Y-%m-%d') date, count, type from wine.wine_log where user_id = #{userId} and type = 'IN') LI
+					on D.date = LI.date
+					group by D.date
+				) A
+				left join (select DATE_FORMAT(date, '%Y-%m-%d') date, count, type from wine.wine_log where user_id = #{userId} and type = 'OUT') LO
+				on A.date = LO.date
+				group by A.date
+			) B
+		)C
+		where
+			C.date <![CDATA[>=]]>
+			<if test="year == null">
+	    	DATE_FORMAT(ADDDATE(now(),  INTERVAL -1 YEAR), '%Y-%m-%d')
+			</if>
+			<if test="year > 0">
+			DATE_FORMAT(CONCAT(#{year}, '-01-01'), '%Y-%m-%d')
+			</if>
+			<if test="year == 0">
+			(select DATE_FORMAT(min(date), '%Y-%m-%d') from wine.wine_log where user_id = #{userId})
+			</if>
+			<if test="year lt 0">
+			DATE_FORMAT(ADDDATE(now(),  INTERVAL -${year * -1} YEAR), '%Y-%m-%d')
+			</if>
     </select>
 
 </mapper>

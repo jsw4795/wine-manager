@@ -134,8 +134,10 @@ public class UserController {
 	
 	@GetMapping("/my-page/stats/stock-by-time")
 	@ResponseBody
-	public List<Map<String, Object>> getStockByTimeData(Principal principal) {
-		List<StockByTime> dataList = userService.getStockByTime(principal.getName());
+	public List<Map<String, Object>> getStockByTimeData(StatsRequest statsRequest, Principal principal) {
+		statsRequest.setUserId(principal.getName());
+		
+		List<StockByTime> dataList = userService.getStockByTime(statsRequest);
 		
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		dataList.forEach((data) -> {

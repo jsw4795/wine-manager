@@ -77,15 +77,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<StockByTime> getStockByTime(String userId) {
-		// 와인 로그에 재고 계산
-		List<StockByTime> stockByTimeList = userMapper.selectStockByDate(userId);
-		int stock = 0;
-		for(StockByTime stockByTime : stockByTimeList) {
-				stock += stockByTime.getCount();
-			stockByTime.setStock(stock);
-		}
-		
+	public List<StockByTime> getStockByTime(StatsRequest statsRequest) {
+		// 재고까지 sql에서 뽑아옴
+		List<StockByTime> stockByTimeList = userMapper.selectStockByDate(statsRequest);
 		return stockByTimeList;
 	}
 	

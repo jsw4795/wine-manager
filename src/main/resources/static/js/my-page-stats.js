@@ -5,6 +5,9 @@ $(()=>{
 	$("main").on("change", "#spend-by-time-select", function() {
 		makeSpendByTimeChart($("#spend-by-time-select").val());
 	})
+	$("main").on("change", "#stock-by-time-select", function() {
+		makeStockByTimeChart($("#stock-by-time-select").val());
+	})
 })
 
 
@@ -96,7 +99,9 @@ function makeSpendByTimeChart(year) {
 
 
 
-function makeStockByTimeChart() {
+function makeStockByTimeChart(year) {
+	
+	$("#stock-by-time-period").text(periodDescription(year));
 	
 	if(stockByTimeChart)
 		stockByTimeChart.destroy();
@@ -104,7 +109,7 @@ function makeStockByTimeChart() {
 	$.ajax({
 		url: '/my-page/stats/stock-by-time',
 		type: "GET",
-		data: {},
+		data: {year: year},
 		dataType: "JSON",
 		success: function(result) {
 			console.log(result)

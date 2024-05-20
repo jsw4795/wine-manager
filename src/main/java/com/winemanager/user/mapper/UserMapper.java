@@ -22,5 +22,5 @@ public interface UserMapper {
 	public MainStats selectMainStats(String userId);
 	public List<Timeline> selectTimeline(TimelineRequest timelineRequest);
 	public List<SpendByTime> selectSpendByMonth(StatsRequest statsRequest);
-	public List<StockByTime> selectStockByDate(String userId);
+	public List<StockByTime> selectStockByDate(StatsRequest statsRequest);
 }

@@ -21,5 +21,5 @@ public interface UserService {
 	public MainStats getMainStats(String userId);
 	public List<Timeline> getTimeline(TimelineRequest timelineRequest);
 	public List<SpendByTime> getSpendByTime(StatsRequest statsRequest);
-	public List<StockByTime> getStockByTime(String userId);
+	public List<StockByTime> getStockByTime(StatsRequest statsRequest);
 }
