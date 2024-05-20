@@ -40,7 +40,9 @@ function makeSpendByTimeChart(year) {
 		data: {year: year},
 		dataType: "JSON",
 		success: function(result) {
-
+			
+			$("#spend-by-time-period").text(periodDescription(year));
+			
 			let data = {
 			datasets: [
 				{
@@ -155,3 +157,14 @@ function makeStockByTimeChart() {
 	})
 	
 };
+
+function periodDescription(year) {
+	switch(true) {
+		case (year > 0):
+			return year;
+		case (year == 0):
+			return 'All time';
+		case (year < 0):
+			return 'Last ' + (-12 * year) + ' months';
+	}
+}
