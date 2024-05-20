@@ -4,7 +4,8 @@
 	layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="script">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+	<script th:src="@{/js/chart/chart.umd.js}" type="text/javascript"></script>
+	<script th:src="@{/js/chart/chartjs-plugin-datalabels.min.js}" type="text/javascript"></script>
 	<script th:src="@{/js/my-page.js}" type="text/javascript"></script>
 	<script th:src="@{/js/my-page-timeline.js}" type="text/javascript"></script>
 	<script th:src="@{/js/my-page-stats.js}" type="text/javascript"></script>

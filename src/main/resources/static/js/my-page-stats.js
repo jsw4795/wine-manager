@@ -212,11 +212,26 @@ function makeBottlesByPlaceChart() {
 		let config = {
 			type: 'pie',
 			data: data,
+			plugins: [ChartDataLabels],
 			options: {
 				responsive: true,
 				plugins: {
 					legend: {
 						display: false,
+					},
+					datalabels: {
+						font: { 
+							weight: 'bold',
+							size: '12px',
+						},
+						color: 'black',
+						formatter: function(value, context) {
+							return context.chart.data.labels[context.dataIndex];
+						},
+						display: function(context) {
+							if (context.dataIndex < 3) { return 1 }
+							else { return 0 }
+						},
 					}
 				},
 			}
