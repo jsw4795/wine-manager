@@ -1,5 +1,6 @@
 var spendByTimeChart;
 var stockByTimeChart;
+var wineByPlaceChart;
 
 $(()=>{
 	$("main").on("change", "#spend-by-time-select", function() {
@@ -25,6 +26,7 @@ function requestStats(callback) {
 			
 			makeSpendByTimeChart();
 			makeStockByTimeChart();
+			makeBottlesByPlaceChart()
 			
 			if(callback)
 				callback();
@@ -66,7 +68,11 @@ function makeSpendByTimeChart(year) {
 			data: data,
 			options: {
 				responsive: true,
-				plugins: {},
+				plugins: {
+					legend: {
+						display: false,
+					}
+				},
 				interaction: {
 					intersect: false,
 					mode: 'index',
@@ -133,7 +139,11 @@ function makeStockByTimeChart(year) {
 			data: data,
 			options: {
 				responsive: true,
-				plugins: {},
+				plugins: {
+					legend: {
+						display: false,
+					}
+				},
 				interaction: {
 					intersect: false,
 					mode: 'index',
@@ -158,6 +168,61 @@ function makeStockByTimeChart(year) {
 		};
 	
 		stockByTimeChart = new Chart($("#stock-by-time")[0], config);
+		}
+	})
+	
+};
+
+function makeBottlesByPlaceChart() {
+	
+	if(wineByPlaceChart)
+		wineByPlaceChart.destroy();
+	
+	$.ajax({
+		url: '/my-page/stats/wine-by-place',
+		type: "GET",
+		data: {},
+		dataType: "JSON",
+		success: function(result) {
+			console.log(result)
+			let data = {
+				labels: result.map(data => data.place),
+				datasets: [
+					{
+						label: 'bottles',
+						data: result.map(data => data.count),
+						backgroundColor: [
+							'rgba(255, 102, 102, 1)',
+							'rgba(255, 218, 107, 1)',
+							'rgba(255, 255, 102, 1)',
+							'rgba(198, 245, 132, 1)',
+							'rgba(112, 255, 186, 1)',
+							'rgba(112, 255, 224, 1)',
+							'rgba(112, 253, 255, 1)',
+							'rgba(112, 207, 255, 1)',
+							'rgba(132, 138, 245, 1)',
+							'rgba(242, 102, 255, 1)',
+							'rgba(168, 168, 168, 1)',
+						],
+						hoverOffset: 5,
+					}
+				]
+			};
+		
+		let config = {
+			type: 'pie',
+			data: data,
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false,
+					}
+				},
+			}
+		};
+	
+		wineByPlaceChart = new Chart($("#wine-by-place")[0], config);
 		}
 	})
 	

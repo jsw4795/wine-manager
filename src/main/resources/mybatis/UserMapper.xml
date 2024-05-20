@@ -109,15 +109,16 @@
 				<if test="year lt 0">
 				DATE_FORMAT(ADDDATE(now(),  INTERVAL -${year * -1} YEAR), '%Y-%m-%d')
 				</if>
+				
 				, (select DATE_FORMAT(min(date), '%Y-%m-%d') from wine.wine_log where user_id = #{userId})
 				)
 				
 		    as date
-		   union all
-		   select Date + interval 1 day
-		   from Date_Ranges
-		   where Date <![CDATA[<]]> 
-		   <if test="year == null">
+		    union all
+		    select Date + interval 1 day
+		    from Date_Ranges
+		    where Date <![CDATA[<]]> 
+		    <if test="year == null">
 			DATE_FORMAT(now(), '%Y-%m-%d')
 			</if>
 			<if test="year > 0">
@@ -163,6 +164,33 @@
 			<if test="year lt 0">
 			DATE_FORMAT(ADDDATE(now(),  INTERVAL -${year * -1} YEAR), '%Y-%m-%d')
 			</if>
+    </select>
+    
+    <select id="selectBottlesByPlace" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.BottlesByPlace">
+    	select A.place, A.count
+		from (
+			select place, IFNULL(sum(count), 0) count
+			from wine.wine_log
+			where user_id = #{userId} and type = 'IN'
+			group by place
+			order by count desc
+			limit 10
+		) A
+		
+		union all
+		
+		select 'others' as place, sum(B.count) count
+		from (
+			select ROW_NUMBER() OVER() row_num, A.place, A.count
+			from(
+				select place, IFNULL(sum(count), 0) count
+				from wine.wine_log
+				where user_id = #{userId} and type = 'IN'
+				group by place
+				order by count desc
+			) A
+		) B
+		where B.row_num > 10;
     </select>
 
 </mapper>

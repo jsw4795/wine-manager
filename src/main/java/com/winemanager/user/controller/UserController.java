@@ -20,11 +20,11 @@ import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
+import com.winemanager.user.domain.stats.BottlesByPlace;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
 import com.winemanager.user.service.UserService;
-import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.service.WineService;
 
 import jakarta.validation.Valid;
@@ -147,6 +147,16 @@ public class UserController {
 			
 			result.add(dataMap);
 		});
+		
+		return result;
+	}
+
+	@GetMapping("/my-page/stats/wine-by-place")
+	@ResponseBody
+	public List<BottlesByPlace> getBottlesByPlaceData(StatsRequest statsRequest, Principal principal) {
+		statsRequest.setUserId(principal.getName());
+		
+		List<BottlesByPlace> result = userService.getBottleByPlace(statsRequest);
 		
 		return result;
 	}
