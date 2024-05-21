@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BottlesByPlace {
+public class WineByPlace {
 	String place;
 	Integer count;
 }

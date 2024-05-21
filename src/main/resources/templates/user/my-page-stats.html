@@ -22,7 +22,7 @@
 							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 								Monthly Consumption
 							</h3>
-							<p id="spend-by-time-period" class="text-sm text-muted-foreground">Last 12 months</p>
+							<p id="spend-by-time-description" class="text-sm text-muted-foreground">Last 12 months</p>
 						</div>
 						<div class="relative">
 							<select id="spend-by-time-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
@@ -55,7 +55,7 @@
 							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 								Change In Wine Stocks
 							</h3>
-							<p id="stock-by-time-period" class="text-sm text-muted-foreground">Last 12 months</p>
+							<p id="stock-by-time-description" class="text-sm text-muted-foreground">Last 12 months</p>
 						</div>
 						<div class="relative">
 							<select id="stock-by-time-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
@@ -86,9 +86,9 @@
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
 					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
-						Bottles By Place
+						Wine By Place
 					</h3>
-					<p class="text-sm text-muted-foreground hidden">The entire period</p>
+					<p id="wine-by-place-description" class="text-sm text-muted-foreground">Wine you bought</p>
 				</div>
 				<div class="p-6">
 					<div class="aspect-[3/3]">
@@ -99,10 +99,24 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
-						Wine Type
-					</h3>
-					<p class="text-sm text-muted-foreground hidden">The entire period</p>
+					<div class="flex justify-between">
+						<div class="space-y-1.5">
+							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+								Wine By Type
+							</h3>
+							<p id="wine-by-type-description" class="text-sm text-muted-foreground">Wine you have</p>
+						</div>
+						<div class="relative">
+							<select id="wine-by-type-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
+								onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+								<optgroup label="----------------">
+								    <option value="hold" selected>Holding</option>
+								    <option value="buy">Buying</option>
+								    <option value="drink">Drinking</option>
+								</optgroup>
+						  	</select>
+						</div>
+					</div>
 				</div>
 				<div class="p-6">
 					<div class="aspect-[3/3]">

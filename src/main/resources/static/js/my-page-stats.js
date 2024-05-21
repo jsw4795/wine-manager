@@ -1,6 +1,14 @@
 var spendByTimeChart;
 var stockByTimeChart;
 var wineByPlaceChart;
+var wineByTypeChart;
+
+const colorByWineType = {
+	Red: 'rgba(208, 37, 37, 1)',
+	White: 'rgba(247, 237, 136, 1)',
+	Sparkling: 'rgba(246, 250, 188, 1)',
+	Rose: 'rgba(255, 163, 163, 1)',	
+};
 
 $(()=>{
 	$("main").on("change", "#spend-by-time-select", function() {
@@ -8,6 +16,9 @@ $(()=>{
 	})
 	$("main").on("change", "#stock-by-time-select", function() {
 		makeStockByTimeChart($("#stock-by-time-select").val());
+	})
+	$("main").on("change", "#wine-by-type-select", function() {
+		makeWineByTypeChart($("#wine-by-type-select").val());
 	})
 })
 
@@ -26,7 +37,8 @@ function requestStats(callback) {
 			
 			makeSpendByTimeChart();
 			makeStockByTimeChart();
-			makeBottlesByPlaceChart()
+			makeWineByPlaceChart();
+			makeWineByTypeChart();
 			
 			if(callback)
 				callback();
@@ -46,7 +58,7 @@ function makeSpendByTimeChart(year) {
 		dataType: "JSON",
 		success: function(result) {
 			
-			$("#spend-by-time-period").text(periodDescription(year));
+			$("#spend-by-time-description").text(getDescription(year));
 			
 			let data = {
 			datasets: [
@@ -107,7 +119,6 @@ function makeSpendByTimeChart(year) {
 
 function makeStockByTimeChart(year) {
 	
-	$("#stock-by-time-period").text(periodDescription(year));
 	
 	if(stockByTimeChart)
 		stockByTimeChart.destroy();
@@ -118,7 +129,9 @@ function makeStockByTimeChart(year) {
 		data: {year: year},
 		dataType: "JSON",
 		success: function(result) {
-			console.log(result)
+			
+			$("#stock-by-time-description").text(getDescription(year));
+			
 			let data = {
 			datasets: [
 				{
@@ -173,7 +186,7 @@ function makeStockByTimeChart(year) {
 	
 };
 
-function makeBottlesByPlaceChart() {
+function makeWineByPlaceChart() {
 	
 	if(wineByPlaceChart)
 		wineByPlaceChart.destroy();
@@ -184,7 +197,6 @@ function makeBottlesByPlaceChart() {
 		data: {},
 		dataType: "JSON",
 		success: function(result) {
-			console.log(result)
 			let data = {
 				labels: result.map(data => data.place),
 				datasets: [
@@ -243,13 +255,117 @@ function makeBottlesByPlaceChart() {
 	
 };
 
-function periodDescription(year) {
-	switch(true) {
-		case (year > 0):
-			return year;
-		case (year == 0):
-			return 'All time';
-		case (year < 0):
-			return 'Last ' + (-12 * year) + ' months';
+function makeWineByTypeChart(wineDataType) {
+	
+	if(wineByTypeChart)
+		wineByTypeChart.destroy();
+	
+	$.ajax({
+		url: '/my-page/stats/wine-by-type',
+		type: "GET",
+		data: {wineDataType: wineDataType},
+		dataType: "JSON",
+		success: function(result) {
+			
+			$("#wine-by-type-description").text(getDescription(wineDataType));
+			
+			let colorList = [];
+			result.forEach((data) => {
+				colorList.push(colorByWineType[data.type])
+			})
+			
+			let data = {
+				labels: result.map(data => data.type),
+				datasets: [
+					{
+						label: 'bottles',
+						data: result.map(data => data.count),
+						backgroundColor: colorList,
+						hoverOffset: 5,
+					}
+				]
+			};
+		
+		let config = {
+			type: 'pie',
+			data: data,
+			plugins: [ChartDataLabels],
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false,
+					},
+					datalabels: {
+						labels:{
+							name: {
+								align: 'top',
+								font: { 
+									weight: 'bold',
+									size: '12px',
+								},
+								color: 'black',
+								padding: -2,
+								formatter: function(value, context) {
+									return context.chart.data.labels[context.dataIndex];
+								},
+							},
+							percent: {
+								align: 'bottom',
+								font: { 
+									weight: 'bold',
+									size: '12px',
+								},
+								color: 'black',
+								padding: -5,
+								formatter: (value, context) => {
+									let sum = 0;
+									let dataArr = context.chart.data.datasets[0].data;
+									dataArr.map(data => {
+										sum += data;
+									});
+									let percentage = (value * 100 / sum).toFixed(1) + "%";
+									return percentage;
+								},
+								display: true,
+							}
+						},
+						
+					}
+				},
+			}
+		};
+	
+		wineByTypeChart = new Chart($("#wine-by-type")[0], config);
+		}
+	})
+	
+};
+
+
+
+function getDescription(param) {
+	if(isNumeric(param)){
+		switch(true) {
+			case (param > 0):
+				return param;
+			case (param == 0):
+				return 'All time';
+			case (param < 0):
+				return 'Last ' + (-12 * param) + ' months';
+		}		
+	} else {
+		switch(param) {
+			case "hold":
+				return 'Wine you have';
+			case "buy":
+				return 'Wine you bought';
+			case "drink":
+				return 'Wine you drank';
+		}
 	}
+}
+
+function isNumeric(value) {
+    return /^-?\d+$/.test(value);
 }

@@ -20,7 +20,8 @@ import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
-import com.winemanager.user.domain.stats.BottlesByPlace;
+import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
@@ -153,14 +154,23 @@ public class UserController {
 
 	@GetMapping("/my-page/stats/wine-by-place")
 	@ResponseBody
-	public List<BottlesByPlace> getBottlesByPlaceData(StatsRequest statsRequest, Principal principal) {
+	public List<WineByPlace> getWineByPlaceData(StatsRequest statsRequest, Principal principal) {
 		statsRequest.setUserId(principal.getName());
 		
-		List<BottlesByPlace> result = userService.getBottleByPlace(statsRequest);
+		List<WineByPlace> result = userService.getWineByPlace(statsRequest);
 		
 		return result;
 	}
 	
+	@GetMapping("/my-page/stats/wine-by-type")
+	@ResponseBody
+	public List<WineByType> getWineByTypeData(StatsRequest statsRequest, Principal principal) {
+		statsRequest.setUserId(principal.getName());
+		
+		List<WineByType> result = userService.getWineByType(statsRequest);
+		
+		return result;
+	}
 	
 	
 	

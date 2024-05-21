@@ -11,7 +11,8 @@ import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
-import com.winemanager.user.domain.stats.BottlesByPlace;
+import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
@@ -85,14 +86,20 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<BottlesByPlace> getBottleByPlace(StatsRequest statsRequest) {
-		List<BottlesByPlace> bottlesByPlaceList = userMapper.selectBottlesByPlace(statsRequest);
+	public List<WineByPlace> getWineByPlace(StatsRequest statsRequest) {
+		List<WineByPlace> bottlesByPlaceList = userMapper.selectWineByPlace(statsRequest);
 		
 		// 기타가 없으면 기타 열 삭제
 		if(bottlesByPlaceList.get(bottlesByPlaceList.size()-1).getCount() == 0)
 			bottlesByPlaceList.remove(bottlesByPlaceList.size()-1);
 		
 		return bottlesByPlaceList;
+	}
+
+	@Override
+	public List<WineByType> getWineByType(StatsRequest statsRequest) {
+		
+		return userMapper.selectWineByType(statsRequest);
 	}
 	
 	

@@ -166,7 +166,7 @@
 			</if>
     </select>
     
-    <select id="selectBottlesByPlace" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.BottlesByPlace">
+    <select id="selectWineByPlace" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.WineByPlace">
     	select A.place, A.count
 		from (
 			select place, IFNULL(sum(count), 0) count
@@ -191,6 +191,30 @@
 			) A
 		) B
 		where B.row_num > 10;
+    </select>
+    
+    <select id="selectWineByType" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.WineByType">
+    	<choose>
+    		<when test="wineDataType == 'hold' || wineDataType == null">
+    			select wine_type type, sum(count) count
+				from wine.wine
+				where user_id = #{userId}
+				group by wine_type
+				order by count desc
+    		</when>
+    		<otherwise>
+    			select W.wine_type type, sum(WL.count) count
+				from wine.wine W
+				left join wine.wine_log WL
+				on W.wine_id = WL.wine_id 
+					and WL.type = 
+					<if test="wineDataType == 'buy'">'IN'</if>
+					<if test="wineDataType == 'drink'">'OUT'</if>
+				where W.user_id = #{userId}
+				group by W.wine_type
+				order by count desc
+    		</otherwise>
+    	</choose>
     </select>
 
 </mapper>

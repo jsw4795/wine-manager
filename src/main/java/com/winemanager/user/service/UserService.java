@@ -7,7 +7,8 @@ import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
-import com.winemanager.user.domain.stats.BottlesByPlace;
+import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
@@ -22,5 +23,6 @@ public interface UserService {
 	public List<Timeline> getTimeline(TimelineRequest timelineRequest);
 	public List<SpendByTime> getSpendByTime(StatsRequest statsRequest);
 	public List<StockByTime> getStockByTime(StatsRequest statsRequest);
-	public List<BottlesByPlace> getBottleByPlace(StatsRequest statsRequest);
+	public List<WineByPlace> getWineByPlace(StatsRequest statsRequest);
+	public List<WineByType> getWineByType(StatsRequest statsRequest);
 }

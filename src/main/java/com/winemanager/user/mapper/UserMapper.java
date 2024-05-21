@@ -8,7 +8,8 @@ import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
-import com.winemanager.user.domain.stats.BottlesByPlace;
+import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
@@ -23,5 +24,6 @@ public interface UserMapper {
 	public List<Timeline> selectTimeline(TimelineRequest timelineRequest);
 	public List<SpendByTime> selectSpendByMonth(StatsRequest statsRequest);
 	public List<StockByTime> selectStockByDate(StatsRequest statsRequest);
-	public List<BottlesByPlace> selectBottlesByPlace(StatsRequest statsRequest);
+	public List<WineByPlace> selectWineByPlace(StatsRequest statsRequest);
+	public List<WineByType> selectWineByType(StatsRequest statsRequest);
 }
