@@ -179,7 +179,7 @@
 		
 		union all
 		
-		select 'others' as place, sum(B.count) count
+		select 'others' as place, IFNULL(sum(B.count), 0) count
 		from (
 			select ROW_NUMBER() OVER() row_num, A.place, A.count
 			from(
