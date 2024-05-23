@@ -11,15 +11,15 @@ import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
-import com.winemanager.user.domain.stats.WineByPlace;
-import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
 import com.winemanager.user.domain.stats.WineByCountry;
+import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByPrice;
+import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.mapper.UserMapper;
 import com.winemanager.user.service.UserService;
-import com.winemanager.wine.domain.WineLog;
 
 import lombok.RequiredArgsConstructor;
 
@@ -107,6 +107,12 @@ public class UserServiceImpl implements UserService{
 	public List<WineByCountry> getWineByCountry(StatsRequest statsRequest) {
 
 		return userMapper.selectWineByCountry(statsRequest);
+	}
+
+	@Override
+	public List<WineByPrice> getWineByPrice(StatsRequest statsRequest) {
+		
+		return userMapper.selectWineByPrice(statsRequest);
 	}
 	
 	

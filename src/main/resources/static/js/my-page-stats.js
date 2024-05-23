@@ -3,12 +3,31 @@ var stockByTimeChart;
 var wineByPlaceChart;
 var wineByTypeChart;
 var wineByCountryChart;
+var wineByPriceChart;
 
 const colorByWineType = {
 	Red: 'rgba(208, 37, 37, 1)',
 	White: 'rgba(247, 237, 136, 1)',
 	Sparkling: 'rgba(246, 250, 188, 1)',
 	Rose: 'rgba(255, 163, 163, 1)',	
+};
+
+const labelForPrice = {
+	range0To10: '~10$',
+	range10To50: '10~50$',
+	range50To100: '50~100$',
+	range100To500: '100~500$',
+	range500To1000: '500~1000$',
+	rangeFrom1000: '1000$~'
+};
+
+const colorForPrice = {
+	range0To10: 'rgba(117, 209, 255, 1)',
+	range10To50: 'rgba(109, 235, 0, 1)',
+	range50To100: 'rgba(233, 227, 37, 1)',
+	range100To500: 'rgba(244, 140, 21, 1)',
+	range500To1000: 'rgba(225, 64, 14, 1)',
+	rangeFrom1000: 'rgba(155, 0, 194, 1)'
 };
 
 $(()=>{
@@ -44,6 +63,7 @@ function requestStats(callback) {
 			makeWineByPlaceChart();
 			makeWineByTypeChart();
 			makeWineByCountryChart();
+			makeWineByPriceChart();
 			
 			if(callback)
 				callback();
@@ -443,6 +463,107 @@ function makeWineByCountryChart(wineDataType) {
 		};
 	
 		wineByCountryChart = new Chart($("#wine-by-country")[0], config);
+		}
+	})
+	
+};
+
+function makeWineByPriceChart() {
+	
+	if(wineByPriceChart)
+		wineByPriceChart.destroy();
+	
+	$.ajax({
+		url: '/my-page/stats/wine-by-price',
+		type: "GET",
+		data: {},
+		dataType: "JSON",
+		success: function(result) {
+			// 수량 내림차순으로 정렬
+			let entries = Object.entries(result[0]);
+			entries.sort(function(a, b) {
+				return b[1] - a[1];
+			})
+			
+			let labelList = [];
+			let dataList = [];
+			let colorList = [];
+			entries.forEach((entry, index) => {
+				labelList.push(labelForPrice[entry[0]]);
+				dataList.push(entry[1]);
+				colorList.push(colorForPrice[entry[0]]);
+			})
+			
+			let data = {
+				labels: labelList,
+				datasets: [
+					{
+						label: 'bottles',
+						data: dataList,
+						backgroundColor: colorList,
+						hoverOffset: 5,
+					}
+				]
+			};
+		
+		let config = {
+			type: 'pie',
+			data: data,
+			plugins: [ChartDataLabels],
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false,
+					},
+					datalabels: {
+						labels:{
+							name: {
+								align: 'top',
+								font: { 
+									weight: 'bold',
+									size: '12px',
+								},
+								color: 'black',
+								padding: -2,
+								formatter: function(value, context) {
+									return context.chart.data.labels[context.dataIndex];
+								},
+								display: function(context) {
+									if (context.dataIndex < 3) { return 1 }
+									else { return 0 }
+								},
+							},
+							percent: {
+								align: 'bottom',
+								font: { 
+									weight: 'bold',
+									size: '12px',
+								},
+								color: 'black',
+								padding: -5,
+								formatter: (value, context) => {
+									let sum = 0;
+									let dataArr = context.chart.data.datasets[0].data;
+									dataArr.map(data => {
+										sum += data;
+									});
+									let percentage = (value * 100 / sum).toFixed(1) + "%";
+									return percentage;
+								},
+								display: function(context) {
+									if (context.dataIndex < 3) { return 1 }
+									else { return 0 }
+								},
+							}
+						},
+						
+					}
+				},
+			}
+		};
+	
+		wineByPriceChart = new Chart($("#wine-by-price")[0], config);
 		}
 	})
 	

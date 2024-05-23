@@ -300,4 +300,18 @@
 		where B.row_num > 10
     </select>
 
+	<select id="selectWineByPrice" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.WineByPrice">
+		select 
+			IFNULL(SUM(case when (WL.price / ER.USD) <![CDATA[>=]]> 0 and (WL.price / ER.USD) <![CDATA[<]]> 10 then WL.count end), 0) 'range0To10'
+		    , IFNULL(SUM(case when (WL.price / ER.USD) <![CDATA[>=]]> 10 and (WL.price / ER.USD) <![CDATA[<]]> 50 then WL.count end), 0) 'range10To50'
+		    , IFNULL(SUM(case when (WL.price / ER.USD) <![CDATA[>=]]> 50 and (WL.price / ER.USD) <![CDATA[<]]> 100 then WL.count end), 0) 'range50To100'
+		    , IFNULL(SUM(case when (WL.price / ER.USD) <![CDATA[>=]]> 100 and (WL.price / ER.USD) <![CDATA[<]]> 500 then WL.count end), 0) 'range100To500'
+		    , IFNULL(SUM(case when (WL.price / ER.USD) <![CDATA[>=]]> 500 and (WL.price / ER.USD) <![CDATA[<]]> 1000 then WL.count end), 0) 'range500To1000'
+		    , IFNULL(SUM(case when (WL.price / ER.USD) <![CDATA[>=]]> 1000 then WL.count end), 0) 'rangeFrom1000'
+		from wine.wine_log WL
+		left join wine.exchange_rate ER
+		on 1=1
+		where WL.user_id = #{userId} and WL.type = 'IN'
+	</select>
+
 </mapper>

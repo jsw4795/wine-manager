@@ -9,6 +9,7 @@ import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
 import com.winemanager.user.domain.User;
 import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByPrice;
 import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
@@ -28,4 +29,5 @@ public interface UserMapper {
 	public List<WineByPlace> selectWineByPlace(StatsRequest statsRequest);
 	public List<WineByType> selectWineByType(StatsRequest statsRequest);
 	public List<WineByCountry> selectWineByCountry(StatsRequest statsRequest);
+	public List<WineByPrice> selectWineByPrice(StatsRequest statsRequest);
 }
