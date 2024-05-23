@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WineByType {
-	String type;
-	int count;
+	private String type;
+	private int count;
 }

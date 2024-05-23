@@ -12,6 +12,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpendByTime {
-	String month;
-	int money;
+	private String month;
+	private int money;
 }

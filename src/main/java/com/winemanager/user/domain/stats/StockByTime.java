@@ -13,10 +13,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockByTime {
-	String Date;
-	int count;
-	int countIn;
-	int countOut;
+	private String Date;
+	private int count;
+	private int countIn;
+	private int countOut;
 	@Setter
-	int stock;
+	private int stock;
 }
