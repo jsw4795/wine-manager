@@ -13,6 +13,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.WineByCountry;
 
 @Mapper
 public interface UserMapper {
@@ -26,4 +27,5 @@ public interface UserMapper {
 	public List<StockByTime> selectStockByDate(StatsRequest statsRequest);
 	public List<WineByPlace> selectWineByPlace(StatsRequest statsRequest);
 	public List<WineByType> selectWineByType(StatsRequest statsRequest);
+	public List<WineByCountry> selectWineByCountry(StatsRequest statsRequest);
 }

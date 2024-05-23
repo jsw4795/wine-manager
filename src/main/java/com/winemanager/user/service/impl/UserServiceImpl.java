@@ -16,6 +16,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.WineByCountry;
 import com.winemanager.user.mapper.UserMapper;
 import com.winemanager.user.service.UserService;
 import com.winemanager.wine.domain.WineLog;
@@ -100,6 +101,12 @@ public class UserServiceImpl implements UserService{
 	public List<WineByType> getWineByType(StatsRequest statsRequest) {
 		
 		return userMapper.selectWineByType(statsRequest);
+	}
+
+	@Override
+	public List<WineByCountry> getWineByCountry(StatsRequest statsRequest) {
+
+		return userMapper.selectWineByCountry(statsRequest);
 	}
 	
 	

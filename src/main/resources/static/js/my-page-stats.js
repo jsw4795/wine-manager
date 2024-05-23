@@ -2,6 +2,7 @@ var spendByTimeChart;
 var stockByTimeChart;
 var wineByPlaceChart;
 var wineByTypeChart;
+var wineByCountryChart;
 
 const colorByWineType = {
 	Red: 'rgba(208, 37, 37, 1)',
@@ -19,6 +20,9 @@ $(()=>{
 	})
 	$("main").on("change", "#wine-by-type-select", function() {
 		makeWineByTypeChart($("#wine-by-type-select").val());
+	})
+	$("main").on("change", "#wine-by-country-select", function() {
+		makeWineByCountryChart($("#wine-by-country-select").val());
 	})
 })
 
@@ -39,6 +43,7 @@ function requestStats(callback) {
 			makeStockByTimeChart();
 			makeWineByPlaceChart();
 			makeWineByTypeChart();
+			makeWineByCountryChart();
 			
 			if(callback)
 				callback();
@@ -342,6 +347,106 @@ function makeWineByTypeChart(wineDataType) {
 	
 };
 
+function makeWineByCountryChart(wineDataType) {
+	
+	if(wineByCountryChart)
+		wineByCountryChart.destroy();
+	
+	$.ajax({
+		url: '/my-page/stats/wine-by-country',
+		type: "GET",
+		data: {wineDataType: wineDataType},
+		dataType: "JSON",
+		success: function(result) {
+			
+			$("#wine-by-country-description").text(getDescription(wineDataType));
+			
+			let data = {
+				labels: result.map(data => data.country),
+				datasets: [
+					{
+						label: 'bottles',
+						data: result.map(data => data.count),
+						backgroundColor: [
+							'rgba(255, 102, 102, 1)',
+							'rgba(255, 218, 107, 1)',
+							'rgba(255, 255, 102, 1)',
+							'rgba(198, 245, 132, 1)',
+							'rgba(112, 255, 186, 1)',
+							'rgba(112, 255, 224, 1)',
+							'rgba(112, 253, 255, 1)',
+							'rgba(112, 207, 255, 1)',
+							'rgba(132, 138, 245, 1)',
+							'rgba(242, 102, 255, 1)',
+							'rgba(168, 168, 168, 1)',
+						],
+						hoverOffset: 5,
+					}
+				]
+			};
+		
+		let config = {
+			type: 'pie',
+			data: data,
+			plugins: [ChartDataLabels],
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false,
+					},
+					datalabels: {
+						labels:{
+							name: {
+								align: 'top',
+								font: { 
+									weight: 'bold',
+									size: '12px',
+								},
+								color: 'black',
+								padding: -2,
+								formatter: function(value, context) {
+									return context.chart.data.labels[context.dataIndex];
+								},
+								display: function(context) {
+									if (context.dataIndex < 3) { return 1 }
+									else { return 0 }
+								},
+							},
+							percent: {
+								align: 'bottom',
+								font: { 
+									weight: 'bold',
+									size: '12px',
+								},
+								color: 'black',
+								padding: -5,
+								formatter: (value, context) => {
+									let sum = 0;
+									let dataArr = context.chart.data.datasets[0].data;
+									dataArr.map(data => {
+										sum += data;
+									});
+									let percentage = (value * 100 / sum).toFixed(1) + "%";
+									return percentage;
+								},
+								display: function(context) {
+									if (context.dataIndex < 3) { return 1 }
+									else { return 0 }
+								},
+							}
+						},
+						
+					}
+				},
+			}
+		};
+	
+		wineByCountryChart = new Chart($("#wine-by-country")[0], config);
+		}
+	})
+	
+};
 
 
 function getDescription(param) {
@@ -362,6 +467,18 @@ function getDescription(param) {
 				return 'Wine you bought';
 			case "drink":
 				return 'Wine you drank';
+			case "country-hold":
+				return "Wine you have by country";
+			case "country-buy":
+				return "Wine you bought by country";
+			case "country-drink":
+				return "Wine you drank by country";
+			case "region-hold":
+				return "Wine you have by region";
+			case "region-buy":
+				return "Wine you bought by region";
+			case "region-drink":
+				return "Wine you drank by region";
 		}
 	}
 }

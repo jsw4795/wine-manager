@@ -25,6 +25,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.WineByCountry;
 import com.winemanager.user.service.UserService;
 import com.winemanager.wine.service.WineService;
 
@@ -172,6 +173,15 @@ public class UserController {
 		return result;
 	}
 	
+	@GetMapping("/my-page/stats/wine-by-country")
+	@ResponseBody
+	public List<WineByCountry> getWineByCountryData(StatsRequest statsRequest, Principal principal) {
+		statsRequest.setUserId(principal.getName());
+		
+		List<WineByCountry> result = userService.getWineByCountry(statsRequest);
+		
+		return result;
+	}
 	
 	
 	

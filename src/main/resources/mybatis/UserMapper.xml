@@ -216,5 +216,88 @@
     		</otherwise>
     	</choose>
     </select>
+    
+    <select id="selectWineByCountry" parameterType="com.winemanager.user.domain.stats.StatsRequest" resultType="com.winemanager.user.domain.stats.WineByCountry">
+    	select A.country, A.count
+		from(
+			select 
+				<if test='wineDataType == null or wineDataType.startsWith("country")'>
+				W.country country, 				
+				</if>
+				<if test='wineDataType != null and wineDataType.startsWith("region")'>
+				W.region country, 				
+				</if>
+				<if test='wineDataType == null or wineDataType.endsWith("hold")'>
+				IFNULL(sum(W.count), 0) count
+				</if>
+				<if test='wineDataType != null and (wineDataType.endsWith("buy") or wineDataType.endsWith("drink"))'>
+				IFNULL(sum(WL.count), 0) count
+				</if>
+			from wine.wine W
+			<if test='wineDataType != null and (wineDataType.endsWith("buy") or wineDataType.endsWith("drink"))'>
+			left join wine.wine_log WL
+			on WL.wine_id = W.wine_id 
+				<if test='wineDataType.endsWith("buy")'>
+				and WL.type = 'IN'
+				</if>
+				<if test='wineDataType.endsWith("drink")'>
+				and WL.type = 'OUT'
+				</if>
+			</if>
+			where W.user_id = #{userId}
+			group by 
+			<if test='wineDataType == null or wineDataType.startsWith("country")'>
+			W.country
+			</if>
+			<if test='wineDataType != null and wineDataType.startsWith("region")'>
+			W.region
+			</if>
+			order by count desc
+			limit 10
+		) A
+		
+		union all
+		
+		select 'others' as country, IFNULL(sum(B.count), 0) count
+		from (
+			select ROW_NUMBER() OVER() row_num, A.country, A.count
+			from(
+				select 
+					<if test='wineDataType == null or wineDataType.startsWith("country")'>
+					W.country country, 				
+					</if>
+					<if test='wineDataType != null and wineDataType.startsWith("region")'>
+					W.region country, 				
+					</if>
+					<if test='wineDataType == null or wineDataType.endsWith("hold")'>
+					IFNULL(sum(W.count), 0) count
+					</if>
+					<if test='wineDataType != null and (wineDataType.endsWith("buy") or wineDataType.endsWith("drink"))'>
+					IFNULL(sum(WL.count), 0) count
+					</if>
+				from wine.wine W
+				<if test='wineDataType != null and (wineDataType.endsWith("buy") or wineDataType.endsWith("drink"))'>
+				left join wine.wine_log WL
+				on WL.wine_id = W.wine_id 
+					<if test='wineDataType.endsWith("buy")'>
+					and WL.type = 'IN'
+					</if>
+					<if test='wineDataType.endsWith("drink")'>
+					and WL.type = 'OUT'
+					</if>
+				</if>
+				where W.user_id = #{userId}
+				group by 
+				<if test='wineDataType == null or wineDataType.startsWith("country")'>
+				W.country
+				</if>
+				<if test='wineDataType != null and wineDataType.startsWith("region")'>
+				W.region
+				</if>
+				order by count desc
+			) A
+		) B
+		where B.row_num > 10
+    </select>
 
 </mapper>
