@@ -173,30 +173,77 @@
 			</div>
 		</div>
 		
-		<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
-			data-v0-t="card">
-			<div class="flex flex-col space-y-1.5 p-6">
-				<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
-					Top Referrers
-				</h3>
-				<p class="text-sm text-muted-foreground">Last 30 days</p>
-			</div>
-			<div class="p-6">
-				<div class="grid gap-4">
-					<div class="flex items-center justify-between">
-						<div>google.com</div>
-						<div class="font-medium">3,456</div>
-					</div>
-					<div class="flex items-center justify-between">
-						<div>twitter.com</div>
-						<div class="font-medium">2,345</div>
-					</div>
-					<div class="flex items-center justify-between">
-						<div>facebook.com</div>
-						<div class="font-medium">1,234</div>
+		<div class="grid gap-6 grid-col-1 lg:grid-cols-2">
+		
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Best Wine You Drank
+					</h3>
+					<p class="text-sm text-muted-foreground">The highest rating</p>
+				</div>
+				<div class="p-6">
+					<div class="grid gap-4 text-sm">
+						<div th:each="data : ${top3.bestWine}" class="flex items-center justify-between">
+							<div><span th:text="${data.name}">와인이름</span></div>
+							<div class="font-medium min-w-16 text-right"><span th:text="${data.value}">평점</span></div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Bang For Your Buck!
+					</h3>
+					<p class="text-sm text-muted-foreground">Rating per a dollar</p>
+				</div>
+				<div class="p-6">
+					<div class="grid gap-4 text-sm">
+						<div th:each="data : ${top3.costEffectiveWine}" class="flex items-center justify-between">
+							<div><span th:text="${data.name}">와인이름</span></div>
+							<div class="font-medium min-w-16 text-right"><span th:text="|${#numbers.formatDecimal(data.value, 1, 2)} / 1$|">1달러 당 평점</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Most Consumed Wine
+					</h3>
+					<p class="text-sm text-muted-foreground">Wine you drank the most</p>
+				</div>
+				<div class="p-6">
+					<div class="grid gap-4 text-sm">
+						<div th:each="data : ${top3.mostConsumedWine}" class="flex items-center justify-between">
+							<div><span th:text="${data.name}">와인이름</span></div>
+							<div class="font-medium min-w-16 text-right"><span th:text="|${#numbers.formatDecimal(data.value, 1, 0)} bottles|">마신 병 수</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
+				data-v0-t="card">
+				<div class="flex flex-col space-y-1.5 p-6">
+					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+						Most Expensive Wine
+					</h3>
+					<p class="text-sm text-muted-foreground">The most expensive wine ever bought</p>
+				</div>
+				<div class="p-6">
+					<div class="grid gap-4 text-sm">
+						<div th:each="data : ${top3.mostExpensiveWine}" class="flex items-center justify-between">
+							<div><span th:text="${data.name}">와인이름</span></div>
+							<div class="font-medium min-w-16 text-right"><span th:text="|${#numbers.formatDecimal(data.value, 1, 2)}$|">가격</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </main>

@@ -313,5 +313,50 @@
 		on 1=1
 		where WL.user_id = #{userId} and WL.type = 'IN'
 	</select>
+	
+	<select id="selectBestWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
+		select CONCAT(W.name, IFNULL(CONCAT(' - ', W.vintage), ''), (CASE WHEN W.size != 'Standard' THEN CONCAT(' [', W.size, ']') ELSE '' END)) name, MAX(R.rating) value
+		from wine.wine W
+		inner join wine.wine_log WL
+		on WL.wine_id = W.wine_id
+		inner join wine.review R
+		on R.log_id = WL.log_id
+		where W.user_id = #{userId}
+		group by W.name, W.average_price, W.vintage, W.size
+		order by value desc, W.average_price desc
+		limit 3
+	</select>
+	<select id="selectCostEffectiveWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
+		select W.name name, (W.average_rating / W.average_price) value
+		from wine.wine W
+		left join (select AVG(average_rating) avg_rating from wine.wine where user_id = 'jsw4795') AR
+		on 1=1 
+		where W.user_id = #{userId} and W.average_rating > AR.avg_rating
+		order by value desc, W.average_price asc
+		limit 3
+	</select>
+	<select id="selectMostConsumedWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
+		select W.name name, SUM(WL.count) value
+		from wine.wine W
+		inner join wine.wine_log WL
+		on WL.wine_id = W.wine_id and WL.type = 'OUT'
+		where W.user_id = #{userId}
+		group by W.name, W.average_price
+		order by value desc, W.average_price desc
+		limit 3
+	</select>
+	<select id="selectMostExpensiveWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
+		select CONCAT(W.name, IFNULL(CONCAT(' - ', W.vintage), ''), (CASE WHEN W.size != 'Standard' THEN CONCAT(' [', W.size, ']') ELSE '' END)) name
+			, (MAX(WL.price) / ER.USD) value
+		from wine.wine W
+		inner join wine.wine_log WL
+		on WL.wine_id = W.wine_id and WL.type = 'IN'
+		left join wine.exchange_rate ER
+		on 1=1 
+		where W.user_id = #{userId}
+		group by W.name, W.vintage, W.size, ER.USD
+		order by value desc
+		limit 3
+	</select>
 
 </mapper>

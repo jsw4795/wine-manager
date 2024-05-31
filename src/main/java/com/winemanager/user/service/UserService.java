@@ -1,6 +1,7 @@
 package com.winemanager.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
@@ -13,6 +14,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.Top3Stats;
 import com.winemanager.user.domain.stats.WineByCountry;
 
 public interface UserService {
@@ -29,4 +31,5 @@ public interface UserService {
 	public List<WineByType> getWineByType(StatsRequest statsRequest);
 	public List<WineByCountry> getWineByCountry(StatsRequest statsRequest);
 	public List<WineByPrice> getWineByPrice(StatsRequest statsRequest);
+	public Map<String, List<Top3Stats>> getTop3Stats(String userId);
 }

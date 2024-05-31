@@ -1,6 +1,8 @@
 package com.winemanager.user.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import com.winemanager.user.domain.User;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.Top3Stats;
 import com.winemanager.user.domain.stats.WineByCountry;
 import com.winemanager.user.domain.stats.WineByPlace;
 import com.winemanager.user.domain.stats.WineByPrice;
@@ -113,6 +116,19 @@ public class UserServiceImpl implements UserService{
 	public List<WineByPrice> getWineByPrice(StatsRequest statsRequest) {
 		
 		return userMapper.selectWineByPrice(statsRequest);
+	}
+
+	@Transactional
+	@Override
+	public Map<String, List<Top3Stats>> getTop3Stats(String userId) {
+		Map<String, List<Top3Stats>> result = new HashMap<>();
+		
+		result.put("bestWine", userMapper.selectBestWine(userId));
+		result.put("costEffectiveWine", userMapper.selectCostEffectiveWine(userId));
+		result.put("mostConsumedWine", userMapper.selectMostConsumedWine(userId));
+		result.put("mostExpensiveWine", userMapper.selectMostExpensiveWine(userId));
+		
+		return result;
 	}
 	
 	

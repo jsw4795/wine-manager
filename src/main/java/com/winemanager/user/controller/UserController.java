@@ -26,6 +26,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.Top3Stats;
 import com.winemanager.user.domain.stats.WineByCountry;
 import com.winemanager.user.service.UserService;
 import com.winemanager.wine.service.WineService;
@@ -113,7 +114,11 @@ public class UserController {
 	}
 	
 	@GetMapping("/my-page/stats")
-	public String getStats() {
+	public String getStats(Principal principal, Model model) {
+		Map<String, List<Top3Stats>> top3Stats = userService.getTop3Stats(principal.getName());
+		
+		model.addAttribute("top3", top3Stats);
+		
 		return "/user/my-page-stats";
 	}
 	

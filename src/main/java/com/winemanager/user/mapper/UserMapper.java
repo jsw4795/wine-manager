@@ -14,6 +14,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
+import com.winemanager.user.domain.stats.Top3Stats;
 import com.winemanager.user.domain.stats.WineByCountry;
 
 @Mapper
@@ -30,4 +31,8 @@ public interface UserMapper {
 	public List<WineByType> selectWineByType(StatsRequest statsRequest);
 	public List<WineByCountry> selectWineByCountry(StatsRequest statsRequest);
 	public List<WineByPrice> selectWineByPrice(StatsRequest statsRequest);
+	public List<Top3Stats> selectBestWine(String userId);
+	public List<Top3Stats> selectCostEffectiveWine(String userId);
+	public List<Top3Stats> selectMostConsumedWine(String userId);
+	public List<Top3Stats> selectMostExpensiveWine(String userId);
 }
