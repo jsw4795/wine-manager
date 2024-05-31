@@ -329,7 +329,7 @@
 	<select id="selectCostEffectiveWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
 		select W.name name, (W.average_rating / W.average_price) value
 		from wine.wine W
-		left join (select AVG(average_rating) avg_rating from wine.wine where user_id = 'jsw4795') AR
+		left join (select AVG(average_rating) avg_rating from wine.wine where user_id = #{userId}) AR
 		on 1=1 
 		where W.user_id = #{userId} and W.average_rating > AR.avg_rating
 		order by value desc, W.average_price asc
