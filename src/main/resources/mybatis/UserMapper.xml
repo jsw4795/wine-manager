@@ -323,16 +323,33 @@
 		on R.log_id = WL.log_id
 		where W.user_id = #{userId}
 		group by W.name, W.average_price, W.vintage, W.size
-		order by value desc, W.average_price desc
+		order by value desc
 		limit 3
 	</select>
 	<select id="selectCostEffectiveWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
-		select W.name name, (W.average_rating / W.average_price) value
-		from wine.wine W
-		left join (select AVG(average_rating) avg_rating from wine.wine where user_id = #{userId}) AR
-		on 1=1 
-		where W.user_id = #{userId} and W.average_rating > AR.avg_rating
-		order by value desc, W.average_price asc
+		select T2.name name, (T2.user_average_rating / (T2.user_average_price / ER.USD)) value
+		from (
+			select T1.wine_id, T1.name, T1.user_average_rating, (sum(LI.price * LI.count) / SUM(LI.count)) user_average_price
+			from (
+				select W.wine_id, W.name, AVG(R.rating) user_average_rating
+				from wine.wine W
+				left join wine.wine_log LO
+				on LO.wine_id = W.wine_id and LO.type = 'OUT'
+				left join wine.review R
+				on R.log_id = LO.log_id
+		        inner join (select AVG(rating) total_average_rating from wine.review where user_id = #{userId}) R2
+		        on R.rating > R2.total_average_rating
+				where W.user_id = #{userId}
+				group by W.wine_id, W.name
+			) T1
+			left join wine.wine_log LI
+			on LI.wine_id = T1.wine_id and LI.type = 'IN'
+			group by T1.wine_id, T1.name
+		) T2
+		left join
+		wine.exchange_rate ER
+		on 1=1
+		order by value desc, T2.user_average_price desc
 		limit 3
 	</select>
 	<select id="selectMostConsumedWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
@@ -342,7 +359,7 @@
 		on WL.wine_id = W.wine_id and WL.type = 'OUT'
 		where W.user_id = #{userId}
 		group by W.name, W.average_price
-		order by value desc, W.average_price desc
+		order by value desc
 		limit 3
 	</select>
 	<select id="selectMostExpensiveWine" parameterType="String" resultType="com.winemanager.user.domain.stats.Top3Stats">
