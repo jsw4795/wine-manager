@@ -322,7 +322,7 @@
 		inner join wine.review R
 		on R.log_id = WL.log_id
 		where W.user_id = #{userId}
-		group by W.name, W.average_price, W.vintage, W.size
+		group by W.name, W.vintage, W.size
 		order by value desc
 		limit 3
 	</select>
@@ -358,7 +358,7 @@
 		inner join wine.wine_log WL
 		on WL.wine_id = W.wine_id and WL.type = 'OUT'
 		where W.user_id = #{userId}
-		group by W.name, W.average_price
+		group by W.name
 		order by value desc
 		limit 3
 	</select>
