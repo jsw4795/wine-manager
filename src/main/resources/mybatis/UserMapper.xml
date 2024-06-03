@@ -343,7 +343,7 @@
 				group by W.wine_id, W.name
 			) T1
 			left join wine.wine_log LI
-			on LI.wine_id = T1.wine_id and LI.type = 'IN'
+			on LI.wine_id = T1.wine_id and LI.type = 'IN' and LI.price > 0
 			group by T1.wine_id, T1.name
 		) T2
 		left join
