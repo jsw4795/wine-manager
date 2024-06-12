@@ -1,6 +1,5 @@
 package com.winemanager.wine.controller;
 
-import java.security.Principal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.service.WineService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -45,16 +45,21 @@ public class WineController {
 	
 	private final WineService wineService;
 	
+	@ModelAttribute
+	public void load(Model model, @AuthenticationPrincipal User user){
+		if(user == null)
+			user = new User();
+		model.addAttribute("user", user);
+
+	}
+	
 	@GetMapping("/")
-	public String getIndex(@AuthenticationPrincipal User user, Principal principal, Model model) {
-		user = setDefaultUser(user);
-		model.addAttribute("userId", user.getUserId());
+	public String getIndex(HttpSession session, Model model) {
 		return "index";
 	}
 	
 	@GetMapping("/about")
-	public String getAbout(Principal principal, Model model) {
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
+	public String getAbout(Model model) {
 		return "about";
 	}
 		
@@ -62,14 +67,14 @@ public class WineController {
 	// 와인 등록 폼
 	@GetMapping("/add-wine")
 	public String getAddWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
-							Principal principal, Model model) {
+			@AuthenticationPrincipal User user, Model model) {
 		
 		// 와인 아이디가 주어지면, 내 와인일 때 자동 정보 입력
 		if(addWineRequest.getWineId() != null) {
 			Wine wine = wineService.getWine(addWineRequest.getWineId()); 
 			setWineImage(wine);
 			
-			if(wine != null && wine.getUserId().equals(principal.getName())) {
+			if(wine != null && wine.getUserId().equals(user.getUserId())) {
 				addWineRequest.setWineId(wine.getWineId());
 				addWineRequest.setWineName(wine.getName());
 				addWineRequest.setWineVintage(wine.getVintage());
@@ -88,9 +93,8 @@ public class WineController {
 			}
 		}
 		
-		List<String> placeList = wineService.getBuyPlace(principal.getName());
+		List<String> placeList = wineService.getBuyPlace(user.getUserId());
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("placeList", placeList);
 		
 		return "wine/add-wine";
@@ -98,30 +102,29 @@ public class WineController {
 	// 와인 등록 실행
 	@PostMapping("/add-wine")
 	public String addWine(@Valid @ModelAttribute AddWineRequest addWineRequest, BindingResult result,
-						Principal principal, Model model) {
+			@AuthenticationPrincipal User user, Model model) {
 		
 		if(result.hasErrors())
 			return "wine/add-wine";
 		
-		String userId = principal.getName();
 		int wineId = 0;
 
 		if(addWineRequest.getWineId() == null) // 새로운 와인 등록
-			wineId = wineService.addNewWine(addWineRequest, userId);
+			wineId = wineService.addNewWine(addWineRequest, user.getUserId());
 		 else { // 원래 있던 와인 추가
-			 if(wineService.isMyWine(addWineRequest.getWineId(), userId)) // 본인 와인일 때만 추가함
-				 wineId = wineService.addBuyWineLog(addWineRequest, userId);			 
+			 if(wineService.isMyWine(addWineRequest.getWineId(), user.getUserId())) // 본인 와인일 때만 추가함
+				 wineId = wineService.addBuyWineLog(addWineRequest, user.getUserId());			 
 		 }
 		
 		
 		return "redirect:/wine/" + wineId;
 	}
 	@GetMapping("/add-wine/my-wine-list")
-	public String getMyWineList(Principal principal, String keyword, Model model) {
+	public String getMyWineList(@AuthenticationPrincipal User user, String keyword, Model model) {
 		if(keyword == null || keyword.trim().length() == 0)
 			return "wine/emptyResultTemplate-add-wine";
 		
-		List<Wine> wineList = wineService.getWineListByWineName(keyword, principal.getName());
+		List<Wine> wineList = wineService.getWineListByWineName(keyword, user.getUserId());
 		setWineImage(wineList);
 		
 		if(wineList == null || wineList.size() == 0)
@@ -152,7 +155,7 @@ public class WineController {
 		return "wine/searchResultTemplate-add-wine";
 	}
 	@PostMapping("/add-place")
-	public String addPlace(String place, Principal principal, Model model) {
+	public String addPlace(String place, @AuthenticationPrincipal User user, Model model) {
 		boolean isBuyPlaceValid = false;
 		String errorMessage = "An unknown error occurred.";
 		
@@ -164,7 +167,7 @@ public class WineController {
 			errorMessage = "Place name must be at least 1 character and not more than 30 characters.";
 		} else {
 			// 이미 등록된 장소인지 확인
-			buyPlaceListOrigin = wineService.getBuyPlace(principal.getName());
+			buyPlaceListOrigin = wineService.getBuyPlace(user.getUserId());
 			if(buyPlaceListOrigin.contains(place)) {
 				errorMessage = "The place already exist.";
 			} else {
@@ -174,8 +177,8 @@ public class WineController {
 		
 		if(isBuyPlaceValid) {
 			// 장소 등록 후, 새로운 값 받아오기
-			wineService.insertBuyPlace(place, principal.getName());
-			buyPlaceList = wineService.getBuyPlace(principal.getName());
+			wineService.insertBuyPlace(place, user.getUserId());
+			buyPlaceList = wineService.getBuyPlace(user.getUserId());
 		}
 		
 		model.addAttribute("buyPlaceList", buyPlaceList);
@@ -187,12 +190,13 @@ public class WineController {
 	
 	
 	@GetMapping("/drink-wine")
-	public String getDrinkWine(@ModelAttribute DrinkWineRequest drinkWineRequest, BindingResult result, Principal principal, Model model) {
+	public String getDrinkWine(@ModelAttribute DrinkWineRequest drinkWineRequest, BindingResult result, 
+			@AuthenticationPrincipal User user, Model model) {
 		
 		if(drinkWineRequest.getWineId() != null) {
 			Wine wine = wineService.getWine(drinkWineRequest.getWineId());
 			setWineImage(wine);
-			if(wine != null && wine.getUserId().equals(principal.getName())) {
+			if(wine != null && wine.getUserId().equals(user.getUserId())) {
 				drinkWineRequest.setWineId(wine.getWineId());
 				drinkWineRequest.setWineName(wine.getName());
 				drinkWineRequest.setWineVintage(wine.getVintage());
@@ -205,21 +209,19 @@ public class WineController {
 			}
 		}
 		
-		List<String> placeList = wineService.getBuyPlace(principal.getName());
+		List<String> placeList = wineService.getBuyPlace(user.getUserId());
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("placeList", placeList);
 		
 		return "wine/drink-wine";
 	}
 	@PostMapping("/drink-wine")
 	public String drinkWine(@Valid @ModelAttribute DrinkWineRequest drinkWineRequest, BindingResult result,
-						Principal principal, Model model) {
+			@AuthenticationPrincipal User user, Model model) {
 		
 		if (result.hasErrors())
 			return "wine/drink-wine";
 
-		String userId = principal.getName();
 		int wineId = 0;
 		
 		Wine wine = wineService.getWine(drinkWineRequest.getWineId());
@@ -234,8 +236,8 @@ public class WineController {
 			return "wine/drink-wine";
 		}
 		
-		if (wine.getUserId().equals(userId))  // 본인 와인일 때만 추가함
-			 wineId = wineService.drinkWine(drinkWineRequest, userId);
+		if (wine.getUserId().equals(user.getUserId()))  // 본인 와인일 때만 추가함
+			 wineId = wineService.drinkWine(drinkWineRequest, user.getUserId());
 		
 		return "redirect:/wine/" + wineId;
 	}
@@ -243,12 +245,12 @@ public class WineController {
 	// 와인 수정 폼
 	@GetMapping("/edit-wine/{wineId}")
 	public String getEditWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result, @PathVariable int wineId,
-							Principal principal, Model model) {
+			@AuthenticationPrincipal User user, Model model) {
 		
 		// 내 와인일 때 만
 		Wine wine = wineService.getWine(addWineRequest.getWineId());
 		setWineImage(wine);
-		if(wine != null && wine.getUserId().equals(principal.getName())) {
+		if(wine != null && wine.getUserId().equals(user.getUserId())) {
 			addWineRequest.setWineId(wine.getWineId());
 			addWineRequest.setWineName(wine.getName());
 			addWineRequest.setWineVintage(wine.getVintage());
@@ -267,13 +269,12 @@ public class WineController {
 			return "error";
 		}
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		
 		return "wine/edit-wine";
 	}
 	@PostMapping("edit-wine/{wineId}")
 	public String editWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
-							Principal principal, Model model) {
+			@AuthenticationPrincipal User user, Model model) {
 		
 		// 파일 체크
 		if(!addWineRequest.getCustomImage().isEmpty()) {
@@ -303,8 +304,8 @@ public class WineController {
 		
 		// 내 와인인지 체크 후, 로직 실행
 		Wine wine = wineService.getWine(addWineRequest.getWineId());
-		if(wine != null && wine.getUserId().equals(principal.getName())) {
-			wineService.editWine(addWineRequest, principal.getName());
+		if(wine != null && wine.getUserId().equals(user.getUserId())) {
+			wineService.editWine(addWineRequest, user.getUserId());
 		} else {
 			model.addAttribute("errorMessage", "You do not have access.");
 			return "error";
@@ -319,12 +320,11 @@ public class WineController {
 		return "redirect:/my-wine/all?sortBy=price_asc";
 	}
 	@GetMapping("/my-wine/{type}")
-	public String getMyWine(MyWineRequest myWineRequest, Principal principal, HttpServletRequest request, Model model) {
-		
-		List<Wine> wineList = wineService.getMyWineList(myWineRequest, principal.getName());
+	public String getMyWine(MyWineRequest myWineRequest, @AuthenticationPrincipal User user, Model model) {
+		System.out.println(user);
+		List<Wine> wineList = wineService.getMyWineList(myWineRequest, user.getUserId());
 		setWineImage(wineList);
-		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
+
 		model.addAttribute("myWineRequest", myWineRequest);
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pagination", myWineRequest.getPagination());
@@ -332,27 +332,27 @@ public class WineController {
 		return "wine/my-wine";
 	}
 	@GetMapping("/wine/{wineId}")
-	public String getWineDetail(@PathVariable(name = "wineId") Integer wineId, Principal principal,
-							 Model model) {
+	public String getWineDetail(@PathVariable(name = "wineId") Integer wineId
+					, @AuthenticationPrincipal User user, Model model) {
 		// 내 와인이 아닌것은 볼 수 없다
-		if(!wineService.isMyWine(wineId, principal.getName())) {
+		if(!wineService.isMyWine(wineId, user.getUserId())) {
 			String errorMessage = "You do not have access.";
 			model.addAttribute("errorMessage", errorMessage);
 			return "error";
 		}
 		
-		WineDetailResponse response = wineService.getWineDetail(wineId, principal.getName());
+		WineDetailResponse response = wineService.getWineDetail(wineId, user.getUserId());
 		setWineImage(response.getWine());
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("response", response);
 		model.addAttribute("exchangeRate", wineService.getExchangeRate());
 		
 		return "wine/wine-detail";
 	}
 	@GetMapping("/wine/load")
-	public String getWineLogInWineDetail(WineDetailRequest wineDetailRequest, Principal principal, Model model) {
-		wineDetailRequest.setUserId(principal.getName());
+	public String getWineLogInWineDetail(WineDetailRequest wineDetailRequest, @AuthenticationPrincipal User user
+								, Model model) {
+		wineDetailRequest.setUserId(user.getUserId());
 		model.addAttribute("wineDetailRequest", wineDetailRequest);
 		
 		if(wineDetailRequest.getType().equalsIgnoreCase("log")) {
@@ -371,10 +371,11 @@ public class WineController {
 	}
 	
 	@GetMapping("/edit-wineLog/{logId}")
-	public String getEditWineLog(@PathVariable(name = "logId", required = true) Integer logId, Principal principal,
+	public String getEditWineLog(@PathVariable(name = "logId", required = true) Integer logId, 
+							@AuthenticationPrincipal User user,
 							@ModelAttribute EditWineLogRequest editWineLogRequest, BindingResult result,
 							HttpServletRequest request, Model model) {
-		WineLog wineLog = wineService.getWineLog(logId, principal.getName());
+		WineLog wineLog = wineService.getWineLog(logId, user.getUserId());
 		Wine wine = wineService.getWine(wineLog.getWineId());
 		setWineImage(wine);
 		
@@ -393,9 +394,8 @@ public class WineController {
 											   .build();
 		
 		
-		List<String> buyPlaceList = wineService.getBuyPlace(principal.getName());
+		List<String> buyPlaceList = wineService.getBuyPlace(user.getUserId());
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute(editWineLogRequest);
 		model.addAttribute("placeList", buyPlaceList);
 		
@@ -404,35 +404,36 @@ public class WineController {
 	
 	@PostMapping("/edit-wine-log")
 	public String editWineLog(@ModelAttribute EditWineLogRequest editWineLogRequest, BindingResult result,
-			Principal principal, Model model) {
+			@AuthenticationPrincipal User user, Model model) {
 		
 		if(result.hasErrors())
 			return "/wine/edit-wine-log";
 		
-		wineService.editWineLog(editWineLogRequest, principal.getName());	
+		wineService.editWineLog(editWineLogRequest, user.getUserId());	
 		
 		
 		return "redirect:/wine/" + editWineLogRequest.getWineId();
 	}
 	
 	@GetMapping("/edit-review/{reviewId}")
-	public String getEditReview(@PathVariable(name = "reviewId", required = true) Integer reviewId, Principal principal,
+	public String getEditReview(@PathVariable(name = "reviewId", required = true) Integer reviewId, 
+			@AuthenticationPrincipal User user,
 			@ModelAttribute EditReviewRequest editReviewRequest, BindingResult result, Model model) {
-		Review review = wineService.getReivew(reviewId, principal.getName());
+		Review review = wineService.getReivew(reviewId, user.getUserId());
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("review", review);
 		
 		return "/wine/edit-review";
 	}
 	
 	@PostMapping("/edit-review")
-	public String editReview(@ModelAttribute EditReviewRequest editReviewRequest, BindingResult result, Principal principal, Model model) {
+	public String editReview(@ModelAttribute EditReviewRequest editReviewRequest, BindingResult result, 
+			@AuthenticationPrincipal User user, Model model) {
 		
 		if(result.hasErrors())
 			return "/wine/edit-wine-log";
 		
-		wineService.editReview(editReviewRequest, principal.getName());
+		wineService.editReview(editReviewRequest, user.getUserId());
 		
 		return "redirect:/wine/" + editReviewRequest.getWineId();
 	}
@@ -465,13 +466,6 @@ public class WineController {
 	    SimpleDateFormat("yyyy-MM-dd"); //날짜 형식은 알아서 정하기
 	    CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
 	    binder.registerCustomEditor(Date.class, editor);
-	}
-	
-	private User setDefaultUser(User user) {
-		if(user == null) 
-			return new User();
-		
-		return user;
 	}
 	
 }

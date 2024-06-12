@@ -24,6 +24,8 @@ spring:
     multipart:
       max-file-size: 15MB
       max-request-size: 15MB
+  messages:
+    basename: messages/messages
     
 # mybatis 설정
 mybatis:

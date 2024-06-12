@@ -21,10 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import com.winemanager.user.domain.Language;
+import com.winemanager.user.domain.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -65,7 +70,10 @@ public class SecurityConfig {
 									HttpServletResponse response, Authentication authentication)
 									throws IOException, ServletException {
 								System.out.println("authentication : " + authentication.getName());
-
+								
+								// 세션에 언어 정보 저장
+								request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Language.valueOf(((User)authentication.getPrincipal()).getLanguage()).getLocale());
+								
 	                            response.sendRedirect("/");
 								
 							}

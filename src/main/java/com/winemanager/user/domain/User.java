@@ -16,7 +16,6 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails{
 	private String userId;
@@ -24,6 +23,11 @@ public class User implements UserDetails{
 	private String email;
 	private String nickname;
 	private String profilePic;
+	private String language; // en, ko
+	
+	public User() {
+		this.language = "en";
+	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

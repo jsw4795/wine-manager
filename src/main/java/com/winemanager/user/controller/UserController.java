@@ -1,11 +1,11 @@
 package com.winemanager.user.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.winemanager.security.domain.SecurityUser;
 import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
-import com.winemanager.user.domain.stats.WineByPlace;
-import com.winemanager.user.domain.stats.WineByPrice;
-import com.winemanager.user.domain.stats.WineByType;
+import com.winemanager.user.domain.User;
 import com.winemanager.user.domain.stats.SpendByTime;
 import com.winemanager.user.domain.stats.StatsRequest;
 import com.winemanager.user.domain.stats.StockByTime;
 import com.winemanager.user.domain.stats.Top3Stats;
 import com.winemanager.user.domain.stats.WineByCountry;
+import com.winemanager.user.domain.stats.WineByPlace;
+import com.winemanager.user.domain.stats.WineByPrice;
+import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.service.UserService;
 import com.winemanager.wine.service.WineService;
 
@@ -41,26 +41,33 @@ public class UserController {
 	private final UserService userService;
 	private final WineService wineService;
 	
+	@ModelAttribute
+	public void load(Model model, @AuthenticationPrincipal User user){
+		if(user == null)
+			user = new User();
+		model.addAttribute("user", user);
+
+	}
+	
 	@GetMapping("/login")
-	public String getLogin(@ModelAttribute SecurityUser securityUser, Principal principal, Model model, @RequestParam(required = false) String error) {
+	public String getLogin(@AuthenticationPrincipal User user, Model model, 
+					@RequestParam(required = false) String error) {
 		// 로그인 상태라면 메인화면으로
-		if(principal != null) 
+		if(user != null) 
 			return "redirect:/";
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("error", error);
 		
 		return "login/login";
 	}
 	
 	@GetMapping("/sign-up")
-	public String getSignUp(@ModelAttribute SignUpRequest signUpRequest, Principal principal, Model model) {
+	public String getSignUp(@ModelAttribute SignUpRequest signUpRequest, 
+			@AuthenticationPrincipal User user, Model model) {
 		// 로그인 상태라면 메인화면으로
-		if(principal != null) 
+		if(user != null) 
 			return "redirect:/";
-		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
-		
+				
 		return "login/sign-up";
 	}
 	
@@ -74,9 +81,9 @@ public class UserController {
 	}
 	// 회원가입 실행
 	@PostMapping("/sign-up")
-	public String signUp(@Valid @ModelAttribute SignUpRequest signUpRequest, BindingResult result, Principal principal, Model model) {
+	public String signUp(@Valid @ModelAttribute SignUpRequest signUpRequest, BindingResult result, 
+			 Model model) {
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		
 		// 비밀번호, 비밀번호 확인 미 일치 시, 에러 추가하고 로그인 회원가입 페이지로
 		if(!signUpRequest.getPassword().equals(signUpRequest.getPasswordCheck())) 
@@ -92,10 +99,9 @@ public class UserController {
 	}
 	
 	@GetMapping("/my-page")
-	public String myPage(Principal principal, Model model) {
-		MainStats mainStats = userService.getMainStats(principal.getName());
+	public String myPage(@AuthenticationPrincipal User user, Model model) {
+		MainStats mainStats = userService.getMainStats(user.getUserId());
 		
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
 		model.addAttribute("mainStats", mainStats);
 		model.addAttribute("exchangeRate", wineService.getExchangeRate());
 		
@@ -104,8 +110,8 @@ public class UserController {
 	
 	@GetMapping("/my-page/timeline")
 	@ResponseBody
-	public List<Timeline> getTimeline(TimelineRequest timelineRequest, Principal principal) {
-		timelineRequest.setUserId(principal.getName());
+	public List<Timeline> getTimeline(TimelineRequest timelineRequest, @AuthenticationPrincipal User user) {
+		timelineRequest.setUserId(user.getUserId());
 		List<Timeline> timeLineList = userService.getTimeline(timelineRequest);
 		
 		setWineImage(timeLineList);
@@ -114,8 +120,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/my-page/stats")
-	public String getStats(Principal principal, Model model) {
-		Map<String, List<Top3Stats>> top3Stats = userService.getTop3Stats(principal.getName());
+	public String getStats(@AuthenticationPrincipal User user, Model model) {
+		Map<String, List<Top3Stats>> top3Stats = userService.getTop3Stats(user.getUserId());
 		
 		model.addAttribute("top3", top3Stats);
 		
@@ -124,8 +130,8 @@ public class UserController {
 	
 	@GetMapping("/my-page/stats/spend-by-time")
 	@ResponseBody
-	public List<Map<String, Object>> getSpendByTimeData(StatsRequest statsRequest, Principal principal) {
-		statsRequest.setUserId(principal.getName());
+	public List<Map<String, Object>> getSpendByTimeData(StatsRequest statsRequest, @AuthenticationPrincipal User user) {
+		statsRequest.setUserId(user.getUserId());
 		List<SpendByTime> dataList = userService.getSpendByTime(statsRequest);
 		
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
@@ -142,8 +148,8 @@ public class UserController {
 	
 	@GetMapping("/my-page/stats/stock-by-time")
 	@ResponseBody
-	public List<Map<String, Object>> getStockByTimeData(StatsRequest statsRequest, Principal principal) {
-		statsRequest.setUserId(principal.getName());
+	public List<Map<String, Object>> getStockByTimeData(StatsRequest statsRequest, @AuthenticationPrincipal User user) {
+		statsRequest.setUserId(user.getUserId());
 		
 		List<StockByTime> dataList = userService.getStockByTime(statsRequest);
 		
@@ -161,8 +167,8 @@ public class UserController {
 
 	@GetMapping("/my-page/stats/wine-by-place")
 	@ResponseBody
-	public List<WineByPlace> getWineByPlaceData(StatsRequest statsRequest, Principal principal) {
-		statsRequest.setUserId(principal.getName());
+	public List<WineByPlace> getWineByPlaceData(StatsRequest statsRequest, @AuthenticationPrincipal User user) {
+		statsRequest.setUserId(user.getUserId());
 		
 		List<WineByPlace> result = userService.getWineByPlace(statsRequest);
 		
@@ -171,8 +177,8 @@ public class UserController {
 	
 	@GetMapping("/my-page/stats/wine-by-type")
 	@ResponseBody
-	public List<WineByType> getWineByTypeData(StatsRequest statsRequest, Principal principal) {
-		statsRequest.setUserId(principal.getName());
+	public List<WineByType> getWineByTypeData(StatsRequest statsRequest, @AuthenticationPrincipal User user) {
+		statsRequest.setUserId(user.getUserId());
 		
 		List<WineByType> result = userService.getWineByType(statsRequest);
 		
@@ -181,8 +187,8 @@ public class UserController {
 	
 	@GetMapping("/my-page/stats/wine-by-country")
 	@ResponseBody
-	public List<WineByCountry> getWineByCountryData(StatsRequest statsRequest, Principal principal) {
-		statsRequest.setUserId(principal.getName());
+	public List<WineByCountry> getWineByCountryData(StatsRequest statsRequest, @AuthenticationPrincipal User user) {
+		statsRequest.setUserId(user.getUserId());
 		
 		List<WineByCountry> result = userService.getWineByCountry(statsRequest);
 		
@@ -191,8 +197,8 @@ public class UserController {
 	
 	@GetMapping("/my-page/stats/wine-by-price")
 	@ResponseBody
-	public List<WineByPrice> getWineByPriceData(StatsRequest statsRequest, Principal principal) {
-		statsRequest.setUserId(principal.getName());
+	public List<WineByPrice> getWineByPriceData(StatsRequest statsRequest, @AuthenticationPrincipal User user) {
+		statsRequest.setUserId(user.getUserId());
 		
 		List<WineByPrice> result = userService.getWineByPrice(statsRequest);
 		

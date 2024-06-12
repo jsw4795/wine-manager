@@ -6,11 +6,11 @@
 	<nav class="md:flex text-center items-center justify-between p-8">
 		<h1 class=" text-3xl font-bold w-full md:w-fit"><a href="/">Wine Manager</a></h1>
 		<div class="flex items-center justify-between space-x-1 md:space-x-8 text-base md:text-xl mt-8 md:mt-0">
-			<a class="text-xs md:text-sm" th:href="${userId == null} ? '/login' : '/logout'" th:text="${userId == null} ? 'Login' : 'Logout'">Login</a>
-			<a class="" href="/add-wine">Add wine</a>
-			<a class="" href="/my-wine">My Wine</a>
-			<a class="" href="/my-page">My Page</a>
-			<a class="" href="/about">About</a>
+			<a class="text-xs md:text-sm" th:href="${user.userId == null} ? '/login' : '/logout'" th:text="${user.userId == null} ? 'Login' : 'Logout'">Login</a>
+			<a th:text="#{nav_addWine}" class="" href="/add-wine">Add wine</a>
+			<a th:text="#{nav_myWine}" class="" href="/my-wine">My Wine</a>
+			<a th:text="#{nav_myPage}" class="" href="/my-page">My Page</a>
+			<a th:text="#{nav_about}" class="" href="/about">About</a>
 		</div>
 	</nav>
 </header>
