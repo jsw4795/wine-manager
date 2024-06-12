@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.winemanager.user.domain.User;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
 import com.winemanager.wine.domain.EditReviewRequest;
@@ -44,8 +46,9 @@ public class WineController {
 	private final WineService wineService;
 	
 	@GetMapping("/")
-	public String getIndex(Principal principal, Model model) {
-		model.addAttribute("userId", principal != null ? principal.getName() : null);
+	public String getIndex(@AuthenticationPrincipal User user, Principal principal, Model model) {
+		user = setDefaultUser(user);
+		model.addAttribute("userId", user.getUserId());
 		return "index";
 	}
 	
@@ -462,6 +465,13 @@ public class WineController {
 	    SimpleDateFormat("yyyy-MM-dd"); //날짜 형식은 알아서 정하기
 	    CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
 	    binder.registerCustomEditor(Date.class, editor);
+	}
+	
+	private User setDefaultUser(User user) {
+		if(user == null) 
+			return new User();
+		
+		return user;
 	}
 	
 }
