@@ -112,7 +112,21 @@ public class SecurityConfig {
 					rememberMeConfig
 						.key("UK") // 쿠키에 사용되는 값을 암호화 할때 사용할 키
 						.alwaysRemember(true)
-						.tokenValiditySeconds(3600 * 24 * 365);
+						.tokenValiditySeconds(3600 * 24 * 365)
+						.authenticationSuccessHandler(new AuthenticationSuccessHandler() {
+							@Override
+							public void onAuthenticationSuccess(HttpServletRequest request,
+									HttpServletResponse response, Authentication authentication)
+									throws IOException, ServletException {
+								System.out.println("auto authentication : " + authentication.getName());
+								
+								// 세션에 언어 정보 저장
+								request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Language.valueOf(((User)authentication.getPrincipal()).getLanguage()).getLocale());
+								
+								response.sendRedirect("/");
+							}
+		                });
+						
 						
 				})
 				.build();
