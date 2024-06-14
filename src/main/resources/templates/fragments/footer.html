@@ -6,18 +6,18 @@
 	<div class="max-w-7xl mx-auto flex-col md:flex-row flex px-4 sm:px-6 lg:px-8 pt-16 md:pt-24 md:justify-between items-center">
 		<div class="flex flex-col">
 			<span class="text-lg font-bold">Wine Manager</span> 
-			<span class="text-sm text-gray-600 mt-1">Comfortable Wine Management</span>
+			<span th:text="#{foot.description}" class="text-sm text-gray-600 mt-1">Comfortable Wine Management</span>
 		</div>
 		<div class="flex space-x-12 mt-10 md:mt-0">
 			<div class="flex flex-col">
-				<span class="text-sm font-semibold">Hours</span> 
-				<span class="text-sm text-gray-600 mt-1">Monday-Sunday</span> 
-				<span class="text-sm text-gray-600 mt-1">8am-11pm</span>
+				<span th:text="#{foot.hours}" class="text-sm font-semibold">Hours</span> 
+				<span th:text="#{foot.hours.day}" class="text-sm text-gray-600 mt-1">Monday-Sunday</span> 
+				<span th:text="#{foot.hours.hour}" class="text-sm text-gray-600 mt-1">8am-11pm</span>
 			</div>
 			<div class="flex flex-col">
-				<span class="text-sm font-semibold">Contact</span> 
-				<span class="text-sm text-gray-600 mt-1">jsw4795@naver.com</span> 
-				<span class="text-sm text-gray-600 mt-1">010 - 7510 - 4566</span>
+				<span th:text="#{foot.contact}" class="text-sm font-semibold">Contact</span> 
+				<span th:text="#{foot.contact.email}" class="text-sm text-gray-600 mt-1">jsw4795@naver.com</span> 
+				<span th:text="#{foot.contact.phone}" class="text-sm text-gray-600 mt-1">010 - 7510 - 4566</span>
 			</div>
 		</div>
 	</div>

@@ -321,7 +321,6 @@ public class WineController {
 	}
 	@GetMapping("/my-wine/{type}")
 	public String getMyWine(MyWineRequest myWineRequest, @AuthenticationPrincipal User user, Model model) {
-		System.out.println(user);
 		List<Wine> wineList = wineService.getMyWineList(myWineRequest, user.getUserId());
 		setWineImage(wineList);
 

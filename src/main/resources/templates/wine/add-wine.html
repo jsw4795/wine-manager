@@ -13,9 +13,9 @@
 
 <form th:object="${addWineRequest}" layout:fragment="content" action="/add-wine" method="POST" class="max-w-4xl mx-auto mb-8 mt-40 p-8">
 	<div class="text-right">
-		<a href="/drink-wine">
-			drink-wine
-			<svg class="inline" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12px" height="12px" viewBox="-0.5 0 8 8" version="1.1">
+		<a href="/drink-wine" class="align-middle">
+			<span th:text="#{addWine.go.drinkWine}">drink-wine</span>
+			<svg class="inline-block mb-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12px" height="12px" viewBox="-0.5 0 8 8" version="1.1">
 			    <title>play [#1001]</title>
 			    <desc>Created with Sketch.</desc>
 			    <defs>
@@ -30,7 +30,7 @@
 			</svg>
 		</a>
 	</div>
-	<h1 class="text-4xl font-bold text-center mb-12">Add Wine</h1>
+	<h1 th:text="#{addWine.title}" class="text-4xl font-bold text-center mb-12">Add Wine</h1>
 	<div class="flex flex-col space-y-6">
 		<div class="flex space-x-2">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -39,15 +39,15 @@
 				class="w-6 h-6 mt-2">
 				<path xmlns="http://www.w3.org/2000/svg" d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 		    </svg>
-			<input id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+			<input th:placeholder="#{addWine.search.description}" id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 				 placeholder="Search your wine name" />
 					<!-- 와인 검색 -->
-			<button id="search-btn" type="button"
-					class="group relative w-15 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
+			<button th:text="#{addWine.search}" id="search-btn" type="button"
+					class="group relative w-20 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
 					Search</button>
 		</div>
 		
-		<label class="font-semibold pt-14 text-2xl"> About Wine </label>
+		<label th:text="#{addWine.wine.title}" class="font-semibold pt-14 text-2xl"> About Wine </label>
 		<hr />
 		<input th:field="*{wineId}" type="hidden" name="wineId" />
 		
@@ -62,15 +62,15 @@
 		<div class="flex flex-col space-y-4">
 			<div class="grid md:grid-cols-4 gap-4">
 				<div class="flex flex-col md:col-span-3">
-					<label for="wine-name" class="font-semibold"> Name </label> 
-					<input th:field="*{wineName}" th:classappend="${#fields.hasErrors('wineName')} ? 'border-red-600' : ''" 
+					<label th:text="#{addWine.wine.name}" for="wine-name" class="font-semibold"> Name </label> 
+					<input th:placeholder="#{addWine.wine.name}" th:field="*{wineName}" th:classappend="${#fields.hasErrors('wineName')} ? 'border-red-600' : ''" 
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="wine-name" placeholder="Name" type="text" name="wineName" required autocomplete="off" readonly/> 
 					<p th:if="${#fields.hasErrors('wineName')}" th:errors="*{wineName}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label for="vintage" class="font-semibold"> Vintage </label> 
-					<input th:field="*{wineVintage}" th:classappend="${#fields.hasErrors('wineVintage')} ? 'border-red-600' : (*{wineId} != null ? 'bg-gray-200 border-gray-300' : '') "  
+					<label th:text="#{addWine.wine.vintage}" for="vintage" class="font-semibold"> Vintage </label> 
+					<input th:placeholder="#{addWine.wine.vintage.description}" th:field="*{wineVintage}" th:classappend="${#fields.hasErrors('wineVintage')} ? 'border-red-600' : (*{wineId} != null ? 'bg-gray-200 border-gray-300' : '') "  
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="vintage" placeholder="NV = blank" type="number" min="1900" max="2100" step="1" name="wineVintage" autocomplete="off" th:readonly="*{wineId} != null"/>
 					<p th:if="${#fields.hasErrors('wineVintage')}" th:errors="*{wineVintage}" class="text-red-600"></p>
@@ -78,15 +78,15 @@
 			</div>
 			<div class="grid grid-cols-2 gap-4">
 				<div class="flex flex-col">
-					<label for="country" class="font-semibold">Country</label> 
-					<input th:field="*{wineCountry}" th:classappend="${#fields.hasErrors('wineCountry')} ? 'border-red-600' : ''"   
+					<label th:text="#{addWine.wine.country}" for="country" class="font-semibold">Country</label> 
+					<input th:placeholder="#{addWine.wine.country}" th:field="*{wineCountry}" th:classappend="${#fields.hasErrors('wineCountry')} ? 'border-red-600' : ''"   
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="country" placeholder="Country" type="text" name="wineCountry" autocomplete="off" readonly/>
 					<p th:if="${#fields.hasErrors('wineCountry')}" th:errors="*{wineCountry}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label for="region" class="font-semibold">Region</label> 
-					<input th:field="*{wineRegion}" th:classappend="${#fields.hasErrors('wineRegion')} ? 'border-red-600' : ''"    
+					<label th:text="#{addWine.wine.region}" for="region" class="font-semibold">Region</label> 
+					<input th:placeholder="#{addWine.wine.region}" th:field="*{wineRegion}" th:classappend="${#fields.hasErrors('wineRegion')} ? 'border-red-600' : ''"    
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="region" placeholder="Region" type="text" name="wineRegion" autocomplete="off" readonly/>
 					<p th:if="${#fields.hasErrors('wineRegion')}" th:errors="*{wineRegion}" class="text-red-600"></p>
@@ -94,15 +94,15 @@
 			</div>
 			<div class="grid grid-cols-2 gap-4">
 				<div class="flex flex-col">
-					<label for="average-rate" class="font-semibold">Average_Rate</label> 
-					<input th:field="*{wineAverageRating}" th:classappend="${#fields.hasErrors('wineAverageRating')} ? 'border-red-600' : ''"     
+					<label th:text="#{addWine.wine.averageRate}" for="average-rate" class="font-semibold">Average_Rate</label> 
+					<input th:placeholder="#{addWine.wine.averageRate}" th:field="*{wineAverageRating}" th:classappend="${#fields.hasErrors('wineAverageRating')} ? 'border-red-600' : ''"     
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="average-rate" placeholder="Average_Rate" type="number" min="0" max="5" step="0.1" name="wineAverageRating" autocomplete="off" readonly/>
 					<p th:if="${#fields.hasErrors('wineAverageRating')}" th:errors="*{wineAverageRating}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label for="rating" class="font-semibold">Ratings</label> 
-					<input th:field="*{wineRating}" th:classappend="${#fields.hasErrors('wineRating')} ? 'border-red-600' : ''"     
+					<label th:text="#{addWine.wine.ratings}" for="rating" class="font-semibold">Ratings</label> 
+					<input th:placeholder="#{addWine.wine.ratings}" th:field="*{wineRating}" th:classappend="${#fields.hasErrors('wineRating')} ? 'border-red-600' : ''"     
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="rating" placeholder="Rating" type="number" min="0" step="1" name="wineRating" autocomplete="off" readonly/>
 					<p th:if="${#fields.hasErrors('wineRating')}" th:errors="*{wineRating}" class="text-red-600"></p>
@@ -110,14 +110,14 @@
 			</div>
 			
 			<div>
-				<label class="font-semibold">Size</label> 
+				<label th:text="#{addWine.wine.size}" class="font-semibold">Size</label> 
 				<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3 ">
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"    
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="size-sp" type="radio" value="Split" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
-				            <label for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
+				            <label th:text="|#{wine.size.split} - 0.178L|" for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
@@ -125,7 +125,7 @@
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"       
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="size-h" type="radio" value="Half" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-				            <label for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
+				            <label th:text="|#{wine.size.half} - 0.375L|" for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
@@ -133,7 +133,7 @@
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="size-st" type="radio" value="Standard" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
+				            <label th:text="|#{wine.size.standard} - 0.75L|" for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
@@ -141,7 +141,7 @@
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="size-m" type="radio" value="Magnum" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
+				            <label th:text="|#{wine.size.magnum} - 1.5L|" for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
@@ -149,7 +149,7 @@
 				            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="size-dm" type="radio" value="Double Magnum" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="size-dm" class="w-full py-3.5 ms-2 text-xs font-medium text-gray-900 ">Double Magnum - 3L</label>
+				            <label th:text="|#{wine.size.doubleMagnum} - 3L|" for="size-dm" class="w-full py-3.5 ms-2 text-xs font-medium text-gray-900 ">Double Magnum - 3L</label>
 				        </div>
 				    </li>
 				</ul>
@@ -157,14 +157,14 @@
 			</div>
 			
 			<div>
-				<label class="font-semibold">Type</label> 
+				<label th:text="#{addWine.wine.type}" class="font-semibold">Type</label> 
 				<ul class=" radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3">
 				            <input th:field="*{wineType}" th:classappend="${#fields.hasErrors('wineType')} ? 'border-red-600' : ''"        
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="type-r" type="radio" value="Red" name="wineType" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
-				            <label for="type-r" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Red </label>
+				            <label th:text="#{wine.type.red}" for="type-r" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Red </label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
@@ -172,7 +172,7 @@
 				            <input th:field="*{wineType}" th:classappend="${#fields.hasErrors('wineType')} ? 'border-red-600' : ''"         
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="type-w" type="radio" value="White" name="wineType" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="type-w" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">White</label>
+				            <label th:text="#{wine.type.white}" for="type-w" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">White</label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
@@ -180,7 +180,7 @@
 				            <input th:field="*{wineType}" th:classappend="${#fields.hasErrors('wineType')} ? 'border-red-600' : ''"         
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="type-s" type="radio" value="Sparkling" name="wineType" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="type-s" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Sparkling</label>
+				            <label th:text="#{wine.type.sparkling}" for="type-s" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Sparkling</label>
 				        </div>
 				    </li>
 				    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full ">
@@ -188,7 +188,7 @@
 				            <input th:field="*{wineType}" th:classappend="${#fields.hasErrors('wineType')} ? 'border-red-600' : ''"         
 				            	th:onclick="*{wineId} != null ? 'return false' : '' "  
 				            	id="type-rs" type="radio" value="Rose" name="wineType" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="type-rs" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Rose</label>
+				            <label th:text="#{wine.type.rose}" for="type-rs" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Rose</label>
 				        </div>
 				    </li>
 				</ul>
@@ -199,19 +199,19 @@
 			<input th:field="*{wineThumbBottom}" type="hidden" name="wineThumbBottom" />
 			<input th:field="*{wineLink}" type="hidden" name="wineLink" />
 			
-			<label class="font-semibold pt-14 text-2xl"> About purchase </label>
+			<label th:text="#{addWine.purchase.title}" class="font-semibold pt-14 text-2xl"> About purchase </label>
 			<hr />
 			<div class="grid md:grid-cols-4 gap-4">
 				<div class="flex flex-col md:col-span-3">
-					<label for="place" class="font-semibold"> Place </label>
+					<label th:text="#{addWine.purchase.place}" for="place" class="font-semibold"> Place </label>
 					<div class="grid grid-cols-12 space-x-1">
-						<input th:field="*{buyPlace}" th:classappend="${#fields.hasErrors('buyPlace')} ? 'border-red-600' : ''" 
+						<input th:placeholder="#{addWine.purchase.place}" th:field="*{buyPlace}" th:classappend="${#fields.hasErrors('buyPlace')} ? 'border-red-600' : ''" 
 							class="col-span-6 md:col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 							id="buy-place-text" placeholder="Select or write place" type="text" name="buyPlace" required autocomplete="off"/> 
 						<select id="buy-place-select"        
 							class="col-span-4 md:col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
 							style="white-space: nowrap; overflow-wrap: normal;" name="placeList" >
-							<option value="DI" selected >=Direct Input=</option>
+							<option th:text="#{addWine.purchase.place.directInput}" value="DI" selected >=Direct Input=</option>
 							<option th:each="place : ${placeList}" th:value="${place}" th:text="${place}"></option>
 						</select> 
 						<button id="add-place-btn" type="button" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
@@ -219,8 +219,8 @@
 					<p th:if="${#fields.hasErrors('buyPlace')}" th:errors="*{buyPlace}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label for="date" class="font-semibold"> Date </label> 
-					<input th:field="*{buyDate}" th:classappend="${#fields.hasErrors('buyDate')} ? 'border-red-600' : ''"         
+					<label th:text="#{addWine.purchase.date}" for="date" class="font-semibold"> Date </label> 
+					<input th:placeholder="#{addWine.purchase.date}" th:field="*{buyDate}" th:classappend="${#fields.hasErrors('buyDate')} ? 'border-red-600' : ''"         
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  disabled:cursor-not-allowed disabled:opacity-50"
 						id="date" type="date" name="buyDate" required/>
 					<p th:if="${#fields.hasErrors('buyDate')}" th:errors="*{buyDate}" class="text-red-600"></p>
@@ -228,7 +228,7 @@
 			</div>
 			<div class="grid md:grid-cols-2 gap-4">
 				<div class="flex flex-col">
-					<label for="price" class="font-semibold">Price</label> 
+					<label th:text="#{addWine.purchase.price}" for="price" class="font-semibold">Price</label> 
 					<div class="relative">
 				        <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
 				            <svg class="w-5 h-5 text-gray-500 "  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -237,7 +237,7 @@
 								<path xmlns="http://www.w3.org/2000/svg" id="primary-2" data-name="primary" d="M3,10H21M3,14H21" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/>
 				            </svg>
 				        </div>
-				        <input th:field="*{buyPrice}" th:classappend="${#fields.hasErrors('buyPrice')} ? 'border-red-600' : ''"   
+				        <input th:placeholder="#{addWine.purchase.price}" th:field="*{buyPrice}" th:classappend="${#fields.hasErrors('buyPrice')} ? 'border-red-600' : ''"   
 				        		type="number" id="price" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none focus:ring-blue-500 block w-full ps-10 p-2.5 " 
 				        		placeholder="Price (Won)" name="buyPrice" min="0" step="1" required autocomplete="off"/>
 				    </div>
@@ -245,15 +245,15 @@
 					
 				</div>
 				<div class="flex flex-col">
-					<label for="count" class="font-semibold">Count</label> 
-					<input th:field="*{buyCount}" th:classappend="${#fields.hasErrors('buyCount')} ? 'border-red-600' : ''"  
+					<label th:text="#{addWine.purchase.count}" for="count" class="font-semibold">Count</label> 
+					<input th:placeholder="#{addWine.purchase.count}" th:field="*{buyCount}" th:classappend="${#fields.hasErrors('buyCount')} ? 'border-red-600' : ''"  
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50"
 						id="count" placeholder="Count" type="number" min="0" step="1" name="buyCount" required autocomplete="off"/>
 					<p th:if="${#fields.hasErrors('buyCount')}" th:errors="*{buyCount}" class="text-red-600"></p>
 				</div>
 			</div>
 			<span class="mt-6"></span>
-			<button type="submit"
+			<button th:text="#{addWine.submit}" type="submit"
 					class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
 					Add!</button>
 		</div>
@@ -263,19 +263,19 @@
 	<div id="search-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
 		<div id="search-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 50vw; max-width: 80vw">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-xl font-semibold">Search result</h2>
-				<button type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+				<h2 th:text="#{addWine.search.result.title}" class="text-xl font-semibold">Search result</h2>
+				<button th:text="#{modal.close}" type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
 					Close</button>
 			</div>
 			<div id="search-modal-content" class="w-full modal-content flex justify-center " >
 				<div class="w-full">
 					<!-- Content Area -->
-					<h4 class="text-xl font-semibold">Registered Wine</h4>
+					<h4 th:text="#{addWine.search.result.registeredWine.title}" class="text-xl font-semibold">Registered Wine</h4>
 					<hr />
 					<div id="search-modal-content-old" class="mb-6">
 					
 					</div>
-					<h4 class="text-xl font-semibold">New Wine</h4>
+					<h4 th:text="#{addWine.search.result.newWine.title}" class="text-xl font-semibold">New Wine</h4>
 					<hr />
 					<div id="search-modal-content-new">
 					
@@ -288,14 +288,14 @@
 	<div id="place-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
 		<div id="place-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 30vw; ">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-xl font-semibold">Add place</h2>
-				<button type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+				<h2 th:text="#{addWine.purchase.place.addPlace.title}" class="text-xl font-semibold">Add place</h2>
+				<button th:text="#{modal.close}" type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
 					Close</button>
 			</div>
 			<div id="place-modal-content" class="modal-content flex justify-center w-full">
 				
 				<div class="grid grid-cols-10 space-x-1 w-full">
-					<input type="text" id="place-add-input" class="col-span-8 md:col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+					<input th:placeholder="#{addWine.purchase.place.addPlace.description}" type="text" id="place-add-input" class="col-span-8 md:col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
 						style="white-space: nowrap; overflow-wrap: normal;" placeholder="Add a new place where you bought wine" />
 						
 					<button type="button" id="add-place-submit" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
@@ -306,6 +306,11 @@
 				
 			</div>
 		</div>
+	</div>
+	
+	<div id="loading-container" class="hidden">
+		<div id="loading" class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 block mx-auto my-5"></div>
+		<h3 th:text="#{addWine.search.loading.description}" class="text-xl text-center">It can take about 10 seconds</h3>
 	</div>
 	
 	
