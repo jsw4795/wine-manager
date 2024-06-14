@@ -2,12 +2,7 @@
 $(() => {
 	// search 버튼 클릭
 	$("#search-btn").on("click", function() {	
-		if($("#search").val() == '') return;
-		$("#search-modal-content-old").html(getLoadingHTML(''));	
-		$("#search-modal-background").removeClass("hidden");
-		
-		let keyword = $("#search").val();
-		searchOwnWine(keyword);
+		search();
 	})
 	// search-input 에서 엔터 클릭
 	$("#search").on("keypress", function(e) {
@@ -17,11 +12,7 @@ $(() => {
 	$("#search").on("keyup", function(e) {
 		if($(this).val() == '') return;
 		if(e.keyCode == 13){
-			$("#search-modal-content-old").html(getLoadingHTML());	
-			$("#search-modal-background").removeClass("hidden");
-			
-			let keyword = $("#search").val();
-			searchOwnWine(keyword);
+			search();
 		}
 	})
 	
@@ -153,6 +144,15 @@ $(() => {
 	
 })
 
+function search() {
+	if($("#search").val() == '') return;
+	$("#search-modal-content-old").html($("#loading").html());	
+	$("#search-modal-background").removeClass("hidden");
+	
+	let keyword = $("#search").val();
+	searchOwnWine(keyword);
+}
+
 function searchOwnWine(keyword) {
 	$.ajax({
 		url: "/add-wine/my-wine-list",
@@ -189,6 +189,9 @@ function addPlace(place) {
 }
 
 // HTML Code
+/**
+ * deprecated
+ */
 function getLoadingHTML(content) {
 	return '<div><div id="loading" class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 block mx-auto my-5"></div><h3 class="text-xl text-center">'+content+'</h3></div>'
 }

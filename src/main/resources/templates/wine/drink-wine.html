@@ -14,7 +14,7 @@
 <form th:object="${drinkWineRequest}" layout:fragment="content" action="/drink-wine" method="POST" class="max-w-4xl mx-auto mb-8 mt-40 p-8">
 	<div class="text-right">
 		<a href="/add-wine">
-			add-wine
+			<span th:text="#{drinkWine.go.addWine}">add-wine</span>
 			<svg class="inline" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12px" height="12px" viewBox="-0.5 0 8 8" version="1.1">
 			    <title>play [#1001]</title>
 			    <desc>Created with Sketch.</desc>
@@ -30,7 +30,7 @@
 			</svg>
 		</a>
 	</div>
-	<h1 class="text-4xl font-bold text-center mb-12">Drink Wine</h1>
+	<h1 th:text="#{drinkWine.title}" class="text-4xl font-bold text-center mb-12">Drink Wine</h1>
 	<div class="flex flex-col space-y-6">
 		<div class="flex space-x-2">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -39,15 +39,15 @@
 				class="w-6 h-6 mt-2">
 				<path xmlns="http://www.w3.org/2000/svg" d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 		    </svg>
-			<input id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+			<input th:placeholder="#{addWine.search.description}" id="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 				 placeholder="Search your wine name" />
 					<!-- 와인 검색 -->
-			<button id="search-btn" type="button"
-					class="group relative w-15 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
+			<button th:text="#{addWine.search}" id="search-btn" type="button"
+					class="group relative w-20 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 ">
 					Search</button>
 		</div>
 		
-		<label class="font-semibold pt-14 text-2xl"> About Wine </label>
+		<label th:text="#{addWine.wine.title}" class="font-semibold pt-14 text-2xl"> About Wine </label>
 		<hr />
 		<input th:field="*{wineId}" type="hidden" name="wineId" />
 		
@@ -57,22 +57,22 @@
 				<h4 th:classappend="${wineCount == null} ? 'hidden' : '' "
 					class="text-orange-600 text-base w-full text-center"
 					id="stock-message">
-					You have <span id="wine-stock" th:text="${wineCount}">와인개수</span> in stock.
+					<span th:text="#{drinkWine.stock.description1}">You have</span> <span id="wine-stock" th:text="${wineCount}">와인개수</span><span th:text="#{drinkWine.stock.description2}">in stock.</span>
 				</h4>
 			</div>
 		</div>
 		<div class="flex flex-col space-y-4">
 			<div class="grid md:grid-cols-4 gap-4">
 				<div class="flex flex-col md:col-span-3">
-					<label for="wine-name" class="font-semibold"> Name </label> 
-					<input th:field="*{wineName}" 
+					<label th:text="#{addWine.wine.name}" for="wine-name" class="font-semibold"> Name </label> 
+					<input th:placeholder="#{addWine.wine.name}" th:field="*{wineName}" 
 						class="flex h-10 w-full rounded-md border border-input bg-gray-200 border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="wine-name" placeholder="Name" type="text" name="wineName" required autocomplete="off" readonly/> 
 					
 				</div>
 				<div class="flex flex-col">
-					<label for="vintage" class="font-semibold"> Vintage </label> 
-					<input th:field="*{wineVintage}" 
+					<label th:text="#{addWine.wine.vintage}" for="vintage" class="font-semibold"> Vintage </label> 
+					<input th:placeholder="#{addWine.wine.vintage.description}" th:field="*{wineVintage}" 
 						class="flex h-10 w-full bg-gray-200 border-gray-300 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="vintage" placeholder="NV = blank" type="number" min="1900" max="2100" step="1" name="wineVintage" autocomplete="off" readonly/>
 					
@@ -80,14 +80,14 @@
 			</div>
 			
 			<div>
-				<label class="font-semibold">Size</label> 
+				<label th:text="#{addWine.wine.size}" class="font-semibold">Size</label> 
 				<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
 				    <li class="w-full border-b border-gray-200 bg-gray-200 border-gray-300 md:border-b-0 md:border-r ">
 				        <div class="flex items-center ps-3 ">
 				            <input th:field="*{wineSize}" 
 				            	onclick="return false"
 				            	id="size-sp" type="radio" value="Split" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" required>
-				            <label for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
+				            <label th:text="|#{wine.size.split} - 0.178L|" for="size-sp" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Split - 0.178L</label>
 				        </div>
 				    </li>
 				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
@@ -95,7 +95,7 @@
 				            <input th:field="*{wineSize}"    
 				            	onclick="return false"
 				            	id="size-h" type="radio" value="Half" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-				            <label for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
+				            <label th:text="|#{wine.size.half} - 0.375L|" for="size-h" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Half - 0.375L</label>
 				        </div>
 				    </li>
 				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
@@ -103,7 +103,7 @@
 				            <input th:field="*{wineSize}"  
 				            	onclick="return false"
 				            	id="size-st" type="radio" value="Standard" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
+				            <label th:text="|#{wine.size.standard} - 0.75L|" for="size-st" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Standard - 0.75L</label>
 				        </div>
 				    </li>
 				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
@@ -111,7 +111,7 @@
 				            <input th:field="*{wineSize}"   
 				            	onclick="return false"
 				            	id="size-m" type="radio" value="Magnum" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
+				            <label th:text="|#{wine.size.magnum} - 1.5L|" for="size-m" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 ">Magnum - 1.5L</label>
 				        </div>
 				    </li>
 				    <li class="w-full border-b border-gray-200 md:border-b-0 md:border-r bg-gray-200 border-gray-300">
@@ -119,31 +119,31 @@
 				            <input th:field="*{wineSize}" 
 				            	onclick="return false"
 				            	id="size-dm" type="radio" value="Double Magnum" name="wineSize" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-				            <label for="size-dm" class="w-full py-3.5 ms-2 text-xs font-medium text-gray-900 ">Double Magnum - 3L</label>
+				            <label th:text="|#{wine.size.doubleMagnum} - 3L|" for="size-dm" class="w-full py-3.5 ms-2 text-xs font-medium text-gray-900 ">Double Magnum - 3L</label>
 				        </div>
 				    </li>
 				</ul>
 			</div>
 			
-			<label class="font-semibold pt-14 text-2xl"> About drinking </label>
+			<label th:text="#{drinkWine.drinking.title}" class="font-semibold pt-14 text-2xl"> About drinking </label>
 			<hr />
 			<div class="grid md:grid-cols-5 gap-4">
 				<div class="flex flex-col">
-					<label for="date" class="font-semibold"> Date </label> 
+					<label th:text="#{drinkWine.drinking.date}" for="date" class="font-semibold"> Date </label> 
 					<input th:field="*{drinkDate}" 
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="date" type="date" name="drinkDate" required/>
 				</div>
 				<div class="flex flex-col md:col-span-3">
-					<label for="place" class="font-semibold"> Place </label>
+					<label th:text="#{drinkWine.drinking.place}" for="place" class="font-semibold"> Place </label>
 					<div class="grid grid-cols-12 space-x-1">
-						<input th:field="*{drinkPlace}" th:classappend="${#fields.hasErrors('drinkPlace')} ? 'border-red-600' : ''" 
+						<input th:placeholder="#{drinkWine.drinking.place.description}" th:field="*{drinkPlace}" th:classappend="${#fields.hasErrors('drinkPlace')} ? 'border-red-600' : ''" 
 							class="col-span-6 md:col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 							id="buy-place-text" placeholder="Select or write place" type="text" name="drinkPlace" required autocomplete="off"/> 
 						<select id="buy-place-select"        
 							class="col-span-4 md:col-span-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none block w-full p-2.5 "
 							style="white-space: nowrap; overflow-wrap: normal;" name="placeList" >
-							<option value="DI" selected >=Direct Input=</option>
+							<option th:text="#{addWine.purchase.place.directInput}" value="DI" selected >=Direct Input=</option>
 							<option th:each="place : ${placeList}" th:value="${place}" th:text="${place}"></option>
 						</select> 
 						<button id="add-place-btn" type="button" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
@@ -151,8 +151,8 @@
 				
 				</div>
 				<div class="flex flex-col">
-					<label for="count" class="font-semibold">Count</label> 
-					<input th:field="*{drinkCount}" th:classappend="${#fields.hasErrors('drinkCount')} ? 'border-red-600' : ''"  
+					<label th:text="#{drinkWine.drinking.count}" for="count" class="font-semibold">Count</label> 
+					<input th:placeholder="#{drinkWine.drinking.count}" th:field="*{drinkCount}" th:classappend="${#fields.hasErrors('drinkCount')} ? 'border-red-600' : ''"  
 						th:max="${wineCount}"
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="count" placeholder="Count" type="number" min="1" step="1" name="drinkCount" required autocomplete="off"/>
@@ -164,11 +164,11 @@
 			<label class="inline-flex items-center cursor-pointer">
 			    <input id="review-on-btn" type="checkbox" value="" class="sr-only peer">
 			    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-			    <span class="ms-3 text-sm font-medium text-gray-900 ">Add review</span>
+			    <span th:text="#{drinkWine.review.button}" class="ms-3 text-sm font-medium text-gray-900 ">Add review</span>
 		    </label>
 		    
 			<div id="review-wrap" class="hidden">
-				<label class="font-semibold pt-14 text-2xl"> Review </label>
+				<label th:text="#{drinkWine.review}" class="font-semibold pt-14 text-2xl"> Review </label>
 				<hr />
 				<div class=" rounded-lg border bg-card text-card-foreground shadow-sm w-full  p-0"
 					data-v0-t="card">
@@ -196,15 +196,15 @@
 						</div>
 					
 						<div class="grid gap-1">
-							<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							<label th:text="#{drinkWine.review.title}" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 								for="title"> Title </label> 
-							<input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+							<input th:placeholder="#{drinkWine.review.title.description}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 								id="title" name="reviewTitle" placeholder="Enter the title" disabled/>
 						</div>
 						<div class="grid gap-1 mt-4">
-							<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							<label th:text="#{drinkWine.review.content}" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 								for="content"> Content </label>
-							<textarea class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+							<textarea th:placeholder="#{drinkWine.review.content.description}" class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 								id="content" name="reviewContent" placeholder="Enter the description" disabled></textarea>
 						</div>
 					</div>
@@ -214,7 +214,7 @@
 				<span class="mt-6"></span>
 			</div>
 			
-			<button type="submit"
+			<button th:text="#{drinkWine.submit}" type="submit"
 					class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
 					Drink!</button>
 		</div>
@@ -226,14 +226,14 @@
 	<div id="search-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
 		<div id="search-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 50vw; max-width: 80vw">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-xl font-semibold">Search result</h2>
-				<button type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+				<h2 th:text="#{addWine.search.result.title}" class="text-xl font-semibold">Search result</h2>
+				<button th:text="#{modal.close}" type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
 					Close</button>
 			</div>
 			<div id="search-modal-content" class="w-full modal-content flex justify-center " >
 				<div class="w-full">
 					<!-- Content Area -->
-					<h4 class="text-xl font-semibold">Registered Wine</h4>
+					<h4 th:text="#{addWine.search.result.registeredWine.title}" class="text-xl font-semibold">Registered Wine</h4>
 					<hr />
 					<div id="search-modal-content-old" class="mb-6">
 					
@@ -247,14 +247,14 @@
 	<div id="place-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
 		<div id="place-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 30vw; max-width: 80vw">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-xl font-semibold">Add place</h2>
-				<button type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+				<h2 th:text="#{addWine.purchase.place.addPlace.title}" class="text-xl font-semibold">Add place</h2>
+				<button th:text="#{modal.close}" type="button" class="close inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
 					Close</button>
 			</div>
 			<div id="place-modal-content" class="modal-content flex justify-center w-full">
 				
 				<div class="grid grid-cols-10 space-x-1 w-full">
-					<input type="text" id="place-add-input" class="col-span-8 md:col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+					<input th:placeholder="#{addWine.purchase.place.addPlace.description}" type="text" id="place-add-input" class="col-span-8 md:col-span-9 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
 						style="white-space: nowrap; overflow-wrap: normal;" placeholder="Add a new place where you bought wine" />
 						
 					<button type="button" id="add-place-submit" class="col-span-2 md:col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm ">+</button>
@@ -265,6 +265,11 @@
 				
 			</div>
 		</div>
+	</div>
+	
+	<div id="loading-container" class="hidden">
+		<div id="loading" class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 block mx-auto my-5"></div>
+		<h3 th:text="#{addWine.search.loading.description}" class="text-xl text-center">It can take about 10 seconds</h3>
 	</div>
 	
 </form>
