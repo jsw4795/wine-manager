@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,7 @@ public class WineController {
 	private final List<String> validFileExtension = new ArrayList<>(Arrays.asList(new String[] {".jpg", ".jpeg", ".png", ".webp"}));
 	
 	private final WineService wineService;
+	private final MessageSource messageSource;
 	
 	@ModelAttribute
 	public void load(Model model, @AuthenticationPrincipal User user){
@@ -323,7 +326,10 @@ public class WineController {
 	public String getMyWine(MyWineRequest myWineRequest, @AuthenticationPrincipal User user, Model model) {
 		List<Wine> wineList = wineService.getMyWineList(myWineRequest, user.getUserId());
 		setWineImage(wineList);
-
+		
+		String reqWineType = messageSource.getMessage("wine.type." + myWineRequest.getType().toLowerCase(), null, LocaleContextHolder.getLocale());
+		
+		model.addAttribute("reqWineType", reqWineType);
 		model.addAttribute("myWineRequest", myWineRequest);
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pagination", myWineRequest.getPagination());

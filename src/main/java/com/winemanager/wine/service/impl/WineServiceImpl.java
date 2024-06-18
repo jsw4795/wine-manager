@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,7 @@ public class WineServiceImpl implements WineService{
 
 	private final WineMapper wineMapper;
 	private final VivinoAPI vivinoAPI;
+	private final MessageSource messageSource;
 	
 	private double exchangeRate = 1300;
 	private String winePicPath = "/Users/jsw4795/springboot-workspace/wine-manager-images/wine-pic";
@@ -215,6 +218,10 @@ public class WineServiceImpl implements WineService{
 		
 		
 		List<Wine> wineList = wineMapper.selectMyWine(myWineRequest);
+		
+		for(Wine wine : wineList) {
+			wine.setSizeToShow(messageSource.getMessage("wine.size." + wine.getSize().toLowerCase(), null, LocaleContextHolder.getLocale()));
+		}
 		
 		return wineList;
 	}

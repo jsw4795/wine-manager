@@ -23,6 +23,8 @@ public class Wine {
 	private String wineType; // red, white, sparkling, rose
 	private String name;
 	private String size; // split, half, standard, magnum, double magnum
+	@Setter
+	private String sizeToShow;
 	private Integer vintage;
 	private String country;
 	private String region;
