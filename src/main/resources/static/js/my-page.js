@@ -26,7 +26,7 @@ window.onpageshow = function(event) {
 			case "timeline" : 
 				navBtnOn("timeline");
 				let scroll = myPageData.scroll; // 미리 저장을 안해놓으면 중간에 값이 바뀌기도함
-				requestTimeline(1, myPageData.page * globalPageSize, function() {
+				requestTimelineFirstTime(1, myPageData.page * globalPageSize, function() {
 					$(document).scrollTop(scroll);
 				});
 				break;
@@ -53,7 +53,7 @@ window.onpageshow = function(event) {
 		switch(myPageData.type){
 			case "timeline" : 
 				navBtnOn("timeline");
-				requestTimeline(myPageData.page, globalPageSize, function() {
+				requestTimelineFirstTime(myPageData.page, globalPageSize, function() {
 					$(document).scrollTop(0);
 				});
 				break;
@@ -66,13 +66,13 @@ window.onpageshow = function(event) {
 				break;
 			default:
 				navBtnOn("timeline")
-				requestTimeline(myPageData.page, globalPageSize, function() {
+				requestTimelineFirstTime(myPageData.page, globalPageSize, function() {
 					$(document).scrollTop(0);
 				});
 		}
 	} else { // 그 외 (my page 클릭해서 들어온 경우)
 		navBtnOn("timeline")
-		requestTimeline(myPageData.page, globalPageSize);
+		requestTimelineFirstTime(myPageData.page, globalPageSize);
 	}
 }
 
@@ -138,7 +138,7 @@ $(()=> {
 	$("#timeline-btn").on("click", function() {
 		myPageData.type = "timeline";
 		
-		requestTimeline(myPageData.page, globalPageSize);
+		requestTimelineFirstTime(myPageData.page, globalPageSize);
 	})
 	$("#stats-btn").on("click", function() {
 		myPageData.type = "stats";

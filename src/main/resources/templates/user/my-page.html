@@ -33,23 +33,23 @@
 			</div>
 			<div class="absolute w-full space-x-3 md:space-x-0 lg:space-x-10 text-center left-0 bottom-28">
 				<div class="stats-card align-bottom w-3/12 h-48 md:w-60 md:h-72 transition-all duration-700 opacity-0 mb-10 inline-flex flex-col justify-between gap-2 rounded-lg bg-gray-900/30 px-4 py-10 text-white shadow">
-					<h3 class="hidden md:block text-2xl font-bold">Number Of Buying</h3>
+					<h3 th:text="#{myPage.top3.buying}" class="hidden md:block text-2xl font-bold">Number Of Buying</h3>
 					<h3 class="block md:hidden text-2xl font-bold ">Buying</h3>
 					<span class=" block text-3xl md:text-6xl font-bold ">
 						<span th:text="${mainStats.numberOfBuying}" class="count whitespace-nowrap">104</span>
 					</span>
-					<span class="block text-lg md:text-xl ">bottles</span>
+					<span th:text="#{myPage.top3.bottles}" class="block text-lg md:text-xl ">bottles</span>
 				</div>
 				<div class="stats-card align-bottom  w-3/12 h-48 md:w-60 md:h-72 transition-all duration-700 opacity-0 mb-10 inline-flex flex-col justify-between gap-2 rounded-lg bg-gray-900/30 px-4 py-10 text-white shadow">
-					<h3 class="hidden md:block text-xl font-bold ">Number Of Drinking</h3>
+					<h3 th:text="#{myPage.top3.drinking}" class="hidden md:block text-xl font-bold ">Number Of Drinking</h3>
 					<h3 class="block md:hidden text-xl font-bold ">Drinking</h3>
 					<span class="block text-3xl md:text-6xl font-bold whitespace-nowrap">
 						<span th:text="${mainStats.numberOfDrinking}" class="count whitespace-nowrap">38</span>
 					</span>
-					<span class="block text-xl ">bottles</span>
+					<span th:text="#{myPage.top3.bottles}" class="block text-xl ">bottles</span>
 				</div>
 				<div id="MS-container" class="stats-card align-bottom  w-3/12 h-48 md:w-60 md:h-72 transition-all duration-700 opacity-0 mb-10 inline-flex flex-col justify-between gap-2 rounded-lg bg-gray-900/30 px-4 py-10 text-white shadow">
-					<h3 class="block text-base md:text-2xl font-bold ">Money Spent</h3>
+					<h3 th:text="#{myPage.top3.money}" class="block text-base md:text-2xl font-bold ">Money Spent</h3>
 					<span id="MS"  class="block text-2xl md:text-5xl font-bold whitespace-nowrap ">
 						<span class="ms">$</span><span th:text="${mainStats.moneySpent / exchangeRate}" class="ms count">200157</span>
 					</span>
@@ -68,13 +68,13 @@
 					<ul data-orientation="horizontal"
 						class="group flex flex-1 list-none items-center justify-center space-x-1"
 						dir="ltr">
-						<li><span id="timeline-btn"
+						<li><span th:text="#{myPage.nav.timeline}" id="timeline-btn"
 							class="my-page-nav border-2 pointer-events-none cursor-pointer border-gray-200 group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 "
 							data-radix-collection-item=""> Timeline </span></li>
-						<li><span id="stats-btn"
+						<li><span th:text="#{myPage.nav.stats}" id="stats-btn"
 							class="my-page-nav cursor-pointer border-gray-200 group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 "
 							data-radix-collection-item=""> Stats </span></li>
-						<li><span id="settings-btn"
+						<li><span th:text="#{myPage.nav.settings}" id="settings-btn"
 							class="my-page-nav cursor-pointer border-gray-200 group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 "
 							data-radix-collection-item=""> Settings </span></li>
 					</ul>

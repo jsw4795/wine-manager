@@ -1,8 +1,6 @@
 package com.winemanager.user.domain;
 
-import java.sql.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +17,7 @@ import lombok.ToString;
 public class Timeline {
 	private Integer wineId; // wine
 	private Integer logId; // wine_log
-	@JsonFormat(pattern = "MMMM d, yyyy (EEE)", locale = "en-US", timezone = "Asia/Seoul")
+	//@JsonFormat(pattern = "MMMM d, yyyy (EEE)", locale = "en-US", timezone = "Asia/Seoul")
 	private Date date; // wine_log
 	private String type; // wine_log
 	private String wineName; // wine

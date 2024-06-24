@@ -1,10 +1,12 @@
 package com.winemanager.user.controller;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.user.domain.MainStats;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
@@ -37,6 +41,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class UserController {
+	
+	private final ObjectMapper objectMapper;
+	private final DateFormat englishDateFormat;
+	private final DateFormat koreanDateFormat;
 	
 	private final UserService userService;
 	private final WineService wineService;
@@ -110,13 +118,34 @@ public class UserController {
 	
 	@GetMapping("/my-page/timeline")
 	@ResponseBody
-	public List<Timeline> getTimeline(TimelineRequest timelineRequest, @AuthenticationPrincipal User user) {
+	public String getTimeline(TimelineRequest timelineRequest, @AuthenticationPrincipal User user) throws JsonProcessingException {
 		timelineRequest.setUserId(user.getUserId());
 		List<Timeline> timeLineList = userService.getTimeline(timelineRequest);
 		
 		setWineImage(timeLineList);
 		
-		return timeLineList;
+		String jsonResult = null;
+		switch (LocaleContextHolder.getLocale().getLanguage()) {
+		case "en":
+			jsonResult = objectMapper.writer(englishDateFormat).writeValueAsString(timeLineList);
+			break;
+			
+		case "ko":
+			jsonResult = objectMapper.writer(koreanDateFormat).writeValueAsString(timeLineList);			
+			break;
+			
+		default:
+			jsonResult = objectMapper.writer(englishDateFormat).writeValueAsString(timeLineList);
+			break;
+		}
+		
+		return jsonResult;
+	}
+	
+	@GetMapping("/my-page/timeline/template")
+	public String getTimelineTemplate(@AuthenticationPrincipal User user) {
+		
+		return "/user/my-page-timeline-template";
 	}
 	
 	@GetMapping("/my-page/stats")
