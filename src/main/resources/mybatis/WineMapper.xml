@@ -206,6 +206,13 @@
     		usd = #{usd}
     </update>
     
+    <select id="selectExchangeRate" resultType="double">
+    	select 
+    		USD 
+    	from 
+    		wine.exchange_rate
+    </select>
+    
     <update id="updateWine" parameterType="com.winemanager.wine.domain.Wine" >
     	update
     		wine.wine

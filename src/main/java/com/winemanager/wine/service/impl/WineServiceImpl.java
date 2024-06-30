@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,9 +39,12 @@ import com.winemanager.wine.util.VivinoAPI;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
 public class WineServiceImpl implements WineService{
+	
+	
+	private final String apiKey; // final로 지정하면, @RequiredArgsConstructor에 의해 
+	private final String apiDataArg = "AP01"; // 환율 정보 요청
 
 	private final WineMapper wineMapper;
 	private final VivinoAPI vivinoAPI;
@@ -48,11 +53,25 @@ public class WineServiceImpl implements WineService{
 	private double exchangeRate = 1300;
 	private String winePicPath = "/Users/jsw4795/springboot-workspace/wine-manager-images/wine-pic";
 	
+	// 생성자가 1개여서 @AutoWired 생략
+	public WineServiceImpl(
+			@Value("${koreaexim-exchangeRate-apiKey}") String apiKey,
+			WineMapper wineMapper,
+			VivinoAPI vivinoAPI,
+			MessageSource messageSource
+			) {
+		this.apiKey = apiKey;
+		this.wineMapper = wineMapper;
+		this.vivinoAPI = vivinoAPI;
+		this.messageSource = messageSource;
+	}
+	
 	// 한시간마다 원-달러 환율 업데이트
 	@Scheduled(fixedRate = 60 * 60 * 1000) // 1시간에 한번 실행
 	public void run() {
+		System.setProperty("https.protocols", "TLSv1.2"); // handShake 오류 해결
 		String jsonData = null;
-		String requestURL = "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD";
+		String requestURL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=" + apiKey + "&data=" + apiDataArg;
 		
 		HttpRequest request = HttpRequest.newBuilder()
 			    .uri(URI.create(requestURL))
@@ -67,12 +86,28 @@ public class WineServiceImpl implements WineService{
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 		    List<Map<String, Object>> result = objectMapper.readValue(jsonData, new TypeReference<List<Map<String,Object>>>() {});
-		    this.exchangeRate = (double)result.get(0).get("basePrice");
-		    wineMapper.updateExchangeRate(this.exchangeRate);
-		    System.out.println("환율 설정: " + this.exchangeRate);
+		    
+		    if(result == null || result.size() < 1) { // 현재 API는 영업시간 외에 요청하면 null을 리턴함
+		    	System.out.println("[환율 업데이트]: 영업시간 외 요청");
+		    	return;
+		    }
+		    
+		    for(Map<String, Object> data : result) {
+		    	if(data.get("cur_unit").toString().equals("USD")){
+		    		double usd = Double.parseDouble(data.get("deal_bas_r").toString().replaceAll(",", ""));
+		    		wineMapper.updateExchangeRate(usd);
+		    		System.out.println("[환율 업데이트]: " + usd);
+		    	}
+		    	
+		    	// ...추후에 다른 통화 추가 시, 조건 추가
+		    }
 		    
 		} catch (Exception e) {
+			System.out.println("[환율 업데이트 중 오류 발생]");
 			e.printStackTrace();
+		} finally {
+			this.exchangeRate = wineMapper.selectExchangeRate();
+			System.out.println("환율 설정: " + this.exchangeRate);
 		}
 	}
 	

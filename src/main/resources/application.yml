@@ -6,6 +6,8 @@ spring:
   thymeleaf:
     cache: false
   profiles:
+    group:
+      "local": "local, API-KEY"
     active: local
 # Database 설정
   datasource:

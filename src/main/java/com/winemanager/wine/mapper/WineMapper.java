@@ -25,6 +25,7 @@ public interface WineMapper {
 	public String selectUserIdByWineId(int wineId);
 	public Wine selectWineById(int wineId);
 	public void insertReview(Review review);
+	public double selectExchangeRate();
 	public void updateExchangeRate(Double usd);
 	public void updateWine(Wine wine);
 	public WineLog selectWineLog(WineLog wineLog);
