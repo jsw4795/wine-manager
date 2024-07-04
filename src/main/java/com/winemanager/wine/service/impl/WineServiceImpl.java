@@ -2,11 +2,11 @@ package com.winemanager.wine.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.KeyManagementException;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.TrustManager;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -77,14 +77,11 @@ public class WineServiceImpl implements WineService{
 		// 인증서 무시를 위한 사전 작업
 		this.sslContext = SSLContext.getInstance("TLS");
 		sslContext.init(null, trustAllCerts, new SecureRandom());
-		// 세션 유지를 위한 쿠키 허용
-		CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
 	}
 	
 	// 한시간마다 원-달러 환율 업데이트
 	@Scheduled(fixedRate = 60 * 60 * 1000) // 1시간에 한번 실행
 	public void run() {
-		//System.setProperty("https.protocols", "TLSv1.3"); // handShake 오류 해결 (JDK 17은 기본이 TLSv1.3이다. 따라서 불필요) (API가 TLS1.3을 지원함)
 		String jsonData = null;
 		String requestURL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=" + apiKey + "&data=" + apiDataArg;
 		
@@ -95,10 +92,22 @@ public class WineServiceImpl implements WineService{
 			    .build();
 		
 		try {
-			HttpResponse<String> response = HttpClient.newBuilder()
-													  .sslContext(sslContext)
-													  .build()
-													  .send(request, HttpResponse.BodyHandlers.ofString());
+			
+			HttpClient client = HttpClient.newBuilder()
+										  .sslContext(sslContext)
+										  .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL)) // 쿠키 허용
+										  .followRedirects(Redirect.NORMAL) // 리다이렉트 허용
+										  .build();
+			
+			// 첫 요청에서 Remote host terminated the handshake 오류가 발생하기 때문에 미리 한번 요청 후 처리한다
+			try {
+				client.send(request, HttpResponse.BodyHandlers.ofString());	
+			} catch (Exception e) {
+				if(e.getMessage().equals("Remote host terminated the handshake"))
+				System.out.println("[환율 업데이트]: Remote host terminated the handshake 오류 발생");
+			}
+			
+			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 			jsonData = response.body();
 			
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -118,44 +127,6 @@ public class WineServiceImpl implements WineService{
 		    	
 		    	// ...추후에 다른 통화 추가 시, 조건 추가
 		    }
-		    
-		} catch (SSLHandshakeException e) {
-			// Remote host terminated the handshake 오류 발생 시 재시도
-			if(!e.getMessage().equals("Remote host terminated the handshake")) {
-				System.out.println("[환율 업데이트 실패]: 재시도 의미 없는 오류 발생");
-				e.printStackTrace();
-				return;
-			}
-			
-			System.out.println("[환율 업데이트 중 HandShakeException 발생]: 재시도 ");
-			
-			try {
-				HttpResponse<String> response;
-				response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-				jsonData = response.body();
-				
-				ObjectMapper objectMapper = new ObjectMapper();
-			    List<Map<String, Object>> result = objectMapper.readValue(jsonData, new TypeReference<List<Map<String,Object>>>() {});
-			    
-			    if(result == null || result.size() < 1) { // 현재 API는 영업시간 외에 요청하면 null을 리턴함
-			    	System.out.println("[환율 업데이트 실패]: 영업시간 외 요청");
-			    	return;
-			    }
-			    
-			    for(Map<String, Object> data : result) {
-			    	if(data.get("cur_unit").toString().equals("USD")){
-			    		double usd = Double.parseDouble(data.get("deal_bas_r").toString().replaceAll(",", ""));
-			    		wineMapper.updateExchangeRate(usd);
-			    		System.out.println("[환율 업데이트 성공]: " + usd);
-			    	}
-			    	
-			    	// ...추후에 다른 통화 추가 시, 조건 추가
-			    }
-			    
-			} catch (Exception e2) {
-				System.out.println("[환율 업데이트 중 오류 발생]: 재시도 중 오류");
-				e.printStackTrace();
-			}
 		} catch (Exception e) {
 			System.out.println("[환율 업데이트 중 오류 발생]");
 			e.printStackTrace();
