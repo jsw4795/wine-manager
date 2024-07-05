@@ -123,18 +123,23 @@ public class WineController {
 		return "redirect:/wine/" + wineId;
 	}
 	@GetMapping("/add-wine/my-wine-list")
-	public String getMyWineList(@AuthenticationPrincipal User user, String keyword, Model model) {
-		if(keyword == null || keyword.trim().length() == 0)
+	public String getMyWineList(@AuthenticationPrincipal User user, String keyword, String uuid, Model model) {
+		if(keyword == null || keyword.trim().length() == 0) {
+			model.addAttribute("uuid", uuid);
 			return "wine/emptyResultTemplate-add-wine";
+		}
 		
 		List<Wine> wineList = wineService.getWineListByWineName(keyword, user.getUserId());
 		setWineImage(wineList);
 		
-		if(wineList == null || wineList.size() == 0)
+		if(wineList == null || wineList.size() == 0) {
+			model.addAttribute("uuid", uuid);			
 			return "wine/emptyResultTemplate-add-wine";
+		}
 		
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("type", "old");
+		model.addAttribute("uuid", uuid);
 		
 		return "wine/searchResultTemplate-add-wine";
 	}

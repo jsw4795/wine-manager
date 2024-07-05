@@ -140,19 +140,21 @@ function search() {
 }
 
 function searchOwnWine(keyword) {
+	let uuid = uuidv4();
 	$.ajax({
 		url: "/add-wine/my-wine-list",
 		type: "GET",
-		data: {keyword, keyword},
+		data: {keyword, keyword, uuid: uuid},
 		dataType: "HTML",
 		success: function(resultHTML) {
-			$("#search-modal-content-old").html(resultHTML);
+			if($(resultHTML).find("#uuid").text() == uuid)
+				$("#search-modal-content-old").html(resultHTML);
 		}
 	});
 }
 var uuid;
 function searchNewWine(keyword) {
-	uuid = uuidv4();
+	let uuid = uuidv4();
 	$.ajax({
 		url: "/add-wine/search-new",
 		type: "GET",
