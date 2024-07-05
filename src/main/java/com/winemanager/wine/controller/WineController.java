@@ -148,8 +148,10 @@ public class WineController {
 		List<Wine> wineList = wineService.searchWineInVivino(keyword);
 		setWineImage(wineList);
 		
-		if(wineList == null || wineList.size() == 0)
-			return "wine/emptyResultTemplate-add-wine";
+		if(wineList == null || wineList.size() == 0) {
+			model.addAttribute("uuid", uuid);
+			return "wine/emptyResultTemplate-add-wine";			
+		}
 		
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("type", "new");
