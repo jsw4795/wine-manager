@@ -8,7 +8,7 @@
 			
 		<span class="text-sm md:text-lg font-semibold">
 			<span th:text="${wine.name}"></span>
-			<span th:if="${type == 'old'}" th:text="${wine.vintage == null ? '--NV' : '--'+wine.vintage}" class="font-black"></span>
+			<span th:if="${type == 'old'}" th:text="${wine.vintage == null ? '' : '--'+wine.vintage}" class="font-black"></span>
 			<span th:if="${type == 'old'}" th:text="${wine.size == 'Standard' ? '' : '--'+wine.size}" class="font-black"></span>
 		</span>
 		
