@@ -123,7 +123,7 @@ public class SecurityConfig {
 								// 세션에 언어 정보 저장
 								request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Language.valueOf(((User)authentication.getPrincipal()).getLanguage()).getLocale());
 								
-								response.sendRedirect("/");
+								response.sendRedirect(request.getRequestURI());
 							}
 		                });
 						
