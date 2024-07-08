@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
@@ -51,7 +50,7 @@ public class WineServiceImpl implements WineService{
 	
 	
 	private final String apiKey; // final로 지정하면, @RequiredArgsConstructor에 의해 빈을 주입하려해서 오류 발생함 (직접 생성자 작성)
-	private final String apiDataArg = "AP01"; // 환율 정보 요청
+	private final String apiDataArg; // 환율 정보 요청
 	private final SSLContext sslContext;
 
 	private final WineMapper wineMapper;
@@ -59,17 +58,21 @@ public class WineServiceImpl implements WineService{
 	private final MessageSource messageSource;
 	
 	private double exchangeRate = 1300;
-	private String winePicPath = "/Users/jsw4795/springboot-workspace/wine-manager-images/wine-pic";
+	private final String winePicPath;
 	
 	// 생성자가 1개여서 @AutoWired 생략
 	public WineServiceImpl(
 			@Value("${koreaexim-exchangeRate-apiKey}") String apiKey,
+			@Value("${winePicPath}") String winePicPath,
+			@Value("${apiDataArg}") String apiDataArg,
 			WineMapper wineMapper,
 			VivinoAPI vivinoAPI,
 			MessageSource messageSource,
 			TrustManager[] trustAllCerts //WebConfig 확인
 			) throws NoSuchAlgorithmException, KeyManagementException {
 		this.apiKey = apiKey;
+		this.winePicPath = winePicPath;
+		this.apiDataArg = apiDataArg;
 		this.wineMapper = wineMapper;
 		this.vivinoAPI = vivinoAPI;
 		this.messageSource = messageSource;
