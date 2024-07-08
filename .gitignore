@@ -164,5 +164,6 @@ Temporary Items
 
 #secret
 src/main/resources/application-API-KEY.yml
+src/main/resources/application-DB.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,macos
