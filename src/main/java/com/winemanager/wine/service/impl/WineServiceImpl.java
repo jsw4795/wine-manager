@@ -306,6 +306,8 @@ public class WineServiceImpl implements WineService{
 			wineLog.setStock(stock);
 		}
 		
+		response.getWine().setSizeToShow(messageSource.getMessage("wine.size." + response.getWine().getSize().toLowerCase(), null, LocaleContextHolder.getLocale()));
+		
 		return response;
 	}
 

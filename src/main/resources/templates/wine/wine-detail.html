@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="relative  md:inline-block">
-					<button type="button" class="absolute right-0 focus:outline-none text-white bg-gray-400 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-base rounded-full text-xs px-3 py-1.5 mb-2 "
+					<button th:text="#{wineDetail.button.modify}" type="button" class="absolute right-0 focus:outline-none text-white bg-gray-400 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-base rounded-full text-xs px-3 py-1.5 mb-2 text-nowrap"
 						th:onclick="|location='/edit-wine/${wine.wineId}'|">
 						Modify</button>
 				</div>
@@ -42,7 +42,7 @@
 							<div th:if="${wine.size != 'Standard' }" 
 								th:classappend="${wine.size == 'Double Magnum'} ? 'bg-red-700' : (${wine.size == 'Magnum'} ? 'bg-blue-700' : (${wine.size == 'Half'} ? 'bg-orange-500' : 'bg-yellow-500')) "
 								class="absolute top-0 left-0  p-2 rounded-br-lg ">
-								<span th:text="${wine.size}" class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
+								<span th:text="${wine.sizeToShow}" class="text-sm font-semibold text-white">기본이 아닌 와인 사이즈</span>
 							</div>
 							<img th:src="@{${wine.thumb}}" th:alt="${wine.name}"
 								class="inline-block my-2 h-[400px] object-cover" 
@@ -76,13 +76,13 @@
 				<div class="col-span-3">
 					<div class="flex justify-between">
 						<div>
-							<h2 class="text-lg font-semibold">Avg Price <span class="text-xs opacity-70">(750ml)</span></h2>
+							<h2 class="text-lg font-semibold"><span th:text="#{wineDetail.avgPrice}" >Avg Price</span> <span class="text-xs opacity-70">(750ml)</span></h2>
 							<p th:text="${wine.averagePrice != null} ? |$ ${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}| : '$ N/A' " class="text-2xl font-bold">비비노 평균 가격</p>
 							<p th:text="${wine.averagePrice != null} ? |(₩ ${#numbers.formatDecimal(wine.averagePrice * exchangeRate,1,'COMMA',0,'POINT')})| : '(₩ N/A)' " class="text-sm">비비노 평균 가격(원)</p>
 							
 						</div>
 						<div>
-							<h2 class="text-lg font-semibold">Your Avg Price</h2>
+							<h2 th:text="#{wineDetail.avgPrice.user}" class="text-lg font-semibold">Your Avg Price</h2>
 							<p th:text="|$ ${#numbers.formatDecimal(userAveragePrice / exchangeRate,1,'COMMA',2,'POINT')}|" class="text-2xl font-bold">사용자 평균 구매 가격(달러)</p>
 							<p th:text="|(₩ ${#numbers.formatDecimal(userAveragePrice,1,'COMMA',0,'POINT')})|" class="text-sm">사용자 평균 구매 가격</p>
 						</div>
@@ -104,7 +104,7 @@
 								</defs>
 					        </svg>
 							<span th:text="${wine.averageRating}" class="text-4xl font-medium">비비노 평점</span> 
-							<span th:text="|(${#numbers.formatDecimal(wine.rating,1,'COMMA',0,'POINT')} ratings)|" class="text-sm pt-4">비비노 평점 개수</span>
+							<span class="text-sm pt-4">(<span th:text="${#numbers.formatDecimal(wine.rating,1,'COMMA',0,'POINT')}">비비노 평점 개수</span> <span th:text="#{wineDetail.ratings}">ratings</span>)</span>
 				        </div>
 				        <div class="flex justify-between pt-1">
 				        	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
@@ -122,29 +122,29 @@
 								</defs>
 					        </svg>
 							<span th:text="${userAverageRating != null} ? (${userAverageRating * 10 % 1 == 0} ? ${#numbers.formatDecimal(userAverageRating,1,1)} : ${#numbers.formatDecimal(userAverageRating,1,2)}) : 'N/A' " class="text-3xl font-medium">유저 평점</span> 
-							<span th:text="|(${#numbers.formatDecimal(reviewList.size(),1,'COMMA',0,'POINT')} ratings)|" class="text-sm pt-3">유저 평점 개수</span>
+							<span class="text-sm pt-3">(<span th:text="${#numbers.formatDecimal(reviewList.size(),1,'COMMA',0,'POINT')}">유저 평점 개수</span> <span th:text="#{wineDetail.ratings}">ratings</span>)</span>
 						</div>
 					</div>
 					<div class="mt-6">
 						<div class="flex justify-between">
-							<p class="text-lg font-medium">Stock: <span th:text="${wine.count}" class="text-4xl"> 현재 보유량 </span> bottle(s)</p>
+							<p class="text-lg font-medium"><span th:text="#{wineDetail.stock}">Stock</span>: <span th:text="${wine.count}" class="text-4xl"> 현재 보유량 </span> <span th:text="#{wineDetail.bottles}">bottle(s)</span></p>
 							<a th:href="@{${wine.link}}" target="_blank">
-						    <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-black px-4 py-2 mt-1 text-white">
+						    <button th:text="#{wineDetail.learnMore}" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-black px-4 py-2 mt-1 text-white">
 						        Learn More
 						    </button>
 					    	</a>
 						</div>
 						<br />
-						<p class="text-sm">Number of buying: <span th:text="${numberOfBuying}"></span> bottle(s)</p>
-						<p class="text-sm">Number of drinking: <span th:text="${numberOfDrinking}"></span> bottle(s)</p>
+						<p class="text-sm"><span th:text="#{wineDetail.numberOfBuying}">Number of buying</span>: <span th:text="${numberOfBuying}"></span> <span th:text="#{wineDetail.bottles}">bottle(s)</span></p>
+						<p class="text-sm"><span th:text="#{wineDetail.numberOfDrinking}">Number of drinking</span>: <span th:text="${numberOfDrinking}"></span> <span th:text="#{wineDetail.bottles}">bottle(s)</span></p>
 					</div>
 					<div class="mt-6 flex justify-between">
 						<div class="inline-block">
-							<button type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
+							<button th:text="#{wineDetail.button.buying}" type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
 								th:onclick="|location='/add-wine?wineId=${wine.wineId}'|">
 								Bought</button>		
 						
-							<button type="button" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
+							<button th:text="#{wineDetail.button.drinking}" type="button" class="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
 								th:onclick="|location='/drink-wine?wineId=${wine.wineId}'|">
 								Drank</button>
 						</div>
@@ -157,7 +157,7 @@
 	<div class="w-full ">
 		<div class="w-4/5 h-full mx-auto">
 			<div class="w-full md:w-3/4 mx-auto my-10">
-				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
+				<h3 th:text="#{wineDetail.inventoryRecord}" class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
 				
 				<div id="history-mobile-container" class="history-for-mobile xl:hidden ">
 					<div th:each="wineLog, stat : ${wineLogList}" th:if="${stat.index < 5}" class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
@@ -182,7 +182,7 @@
 								</svg>
 							</a>
 							<div th:classappend="${wineLog.type == 'IN'} ? 'bg-green-100' : 'bg-red-100' " class="w-20 rounded-lg py-1 px-3  text-center ">
-								<span th:text="${wineLog.type == 'IN'} ? 'Buy' : 'Drink' "
+								<span th:text="${wineLog.type == 'IN'} ? #{wineDetail.inventoryRecord.row.buy} : #{wineDetail.inventoryRecord.row.drink} "
 									th:classappend="${wineLog.type == 'IN'} ? 'text-green-600' : 'text-red-600' " class="text-green-600 font-bold">Buy</span>
 							</div>
 						</div>
@@ -190,7 +190,7 @@
 				</div>
 				
 				<div class="w-full hidden xl:block relative overflow-x-auto shadow-md rounded-lg mb-3">
-					<table class="w-full text-sm text-center rtl:text-right text-gray-700 max-h-[400px] overflow-y-scroll">
+					<table class="w-full text-sm text-center rtl:text-right text-gray-700 max-h-[400px] overflow-y-scroll text-nowrap">
 						<colgroup>
 							<col width="15%">
 							<col width="5%">
@@ -202,13 +202,13 @@
 						</colgroup>
 						<thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
 							<tr>
-								<th scope="col" class="px-6 py-3">Date</th>
-								<th scope="col" class="px-6 py-3">Type</th>
-								<th scope="col" class="px-6 py-3">Place</th>
-								<th scope="col" class="px-6 py-3">Price</th>
-								<th scope="col" class="px-6 py-3">Number</th>
-								<th scope="col" class="px-6 py-3">Stock</th>
-								<th scope="col" class="px-6 py-3">Edit</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.date}" scope="col" class="px-6 py-3">Date</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.type}" scope="col" class="px-6 py-3">Type</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.place}" scope="col" class="px-6 py-3">Place</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.price}" scope="col" class="px-6 py-3">Price</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.number}" scope="col" class="px-6 py-3">Number</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.stock}" scope="col" class="px-6 py-3">Stock</th>
+								<th th:text="#{wineDetail.inventoryRecord.col.edit}" scope="col" class="px-6 py-3">Edit</th>
 							</tr>
 						</thead>
 						<tbody id="history-pc-container">
@@ -216,7 +216,7 @@
 								th:classappend="${wineLog.type == 'IN'} ? 'bg-green-600' : 'bg-red-600' "
 								class="history bg-opacity-20 border-b border-white">
 								<th th:text="${wineLog.date}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">로그 날짜</th>
-								<td th:text="${wineLog.type == 'IN'} ? 'Buy' : 'Drink' " class="px-6 py-4">로그 타입</td>
+								<td th:text="${wineLog.type == 'IN'} ? #{wineDetail.inventoryRecord.row.buy} : #{wineDetail.inventoryRecord.row.drink} " class="px-6 py-4">로그 타입</td>
 								<td th:text="${wineLog.place}" class="px-6 py-4">로그 장소</td>
 								<td th:text="${wineLog.price != null} ? (|₩${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|) : '' " class="px-6 py-4">와인 가격</td>
 								<td th:text="${wineLog.count}" class="px-6 py-4">로그 개수</td>
@@ -235,7 +235,7 @@
 				</div>
 				
 				<div th:if="${wineLogList.size() == 5 + 1}" class="text-center">
-					<button id="history-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
+					<button th:text="#{wineDetail.button.loadMore}" id="history-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
 				        Load More
 				    </button>
 				</div>
@@ -243,8 +243,8 @@
 			</div>
 			
 			<div class="w-full md:w-3/4 mx-auto my-10 mt-20">
-				<h3 class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Review</h3>
-				<h3 th:if="${reviewList.size() == 0}" class="text-xl font-semibold ml-4 mb-4 p-4 text-center rounded-lg border bg-card text-card-foreground shadow-sm" >No review</h3>
+				<h3 th:text="#{wineDetail.review}" class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Review</h3>
+				<h3 th:if="${reviewList.size() == 0}" th:text="#{wineDetail.noReview}" class="text-xl font-semibold ml-4 mb-4 p-4 text-center rounded-lg border bg-card text-card-foreground shadow-sm" >No review</h3>
 				<div class="w-full py-2 lg:py-4">
 				  <div class=" grid items-start gap-6 lg:gap-12">
 				    <div id="review-container" class=" grid gap-4">
@@ -283,7 +283,7 @@
 				      </div>
 				      
 				      <div th:if="${reviewList.size() == 5 + 1}" class="text-center">
-						<button id="review-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
+						<button th:text="#{wineDetail.button.loadMore}" id="review-load-btn" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-full bg-gray-900 px-4 py-2 mt-1 text-white">
 					        Load More
 					    </button>
 					</div>
