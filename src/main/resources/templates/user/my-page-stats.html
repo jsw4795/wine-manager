@@ -5,10 +5,10 @@
 
 <main xmlns:th="http://www.thymeleaf.org" class="flex flex-col gap-8 p-6 md:p-10">
 	<div class="space-y-2">
-		<h1 class="text-3xl font-bold tracking-tighter md:text-4xl">
+		<h1 th:text="#{stats.title}" class="text-3xl font-bold tracking-tighter md:text-4xl">
 			Analytics Dashboard
 		</h1>
-		<p class="text-gray-500 md:text-xl dark:text-gray-400">
+		<p th:text="#{stats.description}" class="text-gray-500 md:text-xl dark:text-gray-400">
 			Check the record of wine on the graph.
 		</p>
 	</div>
@@ -19,20 +19,20 @@
 				<div class="flex flex-col space-y-1.5 p-6">
 					<div class="flex justify-between">
 						<div class="space-y-1.5">
-							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+							<h3 th:text="#{stats.graph.title.monthlyConsumption}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 								Monthly Consumption
 							</h3>
-							<p id="spend-by-time-description" class="text-sm text-muted-foreground">Last 12 months</p>
+							<p th:text="#{stats.graph.select.1year}" id="spend-by-time-description" class="text-sm text-muted-foreground">Last 12 months</p>
 						</div>
 						<div class="relative">
 							<select id="spend-by-time-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
 								onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
 								<optgroup label="----------------">
-								    <option value="-1" selected>Last 1 year</option>
-								    <option value="-2">Last 2 year</option>
-								    <option value="-3">Last 3 year</option>
-								    <option value="-5">Last 5 year</option>
-								    <option value="0">All time</option>
+								    <option th:text="#{stats.graph.select.1year}" value="-1" selected>Last 1 year</option>
+								    <option th:text="#{stats.graph.select.2year}" value="-2">Last 2 year</option>
+								    <option th:text="#{stats.graph.select.3year}" value="-3">Last 3 year</option>
+								    <option th:text="#{stats.graph.select.5year}" value="-5">Last 5 year</option>
+								    <option th:text="#{stats.graph.select.all}" value="0">All time</option>
 								</optgroup>
 							    <optgroup label="----------------">
 							    	<option th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()),1997)}" th:value="${year}" th:text="${year}" ></option>
@@ -52,20 +52,20 @@
 				<div class="flex flex-col space-y-1.5 p-6">
 					<div class="flex justify-between">
 						<div class="space-y-1.5">
-							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+							<h3 th:text="#{stats.graph.title.changeInWineStocks}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 								Change In Wine Stocks
 							</h3>
-							<p id="stock-by-time-description" class="text-sm text-muted-foreground">Last 12 months</p>
+							<p th:text="#{stats.graph.select.1year}" id="stock-by-time-description" class="text-sm text-muted-foreground">Last 12 months</p>
 						</div>
 						<div class="relative">
 							<select id="stock-by-time-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
 								onfocus='this.size=10;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
 								<optgroup label="----------------">
-								    <option value="-1" selected>Last 1 year</option>
-								    <option value="-2">Last 2 year</option>
-								    <option value="-3">Last 3 year</option>
-								    <option value="-5">Last 5 year</option>
-								    <option value="0">All time</option>
+								    <option th:text="#{stats.graph.select.1year}" value="-1" selected>Last 1 year</option>
+								    <option th:text="#{stats.graph.select.2year}" value="-2">Last 2 year</option>
+								    <option th:text="#{stats.graph.select.3year}" value="-3">Last 3 year</option>
+								    <option th:text="#{stats.graph.select.5year}" value="-5">Last 5 year</option>
+								    <option th:text="#{stats.graph.select.all}" value="0">All time</option>
 								</optgroup>
 							    <optgroup label="----------------">
 							    	<option th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()),1997)}" th:value="${year}" th:text="${year}" ></option>
@@ -85,10 +85,10 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					<h3 th:text="#{stats.graph.title.wineByPlace}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 						Wine By Place
 					</h3>
-					<p id="wine-by-place-description" class="text-sm text-muted-foreground">Wine you bought</p>
+					<p th:text="#{stats.graph.description.buy}" id="wine-by-place-description" class="text-sm text-muted-foreground">Wine you bought</p>
 				</div>
 				<div class="p-6">
 					<div class="aspect-[3/3]">
@@ -101,18 +101,18 @@
 				<div class="flex flex-col space-y-1.5 p-6">
 					<div class="flex justify-between">
 						<div class="space-y-1.5">
-							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+							<h3 th:text="#{stats.graph.title.wineByType}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 								Wine By Type
 							</h3>
-							<p id="wine-by-type-description" class="text-sm text-muted-foreground">Wine you have</p>
+							<p th:text="#{stats.graph.description.hold}" id="wine-by-type-description" class="text-sm text-muted-foreground">Wine you have</p>
 						</div>
 						<div class="relative">
 							<select id="wine-by-type-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
 								onfocus='this.size=4;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
 								<optgroup label="-------------">
-								    <option value="hold" selected>Holding</option>
-								    <option value="buy">Buying</option>
-								    <option value="drink">Drinking</option>
+								    <option th:attr="data-description=#{stats.graph.description.hold}" th:text="#{stats.graph.select.hold}" value="hold" selected>Holding</option>
+								    <option th:attr="data-description=#{stats.graph.description.buy}" th:text="#{stats.graph.select.buy}" value="buy">Buying</option>
+								    <option th:attr="data-description=#{stats.graph.description.drink}" th:text="#{stats.graph.select.drink}" value="drink">Drinking</option>
 								</optgroup>
 						  	</select>
 						</div>
@@ -129,23 +129,23 @@
 				<div class="flex flex-col space-y-1.5 p-6">
 					<div class="flex justify-between">
 						<div class="space-y-1.5">
-							<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+							<h3 th:text="#{stats.graph.title.wineByCountry}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 								Wine By Country
 							</h3>
-							<p id="wine-by-country-description" class="text-sm text-muted-foreground">Wine you have by country</p>
+							<p th:text="#{stats.graph.description.hold.country}" id="wine-by-country-description" class="text-sm text-muted-foreground">Wine you have by country</p>
 						</div>
 						<div class="relative">
 							<select id="wine-by-country-select" class="z-10 focus:absolute right-0 block w-fit  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
 								onfocus='this.size=8;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
-								<optgroup label="----By Country---">
-								    <option value="country-hold" selected>Holding</option>
-								    <option value="country-buy">Buying</option>
-								    <option value="country-drink">Drinking</option>
+								<optgroup th:label="#{stats.graph.select.byCountry}">
+								    <option th:attr="data-description=#{stats.graph.description.hold.country}" th:text="#{stats.graph.select.hold}" value="country-hold" selected>Holding</option>
+								    <option th:attr="data-description=#{stats.graph.description.buy.country}" th:text="#{stats.graph.select.buy}" value="country-buy">Buying</option>
+								    <option th:attr="data-description=#{stats.graph.description.drink.country}" th:text="#{stats.graph.select.drink}" value="country-drink">Drinking</option>
 								</optgroup>
-								<optgroup label="----By Region---">
-								    <option value="region-hold">Holding</option>
-								    <option value="region-buy">Buying</option>
-								    <option value="region-drink">Drinking</option>
+								<optgroup th:label="#{stats.graph.select.byRegion}">
+								    <option th:attr="data-description=#{stats.graph.description.hold.region}" th:text="#{stats.graph.select.hold}" value="region-hold">Holding</option>
+								    <option th:attr="data-description=#{stats.graph.description.buy.region}" th:text="#{stats.graph.select.buy}" value="region-buy">Buying</option>
+								    <option th:attr="data-description=#{stats.graph.description.drink.region}" th:text="#{stats.graph.select.drink}" value="region-drink">Drinking</option>
 								</optgroup>
 						  	</select>
 						</div>
@@ -160,10 +160,10 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					<h3 th:text="#{stats.graph.title.wineByPrice}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 						Wine By Price
 					</h3>
-					<p class="text-sm text-muted-foreground">Wine you bought</p>
+					<p th:text="#{stats.graph.description.buy}" class="text-sm text-muted-foreground">Wine you bought</p>
 				</div>
 				<div class="p-6">
 					<div class="aspect-[3/3]">
@@ -178,10 +178,10 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					<h3 th:text="#{stats.top3.title.bestWine}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 						Best Wine You Drank
 					</h3>
-					<p class="text-sm text-muted-foreground">The highest rating</p>
+					<p th:text="#{stats.top3.description.bestWine}" class="text-sm text-muted-foreground">The highest rating</p>
 				</div>
 				<div class="p-6">
 					<div class="grid gap-4 text-sm">
@@ -195,10 +195,10 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					<h3 th:text="#{stats.top3.title.bangForYourBuck}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 						Bang For Your Buck!
 					</h3>
-					<p class="text-sm text-muted-foreground">Rating per a dollar</p>
+					<p th:text="#{stats.top3.description.bangForYourBuck}" class="text-sm text-muted-foreground">Rating per a dollar</p>
 				</div>
 				<div class="p-6">
 					<div class="grid gap-4 text-sm">
@@ -212,16 +212,16 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					<h3 th:text="#{stats.top3.title.mostConsumedWine}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 						Most Consumed Wine
 					</h3>
-					<p class="text-sm text-muted-foreground">Wine you drank the most</p>
+					<p th:text="#{stats.top3.description.mostConsumedWine}" class="text-sm text-muted-foreground">Wine you drank the most</p>
 				</div>
 				<div class="p-6">
 					<div class="grid gap-4 text-sm">
 						<div th:each="data : ${top3.mostConsumedWine}" class="flex items-center justify-between">
 							<div><span th:text="${data.name}">와인이름</span></div>
-							<div class="font-medium min-w-16 text-right"><span th:text="|${#numbers.formatDecimal(data.value, 1, 0)} bottles|">마신 병 수</span></div>
+							<div class="font-medium min-w-16 text-right"><span th:text="|${#numbers.formatDecimal(data.value, 1, 0)} #{stats.top3.bottles}|">마신 병 수</span></div>
 						</div>
 					</div>
 				</div>
@@ -229,10 +229,10 @@
 			<div class="rounded-lg border bg-card text-card-foreground shadow-sm"
 				data-v0-t="card">
 				<div class="flex flex-col space-y-1.5 p-6">
-					<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+					<h3 th:text="#{stats.top3.title.mostExpensiveWine}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
 						Most Expensive Wine
 					</h3>
-					<p class="text-sm text-muted-foreground">The most expensive wine ever bought</p>
+					<p th:text="#{stats.top3.description.mostExpensiveWine}" class="text-sm text-muted-foreground">The most expensive wine ever bought</p>
 				</div>
 				<div class="p-6">
 					<div class="grid gap-4 text-sm">

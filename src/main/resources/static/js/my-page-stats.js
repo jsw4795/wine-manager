@@ -5,6 +5,8 @@ var wineByTypeChart;
 var wineByCountryChart;
 var wineByPriceChart;
 
+var $clickedSelect = $('html'); // 의미 없는 jquery 객체로 초기화
+
 const colorByWineType = {
 	Red: 'rgba(208, 37, 37, 1)',
 	White: 'rgba(247, 237, 136, 1)',
@@ -32,15 +34,19 @@ const colorForPrice = {
 
 $(()=>{
 	$("main").on("change", "#spend-by-time-select", function() {
+		$clickedSelect = $(this).find("option:checked");
 		makeSpendByTimeChart($("#spend-by-time-select").val());
 	})
 	$("main").on("change", "#stock-by-time-select", function() {
+		$clickedSelect = $(this).find("option:checked");
 		makeStockByTimeChart($("#stock-by-time-select").val());
 	})
 	$("main").on("change", "#wine-by-type-select", function() {
+		$clickedSelect = $(this).find("option:checked");
 		makeWineByTypeChart($("#wine-by-type-select").val());
 	})
 	$("main").on("change", "#wine-by-country-select", function() {
+		$clickedSelect = $(this).find("option:checked");
 		makeWineByCountryChart($("#wine-by-country-select").val());
 	})
 })
@@ -572,6 +578,7 @@ function makeWineByPriceChart() {
 
 function getDescription(param) {
 	if(isNumeric(param)){
+		/*
 		switch(true) {
 			case (param > 0):
 				return param;
@@ -580,7 +587,10 @@ function getDescription(param) {
 			case (param < 0):
 				return 'Last ' + (-12 * param) + ' months';
 		}		
+		*/
+		return $clickedSelect.text();
 	} else {
+		/*
 		switch(param) {
 			case "hold":
 				return 'Wine you have';
@@ -601,6 +611,8 @@ function getDescription(param) {
 			case "region-drink":
 				return "Wine you drank by region";
 		}
+		*/
+		return $clickedSelect.attr("data-description");
 	}
 }
 
