@@ -30,9 +30,9 @@
     <insert id="insertWineLog" parameterType="com.winemanager.wine.domain.WineLog" useGeneratedKeys="true" keyColumn="log_id" keyProperty="logId">
     	insert into
 			wine.wine_log
-		(user_id, wine_id, type, date, place, price, count)
+		(user_id, wine_id, type, date, place, price, count, note)
 		values
-		(#{userId}, #{wineId}, #{type}, #{date}, #{place}, #{price}, #{count})
+		(#{userId}, #{wineId}, #{type}, #{date}, #{place}, #{price}, #{count}, #{note})
     </insert>
     
     <select id="selectWineListByName" parameterType="Map" resultType="com.winemanager.wine.domain.Wine">
@@ -144,7 +144,7 @@
     
     <select id="selectWineLogListByWineId" resultType="com.winemanager.wine.domain.WineLog">
     	select
-    		log_id, user_id, wine_id, type, date, place, price, count
+    		log_id, user_id, wine_id, type, date, place, price, count, note
     	from
     		wine.wine_log
     	where
@@ -224,7 +224,7 @@
     
     <select id="selectWineLog" parameterType="com.winemanager.wine.domain.WineLog" resultType="com.winemanager.wine.domain.WineLog">
     	select 
-    		log_id, wine_id, user_id, wine_id, type, date, place, price, count
+    		log_id, wine_id, user_id, wine_id, type, date, place, price, count, note
     	from
     		wine.wine_log
     	where
@@ -237,7 +237,7 @@
     	update
     		wine.wine_log
     	set
-    		date = #{date}, place = #{place}, price = #{price}, count = #{count}
+    		date = #{date}, place = #{place}, price = #{price}, count = #{count}, note = #{note}
     	where
     		log_id = #{logId}
     		and 
@@ -246,7 +246,7 @@
     
     <select id="selectWineLogWithPagination" parameterType="com.winemanager.wine.domain.WineDetailRequest" resultType="com.winemanager.wine.domain.WineLog">
     	select
-    		log_id, user_id, wine_id, type, date, place, price, count
+    		log_id, user_id, wine_id, type, date, place, price, count, note
     	from
     		wine.wine_log
     	where

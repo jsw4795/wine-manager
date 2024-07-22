@@ -59,6 +59,23 @@ $(()=> {
 		
 		sessionStorage.setItem("wineDetailData", JSON.stringify(wineDetailData));
 	})
+	
+	// 비고 버튼 클릭 시 보이기
+	$("html").on("click", ".note-btn",function() {
+		let logId = $(this).attr("data-logId");
+		$(".note-" + logId).removeClass("hidden");
+		
+		// 비고 팝업 외의 요소 클릭 시 비고 숨기기
+		$("html").on("click.closePopOver-" + logId, function() {
+			$(".note-" + logId).addClass("hidden");
+			$("html").off("click.closePopOver-" + logId);
+		})
+	});
+	// 비고 팝업 클릭 시 숨김 무시
+	$("html").on("click", ".note",function() {
+		return false;
+	});
+	
 })
 
 function loadHistory(page, pageSize, callBack) {

@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +38,7 @@ public class EditWineLogRequest {
 	private Integer price;
 	@NotNull(message = "Count must be entered.")
 	private Integer count;
+	@Size(max = 50, message = "Note must be less than 50 characters long.")
+	private String note;
 	
 }

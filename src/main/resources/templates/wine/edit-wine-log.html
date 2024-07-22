@@ -150,6 +150,18 @@
 					<p th:if="${#fields.hasErrors('count')}" th:errors="*{count}" class="text-red-600"></p>
 				</div>
 			</div>
+			<div class="grid md:grid-cols-1 gap-4">
+				<div class="flex flex-col">
+					<label th:text="#{addWine.purchase.note}" for="note" class="font-semibold">Note</label> 
+					<div class="relative">
+				        <input th:placeholder="#{addWine.purchase.note}" th:field="*{note}" th:classappend="${#fields.hasErrors('note')} ? 'border-red-600' : ''"   
+				        		type="text" id="note" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus-visible:outline-none focus:ring-blue-500 block w-full px-3 py-2" 
+				        		placeholder="Note" name="note" autocomplete="off"/>
+				    </div>
+					<p th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="text-red-600"></p>
+					
+				</div>
+			</div>
 			<span class="mt-6"></span>
 			<button type="submit"
 					class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">

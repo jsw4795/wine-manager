@@ -29,6 +29,7 @@ public class WineLog {
 	private Date date;
 	private Integer price;
 	private int count;
+	private String note;
 	
 	@Setter
 	private int stock;

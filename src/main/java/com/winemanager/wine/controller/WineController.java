@@ -403,6 +403,7 @@ public class WineController {
 											   .date(wineLog.getDate())
 											   .count(wineLog.getCount())
 											   .price(wineLog.getPrice())
+											   .note(wineLog.getNote())
 											   .build();
 		
 		

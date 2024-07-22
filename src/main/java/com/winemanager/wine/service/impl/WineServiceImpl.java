@@ -190,6 +190,7 @@ public class WineServiceImpl implements WineService{
 							     .date(addWineRequest.getBuyDate())
 							     .price(addWineRequest.getBuyPrice())
 							     .count(addWineRequest.getBuyCount())
+							     .note(addWineRequest.getNote())
 							     .build();
 		
 		wineMapper.insertWineLog(wineLog);
@@ -210,6 +211,7 @@ public class WineServiceImpl implements WineService{
 							     .date(addWineRequest.getBuyDate())
 							     .price(addWineRequest.getBuyPrice())
 							     .count(addWineRequest.getBuyCount())
+							     .note(addWineRequest.getNote())
 							     .build();
 
 		wineMapper.insertWineLog(wineLog);
@@ -335,6 +337,7 @@ public class WineServiceImpl implements WineService{
 							     .place(drinkWineRequest.getDrinkPlace().trim())
 							     .date(drinkWineRequest.getDrinkDate())
 							     .count(drinkWineRequest.getDrinkCount())
+							     .note(drinkWineRequest.getNote())
 							     .build();
 
 		wineMapper.insertWineLog(wineLog);
@@ -436,6 +439,7 @@ public class WineServiceImpl implements WineService{
 										.date(editWineLogRequest.getDate())
 										.price(editWineLogRequest.getPrice())
 										.count(editWineLogRequest.getCount())
+										.note(editWineLogRequest.getNote())
 										.build());
 		
 	}

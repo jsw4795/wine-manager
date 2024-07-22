@@ -2,7 +2,7 @@
 	<i th:text="${wineLogList.size() == wineDetailRequest.pageSize + 1}" id="hasNext"></i>
 	
 	<div id="wine-log-mobile">
-		<div th:each="wineLog, stat : ${wineLogList}" th:if="${stat.index < 5}"  class="history w-full relative overflow-x-auto border bg-card rounded-lg p-3 flex justify-between mb-2">
+		<div th:each="wineLog, stat : ${wineLogList}" th:if="${stat.index < 5}"  class="history w-full relative border bg-card rounded-lg p-3 flex justify-between mb-2">
 			<div class="text-sm text-gray-700">
 				<div>
 					<span th:text="${wineLog.place}" class="text-lg text-black font-bold">모바일 로그 장소</span>
@@ -17,6 +17,27 @@
 				</div>
 			</div>
 			<div class="flex items-center">
+				<div class="relative me-3">
+					<button th:if="${wineLog.note != null && wineLog.note.length > 0}" th:attr="data-logId=${wineLog.logId}" type="button" class="note-btn mt-1.5">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+							<path d="M8 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M16 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M8 11H16" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M8 16H12" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>									
+					</button>
+					<div th:if="${wineLog.note != null && wineLog.note.length > 0}" th:attr="data-logId=${wineLog.logId}" th:classappend="|note-${wineLog.logId}|" role="tooltip" class="note hidden absolute -right-24 bottom-11 z-10 inline-block w-64 text-sm text-gray-600 transition-opacity duration-300 bg-white border border-gray-300 rounded-lg shadow-sm text-wrap text-center">
+					    <!-- 
+					    <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
+					        <h3 class="font-semibold text-gray-900">Popover click</h3>
+					    </div> 
+					    -->
+					    <div class="px-3 py-2">
+					        <p th:text="${wineLog.note}">비고 내용</p>
+					    </div>
+					</div>
+				</div>
 				<a th:href="@{|/edit-wineLog/${wineLog.logId}|}" class="inline-block me-3">
 					<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
 						<path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,6 +63,27 @@
 				<td th:text="${wineLog.price != null} ? (|₩${#numbers.formatDecimal(wineLog.price,1,'COMMA',0,'POINT')}|) : '' " class="px-6 py-4">와인 가격</td>
 				<td th:text="${wineLog.count}" class="px-6 py-4">로그 개수</td>
 				<td th:text="${wineLog.stock}" class="px-6 py-4">로그 재고</td>
+				<td class="px-6 py-4 relative">
+					<button th:if="${wineLog.note != null && wineLog.note.length > 0}" th:attr="data-logId=${wineLog.logId}" type="button" class="note-btn mt-1.5">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="none">
+							<path d="M8 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M16 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M8 11H16" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M8 16H12" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>									
+					</button>
+					<div th:if="${wineLog.note != null && wineLog.note.length > 0}" th:attr="data-logId=${wineLog.logId}" th:classappend="|note-${wineLog.logId}|" role="tooltip" class="note hidden absolute -right-24 bottom-11 z-10 inline-block w-64 text-sm text-gray-600 transition-opacity duration-300 bg-white border border-gray-300 rounded-lg shadow-sm text-wrap">
+					    <!-- 
+					    <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
+					        <h3 class="font-semibold text-gray-900">Popover click</h3>
+					    </div> 
+					    -->
+					    <div class="px-3 py-2">
+					        <p th:text="${wineLog.note}">비고 내용</p>
+					    </div>
+					</div>
+				</td>
 				<td class="px-6 py-4">
 					<a th:href="@{|/edit-wineLog/${wineLog.logId}|}" class="inline-block mt-1.5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none">

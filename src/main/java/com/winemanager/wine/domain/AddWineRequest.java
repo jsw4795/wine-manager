@@ -44,5 +44,7 @@ public class AddWineRequest {
 	private Integer buyPrice;
 	@NotNull(message = "The purchase quantity must be entered.")
 	private Integer buyCount;
+	@Size(max = 50, message = "Note must be less than 50 characters long.")
+	private String note;
 	
 }
