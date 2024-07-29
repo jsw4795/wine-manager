@@ -160,9 +160,9 @@
 						<input th:placeholder="#{addWine.purchase.date}" th:field="*{drinkDate}" th:classappend="${#fields.hasErrors('drinkDate')} ? 'border-red-600' : ''"         
 							class="flex h-10 w-fit rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  disabled:cursor-not-allowed disabled:opacity-50"
 							id="date" type="date" name="drinkDate" required/>
-						<button id="2daysAgo-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">TDBT</button>
-						<button id="yesterday-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">Y'day</button>
-						<button id="today-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">T'day</button>
+						<button th:text="#{addWine.purchase.date.today}" id="today-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">T'day</button>
+						<button th:text="#{addWine.purchase.date.yesterday}" id="yesterday-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">Y'day</button>
+						<button th:text="#{addWine.purchase.date.2daysAgo}" id="2daysAgo-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">TDBT</button>
 					</div>
 					<p th:if="${#fields.hasErrors('drinkDate')}" th:errors="*{drinkDate}" class="text-red-600"></p>
 				</div>
