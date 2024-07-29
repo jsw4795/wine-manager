@@ -219,11 +219,11 @@
 					<p th:if="${#fields.hasErrors('buyPlace')}" th:errors="*{buyPlace}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label th:text="#{addWine.purchase.date}" for="date" class="font-semibold"> Date </label> 
-					<input th:placeholder="#{addWine.purchase.date}" th:field="*{buyDate}" th:classappend="${#fields.hasErrors('buyDate')} ? 'border-red-600' : ''"         
-						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  disabled:cursor-not-allowed disabled:opacity-50"
-						id="date" type="date" name="buyDate" required/>
-					<p th:if="${#fields.hasErrors('buyDate')}" th:errors="*{buyDate}" class="text-red-600"></p>
+					<label th:text="#{addWine.purchase.count}" for="count" class="font-semibold">Count</label> 
+					<input th:placeholder="#{addWine.purchase.count}" th:field="*{buyCount}" th:classappend="${#fields.hasErrors('buyCount')} ? 'border-red-600' : ''"  
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50"
+						id="count" placeholder="Count" type="number" min="0" step="1" name="buyCount" required autocomplete="off"/>
+					<p th:if="${#fields.hasErrors('buyCount')}" th:errors="*{buyCount}" class="text-red-600"></p>
 				</div>
 			</div>
 			<div class="grid md:grid-cols-2 gap-4">
@@ -242,15 +242,20 @@
 				        		placeholder="Price (Won)" name="buyPrice" min="0" step="1" required autocomplete="off"/>
 				    </div>
 					<p th:if="${#fields.hasErrors('buyPrice')}" th:errors="*{buyPrice}" class="text-red-600"></p>
-					
 				</div>
 				<div class="flex flex-col">
-					<label th:text="#{addWine.purchase.count}" for="count" class="font-semibold">Count</label> 
-					<input th:placeholder="#{addWine.purchase.count}" th:field="*{buyCount}" th:classappend="${#fields.hasErrors('buyCount')} ? 'border-red-600' : ''"  
-						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50"
-						id="count" placeholder="Count" type="number" min="0" step="1" name="buyCount" required autocomplete="off"/>
-					<p th:if="${#fields.hasErrors('buyCount')}" th:errors="*{buyCount}" class="text-red-600"></p>
+					<label th:text="#{addWine.purchase.date}" for="date" class="font-semibold"> Date </label> 
+					<div class="flex">
+						<input th:placeholder="#{addWine.purchase.date}" th:field="*{buyDate}" th:classappend="${#fields.hasErrors('buyDate')} ? 'border-red-600' : ''"         
+							class="flex h-10 w-fit rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground  disabled:cursor-not-allowed disabled:opacity-50"
+							id="date" type="date" name="buyDate" required/>
+						<button id="2daysAgo-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">TDBT</button>
+						<button id="yesterday-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">Y'day</button>
+						<button id="today-btn" type="button" class="date-btn ms-1 px-2 text-sm text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg ">T'day</button>
+					</div>
+					<p th:if="${#fields.hasErrors('buyDate')}" th:errors="*{buyDate}" class="text-red-600"></p>
 				</div>
+				
 			</div>
 			<div class="grid md:grid-cols-1 gap-4">
 				<div class="flex flex-col">

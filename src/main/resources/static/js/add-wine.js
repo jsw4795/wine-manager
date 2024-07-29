@@ -127,6 +127,27 @@ $(() => {
 		}	
 	})
 	
+	$(".date-btn").on("click", function() {
+		let type = $(this).attr("id");
+		let $date = $("#date");
+		let date = new Date();
+		
+		switch(type) {
+			case "today-btn":
+				$date.val(date.toISOString().substring(0, 10));
+				break;
+			case "yesterday-btn":
+				date.setDate(date.getDate() - 1);
+				$date.val(date.toISOString().substring(0, 10));
+				break;
+			case "2daysAgo-btn":
+				date.setDate(date.getDate() - 2);
+				$date.val(date.toISOString().substring(0, 10));
+				break;
+		}
+	})
+	
+	
 })
 
 function search() {
