@@ -301,5 +301,13 @@
     	where
     		review_id = #{reviewId} and user_id = #{userId}
     </update>
+    
+    <delete id="deleteWineLog" parameterType="com.winemanager.wine.domain.WineLog" >
+    	delete
+    	from
+    		wine.wine_log
+    	where
+    		log_id = #{logId} and wine_id = #{wineId} and user_id = #{userId}
+    </delete>
 
 </mapper>

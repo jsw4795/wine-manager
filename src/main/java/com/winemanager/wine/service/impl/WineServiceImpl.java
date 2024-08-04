@@ -474,5 +474,14 @@ public class WineServiceImpl implements WineService{
 									  .photo(editReviewRequest.getPhoto())
 									  .build());
 	}
+
+	@Override
+	public void deleteWineLog(EditWineLogRequest editWineLogRequest, String userId) {
+		wineMapper.deleteWineLog(WineLog.builder()
+										.logId(editWineLogRequest.getLogId())
+										.wineId(editWineLogRequest.getWineId())
+										.userId(userId)
+										.build());
+	}
 	
 }

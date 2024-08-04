@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winemanager.user.domain.User;
@@ -449,6 +450,14 @@ public class WineController {
 		wineService.editReview(editReviewRequest, user.getUserId());
 		
 		return "redirect:/wine/" + editReviewRequest.getWineId();
+	}
+	
+	@PostMapping("/delete-wineLog")
+	public String deleteWineLog(EditWineLogRequest editWineLogRequest, @AuthenticationPrincipal User user) {
+		
+		wineService.deleteWineLog(editWineLogRequest, user.getUserId());	
+		
+		return "redirect:/wine/" + editWineLogRequest.getWineId();
 	}
 	
 	

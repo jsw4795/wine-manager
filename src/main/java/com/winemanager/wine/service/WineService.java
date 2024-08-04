@@ -32,6 +32,7 @@ public interface WineService {
 	public List<Review> getWineReviewList(WineDetailRequest wineDetailRequest);
 	public Review getReivew(int reviewId, String userId);
 	public void editReview(EditReviewRequest editReviewRequest, String userId);
+	public void deleteWineLog(EditWineLogRequest editWineLogRequest, String userId);
 	
 	public double getExchangeRate();
 }
