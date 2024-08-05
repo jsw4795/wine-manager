@@ -13,7 +13,7 @@
 
 <form th:object="${review}" layout:fragment="content" action="/edit-review" method="POST" class="max-w-4xl mx-auto mb-8 mt-40 p-8">
 	<div id="review-wrap" class="">
-		<label class="font-semibold pt-14 text-2xl"> Review </label>
+		<label th:text="#{drinkWine.review}" class="font-semibold pt-14 text-2xl"> Review </label>
 		<hr />
 		<div class=" rounded-lg border bg-card text-card-foreground shadow-sm w-full  p-0"
 			data-v0-t="card">
@@ -41,15 +41,15 @@
 				</div>
 			
 				<div class="grid gap-1">
-					<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					<label th:text="#{drinkWine.review.title}" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 						for="title"> Title </label> 
-					<input th:field="*{title}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+					<input th:placeholder="#{drinkWine.review.title.description}" th:field="*{title}" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="title" name="title" placeholder="Enter the title" />
 				</div>
 				<div class="grid gap-1 mt-4">
-					<label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					<label th:text="#{drinkWine.review.content}" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 						for="content"> Content </label>
-					<textarea th:field="*{content}"  class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+					<textarea th:placeholder="#{drinkWine.review.content.description}" th:field="*{content}"  class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 						id="content" name="content" placeholder="Enter the description" ></textarea>
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 		</div>
 		<span class="mt-6"></span>
 	</div>
-	<button type="submit"
+	<button th:text="#{editHistory.submit}" type="submit"
 					class="group mt-6 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
 					Edit!</button>
 </form>
