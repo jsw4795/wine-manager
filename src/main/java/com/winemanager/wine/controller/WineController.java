@@ -460,6 +460,13 @@ public class WineController {
 		return "redirect:/wine/" + editWineLogRequest.getWineId();
 	}
 	
+	@PostMapping("/delete-wine")
+	public String deleteWine(AddWineRequest addWineRequest, @AuthenticationPrincipal User user) {
+		
+		wineService.deleteWine(addWineRequest, user.getUserId());	
+		
+		return "redirect:/my-wine";
+	}
 	
 	
 	

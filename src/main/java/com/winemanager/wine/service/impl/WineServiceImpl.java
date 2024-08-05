@@ -483,5 +483,14 @@ public class WineServiceImpl implements WineService{
 										.userId(userId)
 										.build());
 	}
+
+	@Override
+	public void deleteWine(AddWineRequest addWineRequest, String userId) {
+		wineMapper.deleteWine(Wine.builder()
+								 .wineId(addWineRequest.getWineId())
+								 .userId(userId)
+								 .build());
+		
+	}
 	
 }

@@ -310,4 +310,12 @@
     		log_id = #{logId} and wine_id = #{wineId} and user_id = #{userId}
     </delete>
 
+	<delete id="deleteWine" parameterType="com.winemanager.wine.domain.Wine" >
+    	delete
+    	from
+    		wine.wine
+    	where
+    		wine_id = #{wineId} and user_id = #{userId}
+    </delete>
+
 </mapper>
