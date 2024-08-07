@@ -468,6 +468,13 @@ public class WineController {
 		return "redirect:/my-wine";
 	}
 	
+	@PostMapping("/delete-review")
+	public String deleteReview(EditReviewRequest editReviewRequest, @AuthenticationPrincipal User user) {
+		
+		wineService.deleteReview(editReviewRequest, user.getUserId());	
+		
+		return "redirect:/wine/" + editReviewRequest.getWineId();
+	}
 	
 	
 	private void setWineImage(Wine wine) {

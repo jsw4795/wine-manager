@@ -318,4 +318,12 @@
     		wine_id = #{wineId} and user_id = #{userId}
     </delete>
 
+	<delete id="deleteReview" parameterType="com.winemanager.wine.domain.Review" >
+    	delete
+    	from
+    		wine.review
+    	where
+    		review_id = #{reviewId} and user_id = #{userId}
+    </delete>
+    
 </mapper>

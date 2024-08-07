@@ -34,6 +34,7 @@ public interface WineService {
 	public void editReview(EditReviewRequest editReviewRequest, String userId);
 	public void deleteWineLog(EditWineLogRequest editWineLogRequest, String userId);
 	public void deleteWine(AddWineRequest addWineRequest, String userId);
+	public void deleteReview(EditReviewRequest editReviewRequest, String userId);
 	
 	public double getExchangeRate();
 }

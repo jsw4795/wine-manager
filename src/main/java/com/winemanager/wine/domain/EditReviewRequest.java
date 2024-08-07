@@ -21,6 +21,6 @@ public class EditReviewRequest {
 	private String content;
 	private String photo;
 	
-	private String wineId;
+	private Integer wineId;
 	
 }

@@ -492,5 +492,15 @@ public class WineServiceImpl implements WineService{
 								 .build());
 		
 	}
+
+	@Override
+	public void deleteReview(EditReviewRequest editReviewRequest, String userId) {
+		wineMapper.deleteReview(Review.builder()
+									  .reviewId(editReviewRequest.getReviewId())
+								      .wineId(editReviewRequest.getWineId())
+								      .userId(userId)
+								      .build());
+		
+	}
 	
 }

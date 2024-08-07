@@ -29,5 +29,5 @@ public class Review {
 	private Date regDate;
 	private String place;
 	
-	private String wineId;
+	private Integer wineId;
 }

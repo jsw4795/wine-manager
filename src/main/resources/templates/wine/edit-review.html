@@ -5,6 +5,7 @@
 
 <th:block layout:fragment="script">
 	<script th:src="@{/js/drink-wine.js}" type="text/javascript"></script>
+	<script th:src="@{/js/edit-review.js}" type="text/javascript"></script>
 </th:block>
 
 <th:block layout:fragment="css">
@@ -59,9 +60,17 @@
 		</div>
 		<span class="mt-6"></span>
 	</div>
-	<button th:text="#{editHistory.submit}" type="submit"
-					class="group mt-6 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
-					Edit!</button>
+	<div class="flex flex-row mt-6">
+		<button th:text="#{editHistory.submit}" type="submit"
+			class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+			Edit!</button>
+		<button th:text="#{editHistory.delete}" type="button" id="delete-btn"
+			class="group relative w-1/6 flex justify-center py-2 px-2 ms-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-400">
+			Delete</button>
+	</div>
+	<div class="text hidden">
+		<i th:text="#{editReview.delete.confirm}" id="delete-confirm-text"></i>
+	</div>
 </form>
 
 </html>

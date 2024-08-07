@@ -36,4 +36,5 @@ public interface WineMapper {
 	public void updateReview(Review review);
 	public void deleteWineLog(WineLog wineLog);
 	public void deleteWine(Wine wine);
+	public void deleteReview(Review review);
 }
