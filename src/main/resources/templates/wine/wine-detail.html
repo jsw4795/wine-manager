@@ -160,6 +160,7 @@
 				<h3 th:text="#{wineDetail.inventoryRecord}" class="text-center md:text-left text-3xl font-semibold ml-4 mb-4">Inventory record</h3>
 				
 				<div id="history-mobile-container" class="history-for-mobile xl:hidden ">
+					<h3 th:if="${wineLogList.size() < 1}" th:text="#{wineDetail.inventoryRecord.noData}" class="text-xl font-semibold ml-4 mb-4 p-4 text-center rounded-lg border bg-card text-card-foreground shadow-sm" >모바일 기록 없음</h3>
 					<div th:each="wineLog, stat : ${wineLogList}" th:if="${stat.index < 5}" class="history w-full relative border bg-card rounded-lg p-3 flex justify-between mb-2">
 						<div class="text-sm text-gray-700">
 							<div>
@@ -235,6 +236,9 @@
 							</tr>
 						</thead>
 						<tbody id="history-pc-container">
+							<tr th:if="${wineLogList == null || wineLogList.size() < 1}">
+								<th th:text="#{wineDetail.inventoryRecord.noData}" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-xl font-semibold" colspan="8">기록 없음</th>
+							</tr>
 							<tr th:each="wineLog, stat : ${wineLogList}"  th:if="${stat.index < 5}"
 								th:classappend="${wineLog.type == 'IN'} ? 'bg-green-600' : 'bg-red-600' "
 								class="history bg-opacity-20 border-b border-white">
