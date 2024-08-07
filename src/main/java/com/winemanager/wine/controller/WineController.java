@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winemanager.user.domain.User;
@@ -384,6 +384,7 @@ public class WineController {
 	}
 	
 	@GetMapping("/edit-wineLog/{logId}")
+	@Transactional
 	public String getEditWineLog(@PathVariable(name = "logId", required = true) Integer logId, 
 							@AuthenticationPrincipal User user,
 							@ModelAttribute EditWineLogRequest editWineLogRequest, BindingResult result,
@@ -391,6 +392,7 @@ public class WineController {
 		WineLog wineLog = wineService.getWineLog(logId, user.getUserId());
 		Wine wine = wineService.getWine(wineLog.getWineId());
 		setWineImage(wine);
+		boolean hasReview = wineService.getReviewByWineLog(logId, user.getUserId()) != null ? true : false;
 		
 		editWineLogRequest = EditWineLogRequest.builder()
 											   .wineId(wine.getWineId())
@@ -412,6 +414,7 @@ public class WineController {
 		
 		model.addAttribute(editWineLogRequest);
 		model.addAttribute("placeList", buyPlaceList);
+		model.addAttribute("hasReview", hasReview);
 		
 		return "/wine/edit-wine-log";
 	}

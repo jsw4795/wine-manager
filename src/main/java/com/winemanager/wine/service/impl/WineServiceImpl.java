@@ -442,6 +442,19 @@ public class WineServiceImpl implements WineService{
 										.note(editWineLogRequest.getNote())
 										.build());
 		
+		if(editWineLogRequest.getReviewRating() == null) //등록할 리뷰 없으면 리턴
+			return;
+		
+		wineMapper.insertReview(Review.builder()
+									  .logId(editWineLogRequest.getLogId())
+									  .userId(userId)
+									  .rating(editWineLogRequest.getReviewRating())
+									  .title(editWineLogRequest.getReviewTitle())
+									  .content(editWineLogRequest.getReviewContent())
+									  .photo(editWineLogRequest.getReviewPhoto())
+									  .build());
+		
+		
 	}
 
 	@Override
@@ -501,6 +514,14 @@ public class WineServiceImpl implements WineService{
 								      .userId(userId)
 								      .build());
 		
+	}
+
+	@Override
+	public Review getReviewByWineLog(int logId, String userId) {
+		return wineMapper.selectReviewByLogId(WineLog.builder()
+													 .logId(logId)
+													 .userId(userId)
+													 .build());
 	}
 	
 }

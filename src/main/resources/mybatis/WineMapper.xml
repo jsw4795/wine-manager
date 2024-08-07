@@ -326,4 +326,19 @@
     		review_id = #{reviewId} and user_id = #{userId}
     </delete>
     
+    <select id="selectReviewByLogId" parameterType="com.winemanager.wine.domain.WineLog" resultType="com.winemanager.wine.domain.Review">
+    	select
+    		R.review_id, R.log_id, R.user_id, R.rating, R.title, R.photo, R.content, L.date reg_date, L.place, L.wine_id
+    	from
+    		wine.review R
+    	inner join
+    		wine.wine_log L
+    	on
+    		R.log_id = L.log_id
+    	where
+    		L.log_id = #{logId}
+    		and
+    		L.user_id = #{userId}
+    </select>
+    
 </mapper>

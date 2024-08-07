@@ -41,4 +41,10 @@ public class EditWineLogRequest {
 	@Size(max = 50, message = "Note must be less than 50 characters long.")
 	private String note;
 	
+	private Integer reviewId;
+	
+	private Double reviewRating;
+	private String reviewTitle;
+	private String reviewContent;
+	private String reviewPhoto;
 }
