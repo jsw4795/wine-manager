@@ -103,8 +103,8 @@
 									</clipPath>
 								</defs>
 					        </svg>
-							<span th:text="${wine.averageRating}" class="text-4xl font-medium">비비노 평점</span> 
-							<span class="text-sm pt-4">(<span th:text="${#numbers.formatDecimal(wine.rating,1,'COMMA',0,'POINT')}">비비노 평점 개수</span> <span th:text="#{wineDetail.ratings}">ratings</span>)</span>
+							<span th:text="${wine.averageRating != null} ? ${wine.averageRating} : 'N/A'" class="text-4xl font-medium">비비노 평점</span> 
+							<span class="text-sm pt-4">(<span th:text="${wine.rating != null} ? ${#numbers.formatDecimal(wine.rating,1,'COMMA',0,'POINT')} : '0'">비비노 평점 개수</span> <span th:text="#{wineDetail.ratings}">ratings</span>)</span>
 				        </div>
 				        <div class="flex justify-between pt-1">
 				        	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
