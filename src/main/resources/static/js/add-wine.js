@@ -131,6 +131,7 @@ $(() => {
 		let type = $(this).attr("id");
 		let $date = $("#date");
 		let date = new Date();
+		date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 		
 		switch(type) {
 			case "today-btn":
