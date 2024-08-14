@@ -40,7 +40,7 @@
     		(select sum(count) from wine.wine_log where date = l.date and type = "OUT") drink_today
 		from
 			wine.wine w
-		left join
+		inner join
 			wine.wine_log l
 		on
 			l.wine_id = w.wine_id
