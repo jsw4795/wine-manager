@@ -70,9 +70,13 @@
 				</div>
 				<div class="flex flex-col">
 					<label th:text="#{addWine.wine.vintage}" for="vintage" class="font-semibold"> Vintage </label> 
-					<input th:placeholder="#{addWine.wine.vintage.description}" th:field="*{wineVintage}" th:classappend="${#fields.hasErrors('wineVintage')} ? 'border-red-600' : (*{wineId} != null ? 'bg-gray-200 border-gray-300' : '') "  
-						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-						id="vintage" placeholder="NV = blank" type="number" min="1900" max="2100" step="1" name="wineVintage" autocomplete="off" th:readonly="*{wineId} != null"/>
+					<select th:field="*{wineVintage}" th:classappend="${#fields.hasErrors('wineVintage')} ? 'border-red-600' : (*{wineId} != null ? 'bg-gray-200 border-gray-300 pointer-events-none' : '') "   
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+						name="wineVintage" id="vintage" th:readonly="*{wineId} != null">
+						<option th:text="#{addWine.wine.vintage.NV}" value="">NV</option>
+						<option th:each="year : ${#numbers.sequence(currentYear - 1, 1900)}"
+								th:value="${year}" th:text="${year}"></option>	
+					</select>
 					<p th:if="${#fields.hasErrors('wineVintage')}" th:errors="*{wineVintage}" class="text-red-600"></p>
 				</div>
 			</div>

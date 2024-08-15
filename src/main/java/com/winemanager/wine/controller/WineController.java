@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -98,6 +99,9 @@ public class WineController {
 		}
 		
 		List<String> placeList = wineService.getBuyPlace(user.getUserId());
+		
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		model.addAttribute("currentYear", currentYear);
 		
 		model.addAttribute("placeList", placeList);
 		
@@ -280,6 +284,8 @@ public class WineController {
 			return "error";
 		}
 		
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		model.addAttribute("currentYear", currentYear);
 		
 		return "wine/edit-wine";
 	}
