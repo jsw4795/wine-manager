@@ -306,7 +306,7 @@ public class WineController {
 			}
 			
 			if(!isExtensionValid) {
-				result.rejectValue("customImage", "errer.customImage", "Only extensions of jpg, jpeg, and png are allowed.");
+				result.rejectValue("customImage", "errer.customImage", "Only extensions of png, jpg and webp are allowed.");
 				return "wine/edit-wine";
 			}
 			
