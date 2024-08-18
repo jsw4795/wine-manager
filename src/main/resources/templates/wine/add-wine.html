@@ -207,7 +207,7 @@
 			<hr />
 			<div class="grid md:grid-cols-4 gap-4">
 				<div class="flex flex-col md:col-span-3">
-					<label th:text="#{addWine.purchase.place}" for="place" class="font-semibold"> Place </label>
+					<label th:text="#{addWine.purchase.place}" for="buy-place-text" class="font-semibold"> Place </label>
 					<div class="grid grid-cols-12 space-x-1">
 						<input th:placeholder="#{addWine.purchase.place}" th:field="*{buyPlace}" th:classappend="${#fields.hasErrors('buyPlace')} ? 'border-red-600' : ''" 
 							class="col-span-6 md:col-span-8 h-10 w-full rounded-md border border-input border-gray-300 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"

@@ -93,14 +93,14 @@
 					<label th:text="#{editWine.wine.learnMore}" for="wine-name" class="font-semibold"> Learn More (Link) </label> 
 					<input th:placeholder="#{editWine.wine.leanMore.description}" th:field="*{wineLink}" th:classappend="${#fields.hasErrors('wineLink')} ? 'border-red-600' : ''" 
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-						id="wine-name" placeholder="Link" type="text" name="wineLink" required autocomplete="off"/> 
+						id="link" placeholder="Link" type="text" name="wineLink" required autocomplete="off"/> 
 					<p th:if="${#fields.hasErrors('wineLink')}" th:errors="*{wineLink}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
 					<label th:text="#{editWine.wine.averagePrice}" for="vintage" class="font-semibold"> Average Price ($) </label>
 					<input th:placeholder="#{editWine.wine.averagePrice.description}" th:field="*{wineAveragePrice}" th:classappend="${#fields.hasErrors('wineAveragePrice')} ? 'border-red-600' : '' "  
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-						id="vintage" placeholder="Average Price" type="number" min="0" step="0.01" name="wineAveragePrice" autocomplete="off" />
+						id="average-price" placeholder="Average Price" type="number" min="0" step="0.01" name="wineAveragePrice" autocomplete="off" />
 					<p th:if="${#fields.hasErrors('wineAveragePrice')}" th:errors="*{wineAveragePrice}" class="text-red-600"></p>
 				</div>
 			</div>
