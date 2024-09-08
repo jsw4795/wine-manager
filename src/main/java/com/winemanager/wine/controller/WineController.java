@@ -77,7 +77,7 @@ public class WineController {
 		// 와인 아이디가 주어지면, 내 와인일 때 자동 정보 입력
 		if(addWineRequest.getWineId() != null) {
 			Wine wine = wineService.getWine(addWineRequest.getWineId()); 
-			setWineImage(wine);
+			wineService.setWineImage(wine);
 			
 			if(wine != null && wine.getUserId().equals(user.getUserId())) {
 				addWineRequest.setWineId(wine.getWineId());
@@ -135,7 +135,7 @@ public class WineController {
 		}
 		
 		List<Wine> wineList = wineService.getWineListByWineName(keyword, user.getUserId());
-		setWineImage(wineList);
+		wineService.setWineImage(wineList);
 		
 		if(wineList == null || wineList.size() == 0) {
 			model.addAttribute("uuid", uuid);			
@@ -156,7 +156,7 @@ public class WineController {
 		}
 		
 		List<Wine> wineList = wineService.searchWineInVivino(keyword);
-		setWineImage(wineList);
+		wineService.setWineImage(wineList);
 		
 		if(wineList == null || wineList.size() == 0) {
 			model.addAttribute("uuid", uuid);
@@ -223,7 +223,7 @@ public class WineController {
 		
 		if(drinkWineRequest.getWineId() != null) {
 			Wine wine = wineService.getWine(drinkWineRequest.getWineId());
-			setWineImage(wine);
+			wineService.setWineImage(wine);
 			if(wine != null && wine.getUserId().equals(user.getUserId())) {
 				drinkWineRequest.setWineId(wine.getWineId());
 				drinkWineRequest.setWineName(wine.getName());
@@ -277,7 +277,7 @@ public class WineController {
 		
 		// 내 와인일 때 만
 		Wine wine = wineService.getWine(addWineRequest.getWineId());
-		setWineImage(wine);
+		wineService.setWineImage(wine);
 		if(wine != null && wine.getUserId().equals(user.getUserId())) {
 			addWineRequest.setWineId(wine.getWineId());
 			addWineRequest.setWineName(wine.getName());
@@ -352,7 +352,7 @@ public class WineController {
 	@GetMapping("/my-wine/{type}")
 	public String getMyWine(MyWineRequest myWineRequest, @AuthenticationPrincipal User user, Model model) {
 		List<Wine> wineList = wineService.getMyWineList(myWineRequest, user.getUserId());
-		setWineImage(wineList);
+		wineService.setWineImage(wineList);
 		
 		String reqWineType = messageSource.getMessage("wine.type." + myWineRequest.getType().toLowerCase(), null, LocaleContextHolder.getLocale());
 		
@@ -374,7 +374,7 @@ public class WineController {
 		}
 		
 		WineDetailResponse response = wineService.getWineDetail(wineId, user.getUserId());
-		setWineImage(response.getWine());
+		wineService.setWineImage(response.getWine());
 		
 		model.addAttribute("response", response);
 		model.addAttribute("exchangeRate", wineService.getExchangeRate());
@@ -410,7 +410,7 @@ public class WineController {
 							HttpServletRequest request, Model model) {
 		WineLog wineLog = wineService.getWineLog(logId, user.getUserId());
 		Wine wine = wineService.getWine(wineLog.getWineId());
-		setWineImage(wine);
+		wineService.setWineImage(wine);
 		boolean hasReview = wineService.getReviewByWineLog(logId, user.getUserId()) != null ? true : false;
 		
 		editWineLogRequest = EditWineLogRequest.builder()
@@ -497,30 +497,6 @@ public class WineController {
 		
 		return "redirect:/wine/" + editReviewRequest.getWineId();
 	}
-	
-	
-	private void setWineImage(Wine wine) {
-		if(wine == null)
-			return;
-		
-		if(wine.getThumb() == null || wine.getThumb().length() < 1) {
-			wine.setThumb("wine-default.png");
-			wine.setThumbBottom("wine-default.png");
-		}
-		
-		if(!wine.getThumb().startsWith("https://")) {
-			wine.setThumb("/images/wine/" + wine.getThumb());
-			wine.setThumbBottom("/images/wine/" + wine.getThumbBottom());
-		}
-	}
-	private void setWineImage(List<Wine> wineList) {
-		if(wineList == null)
-			return;
-		
-		for(Wine wine : wineList) 
-			this.setWineImage(wine);
-	}
-	
 	
 	// String으로 넘어오는 Date 바인딩
 	@InitBinder

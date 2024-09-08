@@ -122,7 +122,7 @@ public class UserController {
 		timelineRequest.setUserId(user.getUserId());
 		List<Timeline> timeLineList = userService.getTimeline(timelineRequest);
 		
-		setWineImage(timeLineList);
+		wineService.setWineImage(timeLineList);
 		
 		String jsonResult = null;
 		switch (LocaleContextHolder.getLocale().getLanguage()) {
@@ -232,30 +232,6 @@ public class UserController {
 		List<WineByPrice> result = userService.getWineByPrice(statsRequest);
 		
 		return result;
-	}
-	
-	
-	
-	private void setWineImage(Timeline timeline) {
-		if(timeline == null)
-			return;
-		
-		if(timeline.getThumb() == null || timeline.getThumb().length() < 1) {
-			timeline.setThumb("wine-default.png");
-			timeline.setThumbBottom("wine-default.png");
-		}
-		
-		if(!timeline.getThumb().startsWith("https://")) {
-			timeline.setThumb("/images/wine/" + timeline.getThumb());
-			timeline.setThumbBottom("/images/wine/" + timeline.getThumbBottom());
-		}
-	}
-	private void setWineImage(List<Timeline> timelineList) {
-		if(timelineList == null)
-			return;
-		
-		for(Timeline timeline : timelineList) 
-			this.setWineImage(timeline);
 	}
 	
 }

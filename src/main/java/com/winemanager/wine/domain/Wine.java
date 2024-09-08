@@ -17,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Wine {
+public class Wine extends WithThumb {
 	private String userId;
 	private Integer wineId;
 	private String wineType; // red, white, sparkling, rose

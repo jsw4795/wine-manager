@@ -12,6 +12,7 @@ import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailRequest;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
+import com.winemanager.wine.domain.WithThumb;
 
 public interface WineService {
 	public List<String> getBuyPlace(String userId);
@@ -38,4 +39,6 @@ public interface WineService {
 	public Review getReviewByWineLog(int logId, String userId);
 	
 	public double getExchangeRate();
+	public void setWineImage(WithThumb object);
+	public void setWineImage(List<? extends WithThumb> objectList);
 }

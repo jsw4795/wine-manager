@@ -2,6 +2,8 @@ package com.winemanager.user.domain;
 
 import java.util.Date;
 
+import com.winemanager.wine.domain.WithThumb;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +16,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Timeline {
+public class Timeline extends WithThumb {
 	private Integer wineId; // wine
 	private Integer logId; // wine_log
 	//@JsonFormat(pattern = "MMMM d, yyyy (EEE)", locale = "en-US", timezone = "Asia/Seoul")

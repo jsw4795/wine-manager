@@ -40,6 +40,7 @@ import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.domain.WineDetailRequest;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
+import com.winemanager.wine.domain.WithThumb;
 import com.winemanager.wine.mapper.WineMapper;
 import com.winemanager.wine.service.WineService;
 import com.winemanager.wine.util.Pagination;
@@ -545,6 +546,28 @@ public class WineServiceImpl implements WineService{
 													 .logId(logId)
 													 .userId(userId)
 													 .build());
+	}
+	
+	public void setWineImage(WithThumb object) {
+		if(object == null)
+			return;
+		
+		if(object.getThumb() == null || object.getThumb().length() < 1) {
+			object.setThumb("wine-default.png");
+			object.setThumbBottom("wine-default.png");
+		}
+		
+		if(!object.getThumb().startsWith("https://")) {
+			object.setThumb("/images/wine/" + object.getThumb());
+			object.setThumbBottom("/images/wine/" + object.getThumbBottom());
+		}
+	}
+	public void setWineImage(List<? extends WithThumb> objectList) {
+		if(objectList == null)
+			return;
+		
+		for(WithThumb object : objectList) 
+			this.setWineImage(object);
 	}
 	
 }
