@@ -523,6 +523,14 @@ public class WineServiceImpl implements WineService{
 
 	@Override
 	public void deleteWine(AddWineRequest addWineRequest, String userId) {
+		// 파일이 있으면 파일 삭제
+		Wine wine = wineMapper.selectWineById(addWineRequest.getWineId());
+		
+		if(wine.getThumb() != null && !wine.getThumb().startsWith("https://")) {
+			File thumbFile = new File(winePicPath, wine.getThumb());
+			thumbFile.delete();
+		}
+		
 		wineMapper.deleteWine(Wine.builder()
 								 .wineId(addWineRequest.getWineId())
 								 .userId(userId)
