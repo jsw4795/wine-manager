@@ -9,4 +9,5 @@ public class TimelineRequest {
 	private String userId;
 	private Integer page;
 	private Integer pageSize;
+	private String type;
 }

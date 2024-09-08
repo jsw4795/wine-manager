@@ -4,6 +4,7 @@ var myPageData = {
 	type: "timeline",
 	page: 1,
 	scroll: 0,
+	timelineType: "all",
 }
 
 // 뒤로가기를 통해 페이지에 들어온 경우, 페이지 뿌려주기
@@ -26,8 +27,8 @@ window.onpageshow = function(event) {
 			case "timeline" : 
 				navBtnOn("timeline");
 				let scroll = myPageData.scroll; // 미리 저장을 안해놓으면 중간에 값이 바뀌기도함
-				requestTimelineFirstTime(1, myPageData.page * globalPageSize, function() {
-					$(document).scrollTop(scroll);
+				requestTimelineFirstTime(1, myPageData.page * globalPageSize, myPageData.timelineType, function() {		
+					$(window).scrollTop(scroll);
 				});
 				break;
 			case "stats" : 
@@ -39,7 +40,7 @@ window.onpageshow = function(event) {
 				break;
 			default:
 				navBtnOn("timeline");
-				requestTimeline(myPageData.page, globalPageSize, function() {
+				requestTimelineFirstTime(myPageData.page, globalPageSize, myPageData.timelineType, function() {
 					$(document).scrollTop(0);
 				});
 		}
@@ -50,10 +51,11 @@ window.onpageshow = function(event) {
 			
 		myPageData = JSON.parse(sessionStorage.getItem("myPageData"));
 		myPageData.page = 1;
+		myPageData.timelineType = "all";
 		switch(myPageData.type){
 			case "timeline" : 
 				navBtnOn("timeline");
-				requestTimelineFirstTime(myPageData.page, globalPageSize, function() {
+				requestTimelineFirstTime(myPageData.page, globalPageSize, myPageData.timelineType, function() {
 					$(document).scrollTop(0);
 				});
 				break;
@@ -66,13 +68,13 @@ window.onpageshow = function(event) {
 				break;
 			default:
 				navBtnOn("timeline")
-				requestTimelineFirstTime(myPageData.page, globalPageSize, function() {
+				requestTimelineFirstTime(myPageData.page, globalPageSize, myPageData.timelineType, function() {
 					$(document).scrollTop(0);
 				});
 		}
 	} else { // 그 외 (my page 클릭해서 들어온 경우)
 		navBtnOn("timeline")
-		requestTimelineFirstTime(myPageData.page, globalPageSize);
+		requestTimelineFirstTime(myPageData.page, globalPageSize, myPageData.timelineType);
 	}
 }
 
@@ -138,7 +140,7 @@ $(()=> {
 	$("#timeline-btn").on("click", function() {
 		myPageData.type = "timeline";
 		
-		requestTimelineFirstTime(myPageData.page, globalPageSize);
+		requestTimelineFirstTime(myPageData.page, globalPageSize, myPageData.timelineType);
 	})
 	$("#stats-btn").on("click", function() {
 		myPageData.type = "stats";

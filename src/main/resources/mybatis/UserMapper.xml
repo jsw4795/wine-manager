@@ -50,6 +50,8 @@
 			r.log_id = l.log_id
 		where
 			w.user_id = #{userId}
+			<if test="type eq 'buy'">and l.type = 'IN'</if>
+			<if test="type eq 'drink'">and l.type = 'OUT'</if>
 		order by
 			l.date desc, l.type, w.name desc, l.log_id desc
 		limit
