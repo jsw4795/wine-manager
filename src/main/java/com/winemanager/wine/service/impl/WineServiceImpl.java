@@ -179,6 +179,29 @@ public class WineServiceImpl implements WineService{
 						.thumb(addWineRequest.getWineThumb().trim())
 						.thumbBottom(addWineRequest.getWineThumbBottom().trim())
 						.build();
+		
+		// 입력받은 파일 처리
+		
+		if(!addWineRequest.getCustomImage().isEmpty()) {
+			MultipartFile uploadPic = addWineRequest.getCustomImage();
+			String originalFileName = uploadPic.getOriginalFilename();
+			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 파일 확장자 (.jpg, .png, webp)
+			String randomFileName = "WINE" + "_" + UUID.randomUUID().toString()+ fileExtension; // 파일명 랜덤으로 변경
+			
+			File saveFile = new File(this.winePicPath, randomFileName);
+			
+			try {
+				uploadPic.transferTo(saveFile);
+				
+				// 오류 없으면 사진 파일명 등록
+				wine.setThumb(randomFileName);
+				wine.setThumbBottom(randomFileName);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+				
+				saveFile.delete();
+			}
+		}
 
 		wineMapper.insertNewWine(wine);
 		

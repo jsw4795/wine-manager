@@ -240,6 +240,11 @@ public class UserController {
 		if(timeline == null)
 			return;
 		
+		if(timeline.getThumb() == null || timeline.getThumb().length() < 1) {
+			timeline.setThumb("wine-default.png");
+			timeline.setThumbBottom("wine-default.png");
+		}
+		
 		if(!timeline.getThumb().startsWith("https://")) {
 			timeline.setThumb("/images/wine/" + timeline.getThumb());
 			timeline.setThumbBottom("/images/wine/" + timeline.getThumbBottom());

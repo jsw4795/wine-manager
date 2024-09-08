@@ -202,7 +202,20 @@ public class WineController {
 		
 		return "wine/placeOptionTemplate-add-wine";
 	}
-	
+	// 새로운 와인 등록 폼
+	@GetMapping("/add-new-wine")
+	public String getAddNewWine(@ModelAttribute AddWineRequest addWineRequest, BindingResult result,
+			@AuthenticationPrincipal User user, Model model) {
+		
+		List<String> placeList = wineService.getBuyPlace(user.getUserId());
+		
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		model.addAttribute("currentYear", currentYear);
+		
+		model.addAttribute("placeList", placeList);
+		
+		return "wine/add-new-wine";
+	}
 	
 	@GetMapping("/drink-wine")
 	public String getDrinkWine(@ModelAttribute DrinkWineRequest drinkWineRequest, BindingResult result, 
@@ -489,6 +502,11 @@ public class WineController {
 	private void setWineImage(Wine wine) {
 		if(wine == null)
 			return;
+		
+		if(wine.getThumb() == null || wine.getThumb().length() < 1) {
+			wine.setThumb("wine-default.png");
+			wine.setThumbBottom("wine-default.png");
+		}
 		
 		if(!wine.getThumb().startsWith("https://")) {
 			wine.setThumb("/images/wine/" + wine.getThumb());
