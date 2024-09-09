@@ -19,6 +19,7 @@ $(()=>{
 		
 		// 기존 타임라인 삭제 후 정보 요청
 		$(".timeline-block").remove();
+		$(".timeline-load-btn").remove();
 		requestTimeline(myPageData.page, globalPageSize, myPageData.timelineType);
 	})
 	
