@@ -139,6 +139,7 @@ $(()=> {
 	})
 	$("#timeline-btn").on("click", function() {
 		myPageData.type = "timeline";
+		myPageData.timelineType = "all";
 		
 		requestTimelineFirstTime(myPageData.page, globalPageSize, myPageData.timelineType);
 	})
