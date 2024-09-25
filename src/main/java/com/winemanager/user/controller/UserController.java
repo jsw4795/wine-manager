@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.winemanager.user.domain.Language;
 import com.winemanager.user.domain.MainStats;
+import com.winemanager.user.domain.SettingRequest;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
@@ -35,6 +37,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.service.UserService;
 import com.winemanager.wine.service.WineService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -232,6 +235,25 @@ public class UserController {
 		List<WineByPrice> result = userService.getWineByPrice(statsRequest);
 		
 		return result;
+	}
+	
+	@GetMapping("/my-page/setting")
+	public String getSetting(@AuthenticationPrincipal User user, Model model) {
+		
+		SettingRequest settingRequest = new SettingRequest();
+		settingRequest.setLanguage(user.getLanguage());
+		model.addAttribute("settingRequest", settingRequest);
+		
+		model.addAttribute("languageList", Language.values());
+		
+		return "/user/my-page-setting";
+	}
+	@PostMapping("/save-setting")
+	public String saveSetting(SettingRequest settingRequest, @AuthenticationPrincipal User user, Model model, HttpServletRequest httpRequest) {
+		
+		userService.changeSetting(settingRequest, user, httpRequest);
+		
+		return "redirect:/";
 	}
 	
 }

@@ -37,6 +37,7 @@ window.onpageshow = function(event) {
 				break;
 			case "settings" : 
 				navBtnOn("settings");
+				requestSetting();
 				break;
 			default:
 				navBtnOn("timeline");
@@ -65,6 +66,7 @@ window.onpageshow = function(event) {
 				break;
 			case "settings" : 
 				navBtnOn("settings");
+				requestSetting();
 				break;
 			default:
 				navBtnOn("timeline")
@@ -151,7 +153,7 @@ $(()=> {
 	$("#settings-btn").on("click", function() {
 		myPageData.type = "settings";
 		
-		// settings 버튼 클릭 시 로직
+		requestSetting();
 	})
 	
 	// 페이지를 벗어날 때, 세션스토리지에 데이터 저장

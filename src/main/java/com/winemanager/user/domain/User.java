@@ -29,6 +29,10 @@ public class User implements UserDetails{
 		this.language = "en";
 	}
 	
+	public void changeLanguage(String newLanguage) {
+		this.language = newLanguage;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("user")); // 유저 권한

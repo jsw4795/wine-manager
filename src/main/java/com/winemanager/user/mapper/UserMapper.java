@@ -35,4 +35,6 @@ public interface UserMapper {
 	public List<Top3Stats> selectCostEffectiveWine(String userId);
 	public List<Top3Stats> selectMostConsumedWine(String userId);
 	public List<Top3Stats> selectMostExpensiveWine(String userId);
+	
+	public void updateSetting(User user);
 }

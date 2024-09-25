@@ -377,5 +377,14 @@
 		order by value desc
 		limit 3
 	</select>
+	
+	<update id="updateSetting" parameterType="com.winemanager.user.domain.User">
+		update
+			wine.member
+		set
+			language = #{language}
+		where
+			user_id = #{userId}
+	</update>
 
 </mapper>

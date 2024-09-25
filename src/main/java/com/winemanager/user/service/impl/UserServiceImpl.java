@@ -7,8 +7,11 @@ import java.util.Map;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import com.winemanager.user.domain.Language;
 import com.winemanager.user.domain.MainStats;
+import com.winemanager.user.domain.SettingRequest;
 import com.winemanager.user.domain.SignUpRequest;
 import com.winemanager.user.domain.Timeline;
 import com.winemanager.user.domain.TimelineRequest;
@@ -24,6 +27,7 @@ import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.mapper.UserMapper;
 import com.winemanager.user.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -129,6 +133,22 @@ public class UserServiceImpl implements UserService{
 		result.put("mostExpensiveWine", userMapper.selectMostExpensiveWine(userId));
 		
 		return result;
+	}
+
+	@Override
+	public void changeSetting(SettingRequest settingRequest, User user, HttpServletRequest httpServletRequest) {
+		userMapper.updateSetting(User.builder()
+							 		 .userId(user.getUserId())
+							 		 .language(settingRequest.getLanguage())
+							 		 .build());
+		
+		if(!user.getLanguage().equals(settingRequest.getLanguage())){
+			// 세션에 언어 정보 저장
+			user.changeLanguage(settingRequest.getLanguage());
+			httpServletRequest.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, Language.valueOf(user.getLanguage()).getLocale());
+		}
+		
+		
 	}
 	
 	

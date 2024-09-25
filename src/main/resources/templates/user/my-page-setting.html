@@ -1,0 +1,29 @@
+<div th:object="${settingRequest}" id="setting-template" class="w-4/6 mx-auto" xmlns:th="http://www.thymeleaf.org">
+
+	<form id="setting-form" class="" action="/save-setting" method="POST">
+
+		<div class="container mx-auto p-4 space-y-6 " >
+			<h1 th:text="#{myPage.settings.title}" class="text-3xl font-bold" >Settings</h1>
+			<div class="rounded-lg border bg-card text-card-foreground shadow-sm" >
+				<div class="flex flex-col space-y-1.5 p-6" >
+					<h3 th:text="#{myPage.settings.language.title}" class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight" >Language</h3>
+					<p th:text="#{myPage.settings.language.description}" class="text-sm text-muted-foreground" >Choose your preferred language for the interface</p>
+				</div>
+				<div class="p-6" >
+					<select th:field="*{language}" name="language" class="flex h-10 items-center cursor-pointer justify-between rounded-md border border-input bg-background px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 w-full">
+						<option th:each="language : ${languageList}" th:value="${language.code}" th:text="${language.lang}"
+							th:selected="${language.code.equals(settingRequest.language)}"></option>
+					</select>
+				</div>
+			</div>
+				
+			<div class="flex justify-end" >
+				<button th:text="#{myPage.settings.submit}" id="setting-submit-btn" type="button" class="inline-flex items-center bg-black hover:bg-gray-700 text-white justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:opacity-50 text-primary-foreground h-10 px-4 py-2"
+					>Save Settings</button>
+				
+			</div>
+		</div>
+
+	</form>
+
+</div>
