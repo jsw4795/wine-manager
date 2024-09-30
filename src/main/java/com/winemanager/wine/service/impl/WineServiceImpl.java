@@ -183,7 +183,7 @@ public class WineServiceImpl implements WineService{
 		
 		// 입력받은 파일 처리
 		
-		if(!addWineRequest.getCustomImage().isEmpty()) {
+		if(addWineRequest.getCustomImage() != null && !addWineRequest.getCustomImage().isEmpty()) {
 			MultipartFile uploadPic = addWineRequest.getCustomImage();
 			String originalFileName = uploadPic.getOriginalFilename();
 			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 파일 확장자 (.jpg, .png, webp)
