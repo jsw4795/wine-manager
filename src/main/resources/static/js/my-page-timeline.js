@@ -61,7 +61,7 @@ function requestTimeline(page, pageSize, timelineType, callback) {
 			$("#timeline-load-btn").remove();
 			
 			if(result.length == pageSize + 1){
-				$("main").append($("#timeline-template .timeline-load-btn-container").clone().attr("id", "timeline-load-btn"));
+				$("#timeline-wrap").append($("#timeline-template .timeline-load-btn-container").clone().attr("id", "timeline-load-btn"));
 			}
 			
 			if(callback)
@@ -72,6 +72,12 @@ function requestTimeline(page, pageSize, timelineType, callback) {
 
 function renderTimeline(jsonList, pageSize) {
 	let index = 0;
+	
+	if(jsonList.length < 1) {
+		$("#timeline-wrap").html($("#timeline-template .timeline-no-data-container").clone());
+		return;
+	}
+	
 	for(data of jsonList) {
 		if(index >= pageSize)
 			return;
@@ -79,7 +85,7 @@ function renderTimeline(jsonList, pageSize) {
 		let html = makeTimelineHTML(data);
 		
 		if($("time[data-date='"+data.date+"']").length < 1) {
-			$("main").append(makeTimelineBlock(data));
+			$("#timeline-wrap").append(makeTimelineBlock(data));
 		}
 		
 		$("time[data-date='"+data.date+"']").parent().parent().find("ol").append(html);
