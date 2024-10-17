@@ -125,41 +125,23 @@ function makeTimelineHTML(data) {
 }
 
 function makeTimelineBlock(data) {
-	let html = 
-				'<div class="timeline-block p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 ">'
-					+'<div class="flex justify-between">'
-				    	+'<time class="text-lg font-semibold text-gray-900 " data-date="'+data.date+'">'+data.date+'</time>'
-				    	+'<div class="">'
-				    	
-		    	if(data.spendToday != null)
-	    			html += '<div class="inline-block">'
-		    					+'<svg class="w-0 h-0 inline-block" height="800px" width="800px" >'
-									+'just for height'
-								+'</svg>'
-		    					+'<span class="text-lg font-semibold text-gray-600"><span class="font-black text-xl align-bottom">₩</span> -'+data.spendToday.toLocaleString()+'</span>'
-	    					+'</div>'
-	    					
-	    		if(data.drinkToday != null)
-	    			html += '<div class="inline-block">'
-		    					+'<svg class="w-6 h-6 inline-block ms-5 mb-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="800px" width="800px" version="1.1" id="Capa_1" viewBox="0 0 58.166 58.166" xml:space="preserve">'
-									+'<g>'
-										+'<g>'
-											+'<path style="fill:#4b5563;" d="M33.349,6.666V1.65c0-0.912-0.738-1.65-1.647-1.65h-5.234c-0.912,0-1.65,0.739-1.65,1.65v5.016    H33.349z"/>'
-											+'<path style="fill:#4b5563;" d="M35.517,17.009c-1.578-1.264-2.61-2.191-2.61-3.509V9.583h-7.646V13.5    c0,1.318-1.034,2.245-2.61,3.509c-1.349,1.081-2.877,2.306-2.877,4.21v8.613h9.309v15.751h-9.311V56.24    c0,1.063,0.862,1.926,1.926,1.926h14.77c1.063,0,1.926-0.862,1.926-1.926V21.22C38.394,19.315,36.864,18.09,35.517,17.009z"/>'
-										+'</g>'
-									+'</g>'
-								+'</svg>'
-		    					+'<span class="text-xl font-semibold text-gray-600">-'+data.drinkToday.toLocaleString()+'</span>'
-	    					+'</div>'
-    			
-		    html +=  	'</div>'
-		    		+'</div>'
-				    +'<ol class="mt-3 divide-y divider-gray-200 ">'
-				    +'</ol>'
-			    +'</div>'
-			    ;
+	let $html = $("#timeline-template .timeline-block-template").clone();
+	$html.removeClass("timeline-block-template");
+	$html.addClass("timeline-block");
 	
-	return html;
+	$html.find("time").attr("data-date", data.date);
+	$html.find("time").text(data.date);
+	
+	if(data.spendToday != null){
+		$html.find(".spend-today-container").removeClass("hidden");
+		$html.find(".spend-today").text(data.spendToday.toLocaleString());
+	}
+	if(data.drinkToday != null){
+		$html.find(".drink-today-container").removeClass("hidden");
+		$html.find(".drink-today").text(data.drinkToday.toLocaleString());
+	}
+	
+	return $html;
 }
 
 const loadTimelineBtn = 
