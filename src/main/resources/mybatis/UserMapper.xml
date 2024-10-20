@@ -99,11 +99,11 @@
 				from (
 					select D.date, sum(IFNULL(LI.count, 0)) count_in
 					from wine.dummy_date D
-					left join (select DATE_FORMAT(date, '%Y-%m-%d') date, count, type from wine.wine_log where user_id = #{userId} and type = 'IN') LI
+					left join (select DATE_FORMAT(date, '%Y-%m-%d') date, sum(count) count, type from wine.wine_log where user_id = #{userId} and type = 'IN' group by date) LI
 					on D.date = LI.date
 					group by D.date
 				) A
-				left join (select DATE_FORMAT(date, '%Y-%m-%d') date, count, type from wine.wine_log where user_id = #{userId} and type = 'OUT') LO
+				left join (select DATE_FORMAT(date, '%Y-%m-%d') date, sum(count) count, type from wine.wine_log where user_id = #{userId} and type = 'OUT' group by date) LO
 				on A.date = LO.date
 				group by A.date
 			) B
@@ -118,6 +118,8 @@
 			C.date <![CDATA[>=]]> DATE_FORMAT(CONCAT(#{year}, '-01-01'), '%Y-%m-%d')
 			and
 			C.date <![CDATA[<=]]> DATE_FORMAT(CONCAT(#{year}, '-12-31'), '%Y-%m-%d')
+			and
+			C.date <![CDATA[<=]]> DATE_FORMAT(now(), '%Y-%m-%d')
 			</if>
 			<if test="year == 0">
 			C.date <![CDATA[>=]]> (select DATE_FORMAT(min(date), '%Y-%m-%d') from wine.wine_log where user_id = #{userId})
