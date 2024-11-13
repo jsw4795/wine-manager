@@ -32,6 +32,9 @@ public class AddWineRequest {
 	private String wineThumb;
 	private String wineThumbBottom;
 	private String wineLink;
+	private Double wineAlcohol;
+	private String wineGrape;
+	private String wineWinery;
 	
 	MultipartFile customImage;
 	

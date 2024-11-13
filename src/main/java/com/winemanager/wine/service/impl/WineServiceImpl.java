@@ -42,9 +42,9 @@ import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.domain.WithThumb;
 import com.winemanager.wine.mapper.WineMapper;
+import com.winemanager.wine.service.CrawlingService;
 import com.winemanager.wine.service.WineService;
 import com.winemanager.wine.util.Pagination;
-import com.winemanager.wine.util.VivinoAPI;
 
 @Service
 public class WineServiceImpl implements WineService{
@@ -55,7 +55,7 @@ public class WineServiceImpl implements WineService{
 	private final SSLContext sslContext;
 
 	private final WineMapper wineMapper;
-	private final VivinoAPI vivinoAPI;
+	private final CrawlingService crawlingService;
 	private final MessageSource messageSource;
 	
 	private double exchangeRate = 1300;
@@ -67,7 +67,7 @@ public class WineServiceImpl implements WineService{
 			@Value("${winePicPath}") String winePicPath,
 			@Value("${apiDataArg}") String apiDataArg,
 			WineMapper wineMapper,
-			VivinoAPI vivinoAPI,
+			CrawlingService crawlingService,
 			MessageSource messageSource,
 			TrustManager[] trustAllCerts //WebConfig 확인
 			) throws NoSuchAlgorithmException, KeyManagementException {
@@ -75,7 +75,7 @@ public class WineServiceImpl implements WineService{
 		this.winePicPath = winePicPath;
 		this.apiDataArg = apiDataArg;
 		this.wineMapper = wineMapper;
-		this.vivinoAPI = vivinoAPI;
+		this.crawlingService = crawlingService;
 		this.messageSource = messageSource;
 		
 		// 인증서 무시를 위한 사전 작업
@@ -179,6 +179,9 @@ public class WineServiceImpl implements WineService{
 						.link(addWineRequest.getWineLink().trim())
 						.thumb(addWineRequest.getWineThumb().trim())
 						.thumbBottom(addWineRequest.getWineThumbBottom().trim())
+						.alcohol(addWineRequest.getWineAlcohol())
+						.grape(addWineRequest.getWineGrape())
+						.winery(addWineRequest.getWineWinery())
 						.build();
 		
 		// 입력받은 파일 처리
@@ -257,42 +260,27 @@ public class WineServiceImpl implements WineService{
 
 	@Override
 	public List<Wine> searchWineInVivino(String keyword) {
-		
 		List<Wine> wineList = null;
-		try {
-			wineList = vivinoAPI.getWineListByName(keyword);
-			
-			for(Wine wine : wineList) {
-				String thumbOrigin = wine.getThumb();
-				
-				// vivino에 사진이 없으면, 자체 기본 이미지로 변경
-				if(thumbOrigin.contains("default_label")) {
-					wine.setThumb("wine-default.png");
-					wine.setThumbBottom("wine-default.png");
-					continue;
-				}
-				
-				int idx1 = thumbOrigin.lastIndexOf("_");
-				int idx2 = thumbOrigin.lastIndexOf(".");
-				String thumbBody = thumbOrigin.substring(0, idx1); 
-				String thumbSize = "x600"; // 이미지 사이즈
-				String thumbBottomSize = "80x80"; 
-				String thumbExtention = thumbOrigin.substring(idx2 + 1); // jpg or png
-				
-				String thumb = thumbBody + "_" + thumbSize + "." + thumbExtention;
-				String thumbBottom = thumbBody + "_" + thumbBottomSize + "." + thumbExtention;
-				
-				thumbBottom = thumbBottom.replace("_pb_", "_pl_"); // 하반부 사진으로 변경 (있을 때만)
-				
-				wine.setThumb(!thumbExtention.equals("png") ? thumbOrigin : thumb); // 확장자가 png일 때만 사이즈 바꾸기
-				wine.setThumbBottom(thumbBottom);
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		wineList = crawlingService.getWineListByName(keyword);
+		// 썸네일 바텀 설정 crawlingService로 옮김
 		
 		return wineList;
+	}
+	@Override
+	public Wine searchWineMoreInfo(AddWineRequest request) {
+		Wine wine = null; 
+		wine = crawlingService.getMoreWineInfo(Wine.builder()
+														   .name(request.getWineName())
+														   .country(request.getWineCountry())
+														   .region(request.getWineRegion())
+														   .averageRating(request.getWineAverageRating())
+														   .rating(request.getWineRating())
+														   .thumb(request.getWineThumb())
+														   .thumbBottom(request.getWineThumbBottom())
+														   .link(request.getWineLink())
+														   .build());
+		
+		return wine;
 	}
 
 	@Transactional(readOnly = true)
@@ -400,6 +388,9 @@ public class WineServiceImpl implements WineService{
 						.rating(addWineRequest.getWineRating())
 						.averagePrice(addWineRequest.getWineAveragePrice())
 						.link(addWineRequest.getWineLink().trim())
+						.alcohol(addWineRequest.getWineAlcohol())
+						.grape(addWineRequest.getWineGrape())
+						.winery(addWineRequest.getWineWinery())
 						.build();
 		
 		// 입력받은 파일 처리

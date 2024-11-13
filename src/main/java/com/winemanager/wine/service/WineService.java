@@ -21,6 +21,7 @@ public interface WineService {
 	public Integer addBuyWineLog(AddWineRequest addWineRequest, String userId);
 	public List<Wine> getWineListByWineName(String keyword, String userId);
 	public List<Wine> searchWineInVivino(String keyword);
+	public Wine searchWineMoreInfo(AddWineRequest addWineRequest);
 	public List<Wine> getMyWineList(MyWineRequest myWineRequest, String userId);
 	public WineDetailResponse getWineDetail(int wineId, String userId);
 	public boolean isMyWine(int wineId, String userId);

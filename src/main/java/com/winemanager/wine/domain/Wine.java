@@ -1,6 +1,5 @@
 package com.winemanager.wine.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -16,7 +15,6 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Wine extends WithThumb {
 	private String userId;
 	private Integer wineId;
@@ -29,9 +27,7 @@ public class Wine extends WithThumb {
 	private String country;
 	private String region;
 	private Double averageRating;
-	@JsonProperty("ratings")
 	private Integer rating;
-	@JsonProperty("price")
 	private Double averagePrice;
 	private int count;
 	private String link;
@@ -40,4 +36,8 @@ public class Wine extends WithThumb {
 	@Setter
 	private String thumbBottom;
 	private Integer bestYear;
+	
+	private Double alcohol;
+	private String grape; // 품종이 하나면 품종으로, 여러개면 blend
+	private String winery;
 }

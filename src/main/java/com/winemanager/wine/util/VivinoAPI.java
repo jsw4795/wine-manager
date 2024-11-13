@@ -15,7 +15,7 @@ import com.winemanager.wine.domain.Wine;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Component
+//@Component
 public class VivinoAPI implements CommandLineRunner, ApplicationListener<ContextClosedEvent> {
 	
 	private final ObjectMapper mapper = new ObjectMapper(); // json -> 객체 변환하는 객체 (thread-safe)

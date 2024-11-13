@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.winemanager.user.domain.User;
@@ -93,6 +95,9 @@ public class WineController {
 				addWineRequest.setWineThumb(wine.getThumb());
 				addWineRequest.setWineThumbBottom(wine.getThumbBottom());
 				addWineRequest.setWineLink(wine.getLink());
+				addWineRequest.setWineAlcohol(wine.getAlcohol());
+				addWineRequest.setWineGrape(wine.getGrape());
+				addWineRequest.setWineWinery(wine.getWinery());
 			} else {
 				addWineRequest.setWineId(null);
 			}
@@ -168,6 +173,12 @@ public class WineController {
 		model.addAttribute("uuid", uuid);
 		
 		return "wine/searchResultTemplate-add-wine";
+	}
+	@GetMapping("/add-wine/search-new/more-info")
+	@ResponseBody
+	public Wine getMoreWineInfo(@ModelAttribute AddWineRequest addWineRequest, @AuthenticationPrincipal User user) {
+		Wine wine = wineService.searchWineMoreInfo(addWineRequest);
+		return wine;
 	}
 	@PostMapping("/add-place")
 	public String addPlace(String place, @AuthenticationPrincipal User user, Model model) {

@@ -136,7 +136,7 @@
 				
 				<div>
 					<label th:text="#{addWine.wine.size}" class="font-semibold">Size</label> 
-					<ul class="radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
+					<ul class="wine-size-ul radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
 					    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 					        <div class="flex items-center ps-3 ">
 					            <input th:field="*{wineSize}" th:classappend="${#fields.hasErrors('wineSize')} ? 'border-red-600' : ''"    
@@ -183,7 +183,7 @@
 				
 				<div>
 					<label th:text="#{addWine.wine.type}" class="font-semibold">Type</label> 
-					<ul class=" radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:flex ">
+					<ul class="wine-type-ul radio-ul items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 overflow-hidden rounded-lg md:flex ">
 					    <li th:classappend="*{wineId} != null ? 'bg-gray-200 border-gray-300' : '' "  class="w-full border-b border-gray-200 md:border-b-0 md:border-r ">
 					        <div class="flex items-center ps-3">
 					            <input th:field="*{wineType}" th:classappend="${#fields.hasErrors('wineType')} ? 'border-red-600' : ''"        
@@ -223,6 +223,9 @@
 				<input th:field="*{wineThumb}" type="hidden" name="wineThumb" />
 				<input th:field="*{wineThumbBottom}" type="hidden" name="wineThumbBottom" />
 				<input th:field="*{wineLink}" type="hidden" name="wineLink" />
+				<input th:field="*{wineAlcohol}" type="hidden" name="wineAlcohol" />
+				<input th:field="*{wineGrape}" type="hidden" name="wineGrape" />
+				<input th:field="*{wineWinery}" type="hidden" name="wineWinery" />
 			</div>
 		</div>
 		
@@ -309,6 +312,12 @@
 	
 	<!-- Search Result Modal -->	
 	<div id="search-modal-background" class="modal-background fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
+		<div id="loading-background" class="loading-bockground fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 h-screen hidden">
+			<div class="loading-container">
+				<div class="loading-aminate animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-gray-100 block mx-auto my-5"></div>
+				<!-- <h3 th:text="#{addWine.search.loading.description}" class="text-xl text-center">It can take about 10 seconds</h3> -->
+			</div>
+		</div>
 		<div id="search-modal" class="modal bg-white p-8 rounded-lg min-w-1/2 overflow-y-scroll " style="max-height: 70vh; min-width: 50vw; max-width: 80vw">
 			<div class="flex items-center justify-between mb-4">
 				<h2 th:text="#{addWine.search.result.title}" class="text-xl font-semibold">Search result</h2>
@@ -356,9 +365,11 @@
 		</div>
 	</div>
 	
-	<div id="loading-container" class="hidden">
-		<div id="loading" class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 block mx-auto my-5"></div>
-		<h3 th:text="#{addWine.search.loading.description}" class="text-xl text-center">It can take about 10 seconds</h3>
+	<div id="template" class="hidden">
+		<div class="loading-container">
+			<div class="loading-aminate animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 block mx-auto my-5"></div>
+			<h3 th:text="#{addWine.search.loading.description}" class="text-xl text-center">It can take about 10 seconds</h3>
+		</div>
 	</div>
 	
 	

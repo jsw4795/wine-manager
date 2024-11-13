@@ -22,9 +22,9 @@
     <insert id="insertNewWine" parameterType="com.winemanager.wine.domain.Wine" useGeneratedKeys="true" keyColumn="wine_id" keyProperty="wineId">
     	insert into
 			wine.wine
-		(user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type)
+		(user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type, alcohol, grape, winery)
 		values
-		(#{userId}, #{name}, #{link}, #{thumb}, #{thumbBottom}, #{country}, #{region}, #{averageRating}, #{rating}, #{averagePrice}, #{vintage}, #{count}, #{size}, #{wineType})
+		(#{userId}, #{name}, #{link}, #{thumb}, #{thumbBottom}, #{country}, #{region}, #{averageRating}, #{rating}, #{averagePrice}, #{vintage}, #{count}, #{size}, #{wineType}, #{alcohol}, #{grape}, #{winery})
     </insert>
     
     <insert id="insertWineLog" parameterType="com.winemanager.wine.domain.WineLog" useGeneratedKeys="true" keyColumn="log_id" keyProperty="logId">
@@ -37,7 +37,7 @@
     
     <select id="selectWineListByName" parameterType="Map" resultType="com.winemanager.wine.domain.Wine">
     	select
-    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type, alcohol, grape, winery
     	from
     		wine.wine
     	where
@@ -64,7 +64,7 @@
     
     <select id="selectMyWine" parameterType="com.winemanager.wine.domain.MyWineRequest" resultType="com.winemanager.wine.domain.Wine">
     	select
-    		W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.rating, W.average_rating, W.vintage, W.count, W.size, W.wine_type
+    		W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.rating, W.average_rating, W.vintage, W.count, W.size, W.wine_type, W.alcohol, W.grape, W.winery
 			, avg(L.price) / (select USD from wine.exchange_rate) average_price
 			, (select max(date) from wine.wine_log where wine_id = w.wine_id and type = 'IN') last_buy_date
     	from
@@ -122,6 +122,9 @@
     		<result property="thumb" column="thumb"/>
     		<result property="thumbBottom" column="thumb_bottom"/>
     		<result property="bestYear" column="best_year"/>
+    		<result property="alcohol" column="alcohol"/>
+    		<result property="grape" column="grape"/>
+    		<result property="winery" column="winery"/>
     	</association>
     	<collection property="wineLogList" column="wineId = wine_id" ofType="com.winemanager.wine.domain.WindLog" select="selectWineLogListByWineId"/>
     	<collection property="reviewList" column="wineId = wine_id" ofType="com.winemanager.wine.domain.Review" select="selectReviewListByWineId"/>
@@ -129,7 +132,7 @@
     
     <select id="selectWineDetail" parameterType="com.winemanager.wine.domain.Wine" resultMap="wineDetail">
     	select
-			W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.average_rating, W.rating, W.average_price, W.vintage, W.count, W.size, W.wine_type
+			W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.average_rating, W.rating, W.average_price, W.vintage, W.count, W.size, W.wine_type, W.alcohol, W.grape, W.winery
 			, (select sum(price * count) / SUM(count) from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id and type = 'IN') user_average_price
 			, (select sum(rating) / count(rating) from wine.review where log_id in (select log_id from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id)) user_average_rating
 			, (select sum(count) from wine.wine_log where wine_id = W.wine_id and user_id = W.user_id and type = 'IN') number_of_buying
@@ -183,7 +186,7 @@
     
     <select id="selectWineById" parameterType="int" resultType="com.winemanager.wine.domain.Wine">
     	select
-    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type
+    		wine_id, user_id, name, link, thumb, thumb_bottom, country, region, average_rating, rating, average_price, vintage, count, size, wine_type, alcohol, grape, winery
     	from
     		wine.wine
     	where
@@ -217,7 +220,21 @@
     	update
     		wine.wine
 		set 
-			name = #{name}, link = #{link}, thumb = #{thumb}, thumb_bottom = #{thumbBottom}, country = #{country}, region = #{region}, average_rating = #{averageRating}, rating = ${rating == null ? 0 : rating}, average_price = #{averagePrice}, vintage = #{vintage}, size = #{size}, wine_type = #{wineType}
+			name = #{name}, 
+			link = #{link}, 
+			thumb = #{thumb}, 
+			thumb_bottom = #{thumbBottom}, 
+			country = #{country}, 
+			region = #{region}, 
+			average_rating = #{averageRating}, 
+			rating = ${rating == null ? 0 : rating}, 
+			average_price = #{averagePrice}, 
+			vintage = #{vintage}, 
+			size = #{size},
+			wine_type = #{wineType},
+			alcohol = #{alcohol},
+			grape = #{grape},
+			winery = #{winery}
 		where
 			wine_id = #{wineId} and user_id = #{userId}
     </update>
