@@ -253,7 +253,7 @@ public class CrawlingServiceImpl implements CrawlingService, CommandLineRunner, 
 			winery = vivinoBreadcrumbs.select(VIVINO_WINERY_SELECTOR).isEmpty()
 					? null
 					: vivinoBreadcrumbs.select(VIVINO_WINERY_SELECTOR).text().trim();
-			grape = vivinoBreadcrumbs.select(VIVINO_GRAPE_SELECTOR).isEmpty()
+			grape = vivinoBreadcrumbs.select(VIVINO_GRAPE_SELECTOR).isEmpty() || vivinoBreadcrumbs.select(VIVINO_GRAPE_SELECTOR).get(0).text().length() < 1
 					? null
 					: vivinoBreadcrumbs.select(VIVINO_GRAPE_SELECTOR).text().trim();
 			for(Element factRow : vivinoFactRows) {
