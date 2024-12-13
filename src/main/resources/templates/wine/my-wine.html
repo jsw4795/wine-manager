@@ -18,6 +18,7 @@
 		<a th:text="#{wine.type.red}" th:classappend="${myWineRequest.type == 'red'} ? 'underline' : ''" class="wine-type text-lg font-semibold" th:href="|/my-wine/red?hideSoldOut=${myWineRequest.hideSoldOut}|"> Red </a>
 		<a th:text="#{wine.type.white}" th:classappend="${myWineRequest.type == 'white'} ? 'underline' : ''" class="wine-type text-lg font-semibold" th:href="|/my-wine/white?hideSoldOut=${myWineRequest.hideSoldOut}|"> White </a> 
 		<a th:text="#{wine.type.sparkling}" th:classappend="${myWineRequest.type == 'sparkling'} ? 'underline' : ''" class="wine-type text-lg font-semibold" th:href="|/my-wine/sparkling?hideSoldOut=${myWineRequest.hideSoldOut}|"> Sparkling </a>
+		<a th:text="#{wine.type.dessert}" th:classappend="${myWineRequest.type == 'dessert'} ? 'underline' : ''" class="wine-type text-lg font-semibold" th:href="|/my-wine/dessert?hideSoldOut=${myWineRequest.hideSoldOut}|"> Dessert </a>
 		<a th:text="#{wine.type.rose}" th:classappend="${myWineRequest.type == 'rose'} ? 'underline' : ''" class="wine-type text-lg font-semibold" th:href="|/my-wine/rose?hideSoldOut=${myWineRequest.hideSoldOut}|"> Rose </a> 
 	</nav>
 	

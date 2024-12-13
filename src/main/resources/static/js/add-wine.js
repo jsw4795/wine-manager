@@ -231,6 +231,7 @@ function getMoreInfo($this) {
 				$wineTypeInput.attr("onclick", "return false;");
 				// 회색 처리
 				$(".wine-type-ul li").addClass("bg-gray-200");
+				$(".wine-type-ul li").removeClass("border-gray-200");
 				$(".wine-type-ul li").addClass("border-gray-300");
 			}
 			
