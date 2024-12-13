@@ -249,7 +249,7 @@ public class CrawlingServiceImpl implements CrawlingService, CommandLineRunner, 
 			
 			wineType = vivinoBreadcrumbs.select(VIVINO_WINE_TYPE_SELECTOR).isEmpty()
 					? null
-					: vivinoBreadcrumbs.select(VIVINO_WINE_TYPE_SELECTOR).text().split(" ")[0].trim(); // Red wine => Red
+					: vivinoBreadcrumbs.select(VIVINO_WINE_TYPE_SELECTOR).text().split(" ")[0].trim().replace('é', 'e'); // Red wine => Red
 			winery = vivinoBreadcrumbs.select(VIVINO_WINERY_SELECTOR).isEmpty()
 					? null
 					: vivinoBreadcrumbs.select(VIVINO_WINERY_SELECTOR).text().trim();
