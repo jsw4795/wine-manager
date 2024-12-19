@@ -45,6 +45,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class UserController {
 	
+	// WebConfig에서 주입됨
 	private final ObjectMapper objectMapper;
 	private final DateFormat englishDateFormat;
 	private final DateFormat koreanDateFormat;
@@ -114,7 +115,7 @@ public class UserController {
 		MainStats mainStats = userService.getMainStats(user.getUserId());
 		
 		model.addAttribute("mainStats", mainStats);
-		model.addAttribute("exchangeRate", wineService.getExchangeRate());
+		model.addAttribute("exchangeRate", wineService.getExchangeRateUSD());
 		
 		return "/user/my-page";
 	}

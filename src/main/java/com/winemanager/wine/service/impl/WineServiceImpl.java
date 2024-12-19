@@ -58,7 +58,7 @@ public class WineServiceImpl implements WineService{
 	private final CrawlingService crawlingService;
 	private final MessageSource messageSource;
 	
-	private double exchangeRate = 1300;
+	private double exchangeRateUSD = 1300;
 	private final String winePicPath;
 	
 	// 생성자가 1개여서 @AutoWired 생략
@@ -135,14 +135,14 @@ public class WineServiceImpl implements WineService{
 			System.out.println("[환율 업데이트 중 오류 발생]");
 			e.printStackTrace();
 		} finally {
-			this.exchangeRate = wineMapper.selectExchangeRate();
-			System.out.println("[환율 설정]: " + this.exchangeRate);
+			this.exchangeRateUSD = wineMapper.selectExchangeRate();
+			System.out.println("[환율 설정]: " + this.exchangeRateUSD);
 		}
 	}
 	
 	@Override
-	public double getExchangeRate() {
-		return exchangeRate;
+	public double getExchangeRateUSD() {
+		return exchangeRateUSD;
 	}
 
 	@Transactional(readOnly = true)

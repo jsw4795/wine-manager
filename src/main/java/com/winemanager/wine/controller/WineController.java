@@ -371,6 +371,7 @@ public class WineController {
 		model.addAttribute("myWineRequest", myWineRequest);
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pagination", myWineRequest.getPagination());
+		model.addAttribute("exchangeRateUSD", wineService.getExchangeRateUSD());
 		
 		return "wine/my-wine";
 	}
@@ -388,7 +389,7 @@ public class WineController {
 		wineService.setWineImage(response.getWine());
 		
 		model.addAttribute("response", response);
-		model.addAttribute("exchangeRate", wineService.getExchangeRate());
+		model.addAttribute("exchangeRateUSD", wineService.getExchangeRateUSD());
 		
 		return "wine/wine-detail";
 	}

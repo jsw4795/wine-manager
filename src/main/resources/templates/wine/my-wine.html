@@ -98,7 +98,8 @@
 					</div>
 					<h2 th:text="${wine.name}" class="text-sm md:text-base lg:text-lg font-semibold">와인 이름</h2>
 					<h3 th:text="${wine.vintage != null} ? ${wine.vintage} : 'NV' " class="text-base font-medium">빈티지</h3>
-					<p th:text="${wine.averagePrice != null} ? |$${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',2,'POINT')}| : |$N/A|" class="mt-1 text-sm text-gray-700">평균 가격</p>
+					<p th:if="${user.language == 'en'}" th:text="${wine.averagePrice != null} ? |$${#numbers.formatDecimal(wine.averagePrice / exchangeRateUSD,1,'COMMA',2,'POINT')}| : |$N/A|" class="mt-1 text-sm text-gray-700">평균 가격(달러)</p>
+					<p th:if="${user.language == 'ko'}" th:text="${wine.averagePrice != null} ? |₩${#numbers.formatDecimal(wine.averagePrice,1,'COMMA',0,'POINT')}| : |$N/A|" class="mt-1 text-sm text-gray-700">평균 가격(원화)</p>
 				</a>
 			</div>
 			

@@ -65,7 +65,7 @@
     <select id="selectMyWine" parameterType="com.winemanager.wine.domain.MyWineRequest" resultType="com.winemanager.wine.domain.Wine">
     	select
     		W.wine_id, W.user_id, W.name, W.link, W.thumb, W.thumb_bottom, W.country, W.region, W.rating, W.average_rating, W.vintage, W.count, W.size, W.wine_type, W.alcohol, W.grape, W.winery
-			, avg(L.price) / (select USD from wine.exchange_rate) average_price
+			, avg(L.price) average_price
 			, (select max(date) from wine.wine_log where wine_id = w.wine_id and type = 'IN') last_buy_date
     	from
     		wine.wine W
