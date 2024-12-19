@@ -11,6 +11,7 @@ const colorByWineType = {
 	Red: 'rgba(208, 37, 37, 1)',
 	White: 'rgba(247, 237, 136, 1)',
 	Sparkling: 'rgba(246, 250, 188, 1)',
+	Dessert: 'rgba(235, 192, 0, 1)',
 	Rose: 'rgba(255, 163, 163, 1)',	
 };
 
