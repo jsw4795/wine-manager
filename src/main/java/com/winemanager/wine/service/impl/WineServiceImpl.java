@@ -297,7 +297,7 @@ public class WineServiceImpl implements WineService{
 		List<Wine> wineList = wineMapper.selectMyWine(myWineRequest);
 		
 		for(Wine wine : wineList) {
-			wine.setSizeToShow(messageSource.getMessage("wine.size." + wine.getSize().toLowerCase(), null, LocaleContextHolder.getLocale()));
+			wine.setSizeToShow(messageSource.getMessage("wine.size." + wine.getSize().toLowerCase().replaceAll("double magnum", "doubleMagnum"), null, LocaleContextHolder.getLocale()));
 		}
 		
 		return wineList;
@@ -320,7 +320,7 @@ public class WineServiceImpl implements WineService{
 			wineLog.setStock(stock);
 		}
 		
-		response.getWine().setSizeToShow(messageSource.getMessage("wine.size." + response.getWine().getSize().toLowerCase(), null, LocaleContextHolder.getLocale()));
+		response.getWine().setSizeToShow(messageSource.getMessage("wine.size." + response.getWine().getSize().toLowerCase().replaceAll("double magnum", "doubleMagnum"), null, LocaleContextHolder.getLocale()));
 		
 		return response;
 	}
