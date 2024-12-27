@@ -303,6 +303,9 @@ public class WineController {
 			addWineRequest.setWineThumb(wine.getThumb());
 			addWineRequest.setWineThumbBottom(wine.getThumbBottom());
 			addWineRequest.setWineLink(wine.getLink());
+			addWineRequest.setWineAlcohol(wine.getAlcohol());
+			addWineRequest.setWineGrape(wine.getGrape());
+			addWineRequest.setWineWinery(wine.getWinery());
 		} else {
 			model.addAttribute("errorMessage", "You do not have access.");
 			return "error";

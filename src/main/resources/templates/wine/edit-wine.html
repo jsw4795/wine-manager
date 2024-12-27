@@ -90,18 +90,42 @@
 			
 			<div class="grid md:grid-cols-4 gap-4">
 				<div class="flex flex-col md:col-span-3">
-					<label th:text="#{editWine.wine.learnMore}" for="wine-name" class="font-semibold"> Learn More (Link) </label> 
+					<label th:text="#{editWine.wine.learnMore}" for="link" class="font-semibold"> Learn More (Link) </label> 
 					<input th:placeholder="#{editWine.wine.leanMore.description}" th:field="*{wineLink}" th:classappend="${#fields.hasErrors('wineLink')} ? 'border-red-600' : ''" 
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="link" placeholder="Link" type="text" name="wineLink" required autocomplete="off"/> 
 					<p th:if="${#fields.hasErrors('wineLink')}" th:errors="*{wineLink}" class="text-red-600"></p>
 				</div>
 				<div class="flex flex-col">
-					<label th:text="#{editWine.wine.averagePrice}" for="vintage" class="font-semibold"> Average Price ($) </label>
+					<label th:text="#{editWine.wine.averagePrice}" for="average-price" class="font-semibold"> Average Price (₩) </label>
 					<input th:placeholder="#{editWine.wine.averagePrice.description}" th:field="*{wineAveragePrice}" th:classappend="${#fields.hasErrors('wineAveragePrice')} ? 'border-red-600' : '' "  
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 						id="average-price" placeholder="Average Price" type="number" min="0" step="0.01" name="wineAveragePrice" autocomplete="off" />
 					<p th:if="${#fields.hasErrors('wineAveragePrice')}" th:errors="*{wineAveragePrice}" class="text-red-600"></p>
+				</div>
+			</div>
+			
+			<div class="grid md:grid-cols-7 gap-4">
+				<div class="flex flex-col md:col-span-1">
+					<label th:text="#{editWine.wine.alcohol}" for="wine-alcohol" class="font-semibold"> ABV(%) </label> 
+					<input th:placeholder="#{editWine.wine.alcohol.description}" th:field="*{wineAlcohol}" th:classappend="${#fields.hasErrors('wineAlcohol')} ? 'border-red-600' : ''" 
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+						id="wine-alcohol" placeholder="Alcohol" type="number" min="0" step="0.1" name="wineAlcohol" required autocomplete="off"/> 
+					<p th:if="${#fields.hasErrors('wineAlcohol')}" th:errors="*{wineAlcohol}" class="text-red-600"></p>
+				</div>
+				<div class="flex flex-col md:col-span-3">
+					<label th:text="#{editWine.wine.grape}" for="wine-grape" class="font-semibold"> Grape </label>
+					<input th:placeholder="#{editWine.wine.grape.description}" th:field="*{wineGrape}" th:classappend="${#fields.hasErrors('wineGrape')} ? 'border-red-600' : '' "  
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+						id="wine-grape" placeholder="Grape" type="text" name="wineGrape" autocomplete="off" />
+					<p th:if="${#fields.hasErrors('wineGrape')}" th:errors="*{wineGrape}" class="text-red-600"></p>
+				</div>
+				<div class="flex flex-col md:col-span-3">
+					<label th:text="#{editWine.wine.winery}" for="wine-winery" class="font-semibold"> Winery </label>
+					<input th:placeholder="#{editWine.wine.winery.description}" th:field="*{wineWinery}" th:classappend="${#fields.hasErrors('wineWinery')} ? 'border-red-600' : '' "  
+						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+						id="wine-winery" placeholder="Winery" type="text" name="wineWinery" autocomplete="off" />
+					<p th:if="${#fields.hasErrors('wineWinery')}" th:errors="*{wineWinery}" class="text-red-600"></p>
 				</div>
 			</div>
 			
