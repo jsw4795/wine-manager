@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +36,7 @@ import com.winemanager.wine.domain.WineDetailRequest;
 import com.winemanager.wine.domain.WineDetailResponse;
 import com.winemanager.wine.domain.WineLog;
 import com.winemanager.wine.service.WineService;
+import com.winemanager.wine.util.ExchangeRate;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -51,6 +51,7 @@ public class WineController {
 	
 	private final WineService wineService;
 	private final MessageSource messageSource;
+	private final ExchangeRate exchangeRate;
 	
 	@ModelAttribute
 	public void load(Model model, @AuthenticationPrincipal User user){
@@ -374,7 +375,7 @@ public class WineController {
 		model.addAttribute("myWineRequest", myWineRequest);
 		model.addAttribute("wineList", wineList);
 		model.addAttribute("pagination", myWineRequest.getPagination());
-		model.addAttribute("exchangeRateUSD", wineService.getExchangeRateUSD());
+		model.addAttribute("exchangeRateUSD", exchangeRate.getUSD());
 		
 		return "wine/my-wine";
 	}
@@ -392,7 +393,7 @@ public class WineController {
 		wineService.setWineImage(response.getWine());
 		
 		model.addAttribute("response", response);
-		model.addAttribute("exchangeRateUSD", wineService.getExchangeRateUSD());
+		model.addAttribute("exchangeRateUSD", exchangeRate.getUSD());
 		
 		return "wine/wine-detail";
 	}

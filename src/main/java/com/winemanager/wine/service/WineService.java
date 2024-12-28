@@ -39,7 +39,6 @@ public interface WineService {
 	public void deleteReview(EditReviewRequest editReviewRequest, String userId);
 	public Review getReviewByWineLog(int logId, String userId);
 	
-	public double getExchangeRateUSD();
 	public void setWineImage(WithThumb object);
 	public void setWineImage(List<? extends WithThumb> objectList);
 }

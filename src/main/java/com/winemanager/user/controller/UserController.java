@@ -36,6 +36,7 @@ import com.winemanager.user.domain.stats.WineByPrice;
 import com.winemanager.user.domain.stats.WineByType;
 import com.winemanager.user.service.UserService;
 import com.winemanager.wine.service.WineService;
+import com.winemanager.wine.util.ExchangeRate;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -52,6 +53,7 @@ public class UserController {
 	
 	private final UserService userService;
 	private final WineService wineService;
+	private final ExchangeRate exchangeRate;
 	
 	@ModelAttribute
 	public void load(Model model, @AuthenticationPrincipal User user){
@@ -115,7 +117,7 @@ public class UserController {
 		MainStats mainStats = userService.getMainStats(user.getUserId());
 		
 		model.addAttribute("mainStats", mainStats);
-		model.addAttribute("exchangeRate", wineService.getExchangeRateUSD());
+		model.addAttribute("exchangeRate", exchangeRate.getUSD());
 		
 		return "/user/my-page";
 	}

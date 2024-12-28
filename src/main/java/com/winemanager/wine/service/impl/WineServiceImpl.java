@@ -2,34 +2,18 @@ package com.winemanager.wine.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpClient.Redirect;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.winemanager.wine.domain.AddWineRequest;
 import com.winemanager.wine.domain.DrinkWineRequest;
 import com.winemanager.wine.domain.EditReviewRequest;
@@ -48,101 +32,24 @@ import com.winemanager.wine.util.Pagination;
 
 @Service
 public class WineServiceImpl implements WineService{
-	
-	
-	private final String apiKey; // final로 지정하면, @RequiredArgsConstructor에 의해 빈을 주입하려해서 오류 발생함 (직접 생성자 작성)
-	private final String apiDataArg; // 환율 정보 요청
-	private final SSLContext sslContext;
 
 	private final WineMapper wineMapper;
 	private final CrawlingService crawlingService;
 	private final MessageSource messageSource;
 	
-	private double exchangeRateUSD = 1300;
 	private final String winePicPath;
 	
 	// 생성자가 1개여서 @AutoWired 생략
 	public WineServiceImpl(
-			@Value("${koreaexim-exchangeRate-apiKey}") String apiKey,
 			@Value("${winePicPath}") String winePicPath,
-			@Value("${apiDataArg}") String apiDataArg,
 			WineMapper wineMapper,
 			CrawlingService crawlingService,
-			MessageSource messageSource,
-			TrustManager[] trustAllCerts //WebConfig 확인
-			) throws NoSuchAlgorithmException, KeyManagementException {
-		this.apiKey = apiKey;
+			MessageSource messageSource
+			) {
 		this.winePicPath = winePicPath;
-		this.apiDataArg = apiDataArg;
 		this.wineMapper = wineMapper;
 		this.crawlingService = crawlingService;
 		this.messageSource = messageSource;
-		
-		// 인증서 무시를 위한 사전 작업
-		this.sslContext = SSLContext.getInstance("TLS");
-		sslContext.init(null, trustAllCerts, new SecureRandom());
-	}
-	
-	// 한시간마다 원-달러 환율 업데이트
-	@Scheduled(fixedRate = 60 * 60 * 1000) // 1시간에 한번 실행
-	public void run() {
-		String jsonData = null;
-		String requestURL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=" + apiKey + "&data=" + apiDataArg;
-		
-		HttpRequest request = HttpRequest.newBuilder()
-			    .uri(URI.create(requestURL))
-			    .header("accept", "application/json")
-			    .method("GET", HttpRequest.BodyPublishers.noBody())
-			    .build();
-		
-		try {
-			
-			HttpClient client = HttpClient.newBuilder()
-										  .sslContext(sslContext)
-										  .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL)) // 쿠키 허용
-										  .followRedirects(Redirect.NORMAL) // 리다이렉트 허용
-										  .build();
-			
-			// 첫 요청에서 Remote host terminated the handshake 오류가 발생하기 때문에 미리 한번 요청 후 처리한다
-			try {
-				client.send(request, HttpResponse.BodyHandlers.ofString());	
-			} catch (Exception e) {
-				if(e.getMessage().equals("Remote host terminated the handshake"))
-				System.out.println("[환율 업데이트]: Remote host terminated the handshake 오류 발생");
-			}
-			
-			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-			jsonData = response.body();
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-		    List<Map<String, Object>> result = objectMapper.readValue(jsonData, new TypeReference<List<Map<String,Object>>>() {});
-		    
-		    if(result == null || result.size() < 1) { // 현재 API는 영업시간 외에 요청하면 null을 리턴함
-		    	System.out.println("[환율 업데이트 실패]: 영업시간 외 요청");
-		    	return;
-		    }
-		    
-		    for(Map<String, Object> data : result) {
-		    	if(data.get("cur_unit").toString().equals("USD")){
-		    		double usd = Double.parseDouble(data.get("deal_bas_r").toString().replaceAll(",", ""));
-		    		wineMapper.updateExchangeRate(usd);
-		    		System.out.println("[환율 업데이트 성공]: " + usd);
-		    	}
-		    	
-		    	// ...추후에 다른 통화 추가 시, 조건 추가
-		    }
-		} catch (Exception e) {
-			System.out.println("[환율 업데이트 중 오류 발생]");
-			e.printStackTrace();
-		} finally {
-			this.exchangeRateUSD = wineMapper.selectExchangeRate();
-			System.out.println("[환율 설정]: " + this.exchangeRateUSD);
-		}
-	}
-	
-	@Override
-	public double getExchangeRateUSD() {
-		return exchangeRateUSD;
 	}
 
 	@Transactional(readOnly = true)
