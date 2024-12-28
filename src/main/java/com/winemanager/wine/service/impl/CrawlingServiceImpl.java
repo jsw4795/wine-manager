@@ -22,15 +22,16 @@ import org.jsoup.select.Elements;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.winemanager.wine.domain.Wine;
 import com.winemanager.wine.service.CrawlingService;
+import com.winemanager.wine.util.ExchangeRate;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class CrawlingServiceImpl implements CrawlingService, CommandLineRunner, ApplicationListener<ContextClosedEvent>{
 	// 사용할 URL
 	private final String VIVINO_BASE_URL = "https://www.vivino.com";
@@ -58,11 +59,14 @@ public class CrawlingServiceImpl implements CrawlingService, CommandLineRunner, 
 	
 	// wine-searcher에서 사용할 selector
 	private final String WINE_SEARCHER_PRICE_SELECTOR = ".prod-profile__avg-price .price .font-light-bold";
+	private final String WINE_SEARCHER_PRICE_SECONDARY_SELECTOR = ".prod-profile__avg-price-global .price .font-light-bold";
 	
 	// 크롤링 시 설정할 userAgent
 	private final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36";
 	private final String cookiesPath = System.getProperty("user.dir") + "/cookies/";
 	private final String cookiesNameForWS = "wine-searcher_cookie.properties"; // 파일명은 나중에 yml에 저장
+	
+	private final ExchangeRate exchangeRate;
 	
 	// 쿠키 담아놓을 맵
 	private Map<String, String> wsCookies = new ConcurrentHashMap<>(); 
@@ -269,6 +273,14 @@ public class CrawlingServiceImpl implements CrawlingService, CommandLineRunner, 
 			averagePrice = wsPriceElement.size() < 1 
 						? null
 						: Double.valueOf(wsPriceElement.get(0).text().replaceAll(",", "").trim());
+			
+			// 와인서쳐에 가격 정보가 없어서 임의 가격이 나타날 때 처리
+			if(averagePrice == null) {
+				wsPriceElement = wsDocument.select(WINE_SEARCHER_PRICE_SECONDARY_SELECTOR); // 하나만 검색됨
+				averagePrice = wsPriceElement.size() < 1 
+							? null
+							: Double.valueOf(wsPriceElement.get(0).text().replaceAll(",", "").trim()) * exchangeRate.getUSD(); // 얘는 달러로 가져와서 원화로 변경해줘야함
+			}
 		}
 		
 		System.out.println("[vivino/ws-detail]데이터 가공 소요시간: " + (System.currentTimeMillis() - startTime) + "ms");
