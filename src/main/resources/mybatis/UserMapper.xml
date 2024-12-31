@@ -35,10 +35,10 @@
     	select
 			w.wine_id, l.log_id, l.date, l.type, w.name wine_name, w.vintage, w.size wine_size, l.count, l.price, l.place, r.rating rate, w.thumb, w.thumb_bottom
 			<if test="type eq 'all' or type eq 'buy'">
-			, (select sum(price * count) from wine.wine_log where date = l.date and type = "IN") spend_today
+			, (select sum(price * count) from wine.wine_log where date = l.date and type = "IN" and user_id = w.user_id) spend_today
 			</if>
 			<if test="type eq 'all' or type eq 'drink'">
-    		, (select sum(count) from wine.wine_log where date = l.date and type = "OUT") drink_today
+    		, (select sum(count) from wine.wine_log where date = l.date and type = "OUT" and user_id = w.user_id) drink_today
     		</if>
 		from
 			wine.wine w
