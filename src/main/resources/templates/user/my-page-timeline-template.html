@@ -18,7 +18,7 @@
 						--just for height--
 					</svg>
    					<span class="text-lg font-semibold text-gray-600">
-   						<span class="font-black text-xl align-bottom">₩</span> 
+   						<span th:text="${currencySign}" class="font-black text-xl align-bottom">₩</span> 
    						- <span class="spend-today">data.spendToday.toLocaleString()</span>
    					</span>
   				</div>
@@ -54,7 +54,7 @@
 		                   	<span class="timeline-name font-medium text-gray-900 ">data.wineName</span>
 						</div>
 						<div class="text-sm font-normal">
-							at <span class="timeline-place font-medium text-gray-900 ">data.place</span> for <span class="font-medium text-gray-900 ">₩ <span class="timeline-price">data.price.toLocaleString()</span></span> each.
+							at <span class="timeline-place font-medium text-gray-900 ">data.place</span> for <span class="font-medium text-gray-900 "><span th:text="${currencySign}" >₩</span> <span class="timeline-price">data.price.toLocaleString()</span></span> each.
 						</div>
 			
 						<span class="inline-flex items-center text-xs font-normal text-gray-500 ">

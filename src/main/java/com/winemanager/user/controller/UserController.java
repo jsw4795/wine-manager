@@ -133,6 +133,10 @@ public class UserController {
 		String jsonResult = null;
 		switch (LocaleContextHolder.getLocale().getLanguage()) {
 		case "en":
+			// 원화 -> 달러 변경
+			for(Timeline timeline : timeLineList) {
+				timeline.applyCurrency(exchangeRate.getUSD());
+			}
 			jsonResult = objectMapper.writer(englishDateFormat).writeValueAsString(timeLineList);
 			break;
 			
@@ -141,6 +145,9 @@ public class UserController {
 			break;
 			
 		default:
+			for(Timeline timeline : timeLineList) {
+				timeline.applyCurrency(exchangeRate.getUSD());
+			}
 			jsonResult = objectMapper.writer(englishDateFormat).writeValueAsString(timeLineList);
 			break;
 		}
@@ -149,8 +156,9 @@ public class UserController {
 	}
 	
 	@GetMapping("/my-page/timeline/template")
-	public String getTimelineTemplate(@AuthenticationPrincipal User user) {
+	public String getTimelineTemplate(@AuthenticationPrincipal User user, Model model) {
 		
+		model.addAttribute("currencySign", Language.valueOf(user.getLanguage()).getCurrencySign());
 		return "/user/my-page-timeline-template";
 	}
 	
