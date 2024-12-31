@@ -35,6 +35,7 @@ public class Timeline extends WithThumb {
 	private String thumbBottom; // wine 
 	
 	private Double spendToday;
+	private Integer buyToday;
 	private Integer drinkToday;
 	
 	

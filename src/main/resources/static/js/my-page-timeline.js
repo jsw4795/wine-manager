@@ -135,6 +135,8 @@ function makeTimelineBlock(data) {
 	if(data.spendToday != null){
 		$html.find(".spend-today-container").removeClass("hidden");
 		$html.find(".spend-today").text(data.spendToday.toLocaleString());
+		$html.find(".buy-today-container").removeClass("hidden");
+		$html.find(".buy-today").text(data.buyToday.toLocaleString());
 	}
 	if(data.drinkToday != null){
 		$html.find(".drink-today-container").removeClass("hidden");
