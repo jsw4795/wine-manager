@@ -41,7 +41,9 @@ public class Timeline extends WithThumb {
 	
 	// 원화 -> 다른 통화 변경 (모든 통화에 적용가능)
 	public void applyCurrency(double exchangeRate) {
-		this.price = Math.round(this.price / exchangeRate * 100) / 100.0;
-		this.spendToday = Math.round(this.spendToday / exchangeRate * 100) / 100.0;
+		if(this.price != null)
+			this.price = Math.round(this.price / exchangeRate * 100) / 100.0;
+		if(this.spendToday != null)
+			this.spendToday = Math.round(this.spendToday / exchangeRate * 100) / 100.0;
 	}
 }
